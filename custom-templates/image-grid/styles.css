@@ -19,8 +19,12 @@
   display: flex;
   height: 100vh;
   border-right: 1px solid #e8e8e8;
-  width: 500px;
-  min-width: 300px;
+  max-width: 250px;
+  min-width: 200px;
+}
+
+.grod-container{
+  grid-gap: 20px 20px;
 }
 
 .text{
