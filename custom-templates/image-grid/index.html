@@ -72,9 +72,19 @@
   const defaultConfiguration = {
     classifications: [
       {
-        name: "transcription",
-        instructions: "Transcribe the audio file",
-        type: "text"
+        name: "image_grid_update",
+        instructions: "Done updating image grid?",
+        type: "radio",
+        options: [
+          {
+            "label": "Yes",
+            "value": "yes"
+          },
+          {
+            "label": "No",
+            "value": "no"
+          }
+        ]
       }
     ]
   };
@@ -159,7 +169,7 @@
 
   Labelbox.getTemplateCustomization().subscribe(customization => {
     classifications =
-      (customization && customization.classifications) ||
+      // (customization && customization.classifications) ||
       defaultConfiguration.classifications;
     drawQuestions(classifications);
     markQuestionsAsLoaded();
@@ -242,35 +252,48 @@
     }
   }
 
-  function getHtmlForAsset(data) {
-    const info = data.toLowerCase();
-    if (info.indexOf(".mp4") !== -1) {
-      return `
-      <video class="asset" src="${data}" controls autoplay></video>
-    `;
-    }
+  function createImage(imageObj) {
+    const imageLink = imageObj.image_link;
+    const pdpLink = imageObj.pdp_link;
+    const listingId = imageObj.listing_id;
+    //return `<img src="${imageLink}" pdp_link="${pdpLink}" listing_id="${listingId}" onclick="myFunction()" style="width:200px;height:200px;">`;
+    return `<a href="${pdpLink}"><img src="${imageLink}" listing_id="${listingId}" style="width:200px;height:200px;"></a>`;
+  }
 
-    if (info.indexOf(".mp3") !== -1 || info.indexOf(".flac") !== -1) {
-      return `
-      <audio class="asset" controls>
-        <source src="${data}" type="audio/mp3">
-      </audio>
-    `;
-    }
-
-    if (
-      info.indexOf(".png") !== -1 ||
-      info.indexOf(".jpg") !== -1 ||
-      info.indexOf(".jpeg") !== -1
-    ) {
-      return `
-      <img class="asset" src="${data}"></img>
-    `;
-    }
-
+  function createImageRow(imageObjs) {
     return `
-    <div class="text">${data}</div>
-  `;
+    <div class="column">
+      ${imageObjs.map(createImage).join("\n")}
+    </div>
+    `;
+  }
+
+  function getHtmlForAsset(data) {
+    // const info = data.toLowerCase();
+    const parsedData = JSON.parse(data);
+    const imageObjs = parsedData.images;
+
+    // createImageRows
+    var imageRows = [];
+    const numColumns = 5;
+    // for (i = 0, j = imageObjs.length; i < j; i += numColumns) {
+    for (i = 0, j = 100; i < j; i += numColumns) {
+        rowImageObjs = imageObjs.slice(i, i + numColumns);
+        imageRows.push(createImageRow(rowImageObjs));
+    }
+
+    console.dir(parsedData);
+    // style="width:100%"
+    return `
+    <div class="header">
+      <h3>Image Grid</h3>
+    </div>
+
+    <!-- Photo Grid -->
+    <div class="grid-container">
+      ${imageRows.join("\n")}
+    </div>
+    `;
   }
 
   function drawAsset(asset) {
