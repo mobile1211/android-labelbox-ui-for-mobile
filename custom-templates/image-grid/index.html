@@ -11,37 +11,15 @@
 <link rel="stylesheet" href="styles.css" />
 
 <div class="app flex-grow">
-  <div class="flex-column sidebar">
-    <div class="navbar">
+
+  <div class="flex-grow flex-column">
+    <div style="display: flex; align-items: center; padding: 10px 0px;margin-left:20px;">
       <i
         class="material-icons"
-        style="color: #9b9b9b; cursor: pointer;"
+        style="color: #9b9b9b; cursor: pointer; margin-right: 20px"
         onclick="goHome()"
         >home</i
       >
-    </div>
-
-    <div id="questions"></div>
-
-    <div class="flex-grow"></div>
-    <div style="display: flex;">
-      <a
-        class="waves-effect waves-light btn-large"
-        style="background-color: white; color: black; width: 100%;"
-        onclick="skip()"
-        >Skip</a
-      >
-      <a
-        class="waves-effect waves-light btn-large"
-        style="background-color: #03a9f4; width: 100%;"
-        onclick="submit()"
-        >Submit</a
-      >
-    </div>
-  </div>
-
-  <div class="flex-grow flex-column content">
-    <div style="display: flex; align-items: center; padding: 10px 0px">
       <i
         id="back"
         class="material-icons"
@@ -60,7 +38,35 @@
         >keyboard_arrow_right</i
       >
     </div>
-    <div id="asset">loading...</div>
+    <div class="content">
+      <div id="asset">
+        loading...
+      </div>
+      <div class="flex-column questions">
+        <div id="questions"></div>
+
+        <div class="flex-grow"></div>
+        <div style="display: flex;">
+          <a
+            class="waves-effect waves-light btn-large"
+            style="background-color: white; color: black; width: 100%; margin-right: 10px"
+            onclick="skip()"
+            >Skip</a
+          >
+          <a
+            class="waves-effect waves-light btn-large"
+            style="background-color: #03a9f4; width: 100%;"
+            onclick="submit()"
+            >Submit</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex-column side-panel">
+    <h5>Other pictures</h5>
+    <div id="panel"></div>
   </div>
 </div>
 
@@ -186,6 +192,10 @@
     });
   }
 
+  function pdpUrl(id) {
+    return `https://www.airbnb.com/rooms/${id}`;
+  }
+
   function getLabel() {
     const getAnswer = node => {
       const key = node.getAttribute("id");
@@ -252,47 +262,92 @@
     }
   }
 
-  function createImage(imageObj) {
-    const imageLink = imageObj.image_link;
-    const pdpLink = imageObj.pdp_link;
+  function createImage(imageObj, idx) {
+    const imageLink = `${imageObj.image_link}?img_w=720`;
     const listingId = imageObj.listing_id;
-    //return `<img src="${imageLink}" pdp_link="${pdpLink}" listing_id="${listingId}" onclick="myFunction()" style="width:200px;height:200px;">`;
-    return `<a href="${pdpLink}"><img src="${imageLink}" listing_id="${listingId}" style="width:200px;height:200px;"></a>`;
-  }
 
-  function createImageRow(imageObjs) {
     return `
-    <div class="column">
-      ${imageObjs.map(createImage).join("\n")}
-    </div>
+      <div class="image-container" onclick="{displayInfo(${idx})}" tabindex="${idx}">
+        <img src="${imageLink}" listing_id="${listingId}" class="image" />
+      </div>
     `;
   }
 
-  function getHtmlForAsset(data) {
-    // const info = data.toLowerCase();
-    const parsedData = JSON.parse(data);
-    const imageObjs = parsedData.images;
-
-    // createImageRows
-    var imageRows = [];
-    const numColumns = 5;
-    // for (i = 0, j = imageObjs.length; i < j; i += numColumns) {
-    for (i = 0, j = 100; i < j; i += numColumns) {
-        rowImageObjs = imageObjs.slice(i, i + numColumns);
-        imageRows.push(createImageRow(rowImageObjs));
-    }
-
-    console.dir(parsedData);
-    // style="width:100%"
+  function createAdditionalImage(url, idx) {
+    // TODO replace idx with the photo ID
     return `
-    <div class="header">
-      <h3>Image Grid</h3>
-    </div>
+      <div class="additional-image">
+        <div>Photo ID: ${idx}</div>
+        <img src="${url}" style="width:100%"/>
+      </div>
+    `;
+  }
 
-    <!-- Photo Grid -->
-    <div class="grid-container">
-      ${imageRows.join("\n")}
-    </div>
+  const otherImagesPlaceholders = [
+    'https://a0.muscache.com/im/pictures/87079999/a620977d_original.jpg?img_w=720',
+    'https://a0.muscache.com/im/pictures/cf89911e-8e4e-49af-9f1e-9aa662abf6af.jpg?img_w=720',
+    'https://a0.muscache.com/im/pictures/17e14ce8-2f39-4d79-9e12-a0355dc6c448.jpg?img_w=720',
+    'https://a0.muscache.com/im/pictures/f3e52aa8-1646-4d4b-a9c1-11cfbc0f9f86.jpg?img_w=720',
+    'https://a0.muscache.com/im/pictures/87079999/a620977d_original.jpg?img_w=720',
+    'https://a0.muscache.com/im/pictures/cf89911e-8e4e-49af-9f1e-9aa662abf6af.jpg?img_w=720',
+    'https://a0.muscache.com/im/pictures/17e14ce8-2f39-4d79-9e12-a0355dc6c448.jpg?img_w=720',
+    'https://a0.muscache.com/im/pictures/f3e52aa8-1646-4d4b-a9c1-11cfbc0f9f86.jpg?img_w=720',
+  ]
+
+  function displayInfo(itemIdx) {
+    // TODO: remove placeholders
+    const {
+      listing_id: id,
+      photoQuality = 'High',
+      photoId = 123,
+      propertyType = 'House',
+      allPhotos = otherImagesPlaceholders,
+    } = state.currentAssetData.images[itemIdx];
+
+    document.querySelector("#selected-id").innerHTML = id;
+    document.querySelector("#selected-quality").innerHTML = photoQuality;
+    document.querySelector("#selected-photo").innerHTML = photoId;
+    document.querySelector("#selected-link").href = pdpUrl(id);
+    document.querySelector("#selected-type").innerHTML = propertyType;
+    // window.open(pdpUrl(id), '_blank');
+
+    document.querySelector("#panel").innerHTML = otherImagesPlaceholders.map(createAdditionalImage).join("\n");
+  }
+
+  function getHtmlForAsset(parsedData) {
+    console.log(parsedData);
+    return `
+      <div class="header sticky">
+        <div style="display:flex;flex-direction:column;">
+          <h3>Pool - High</h3>
+
+          <div style="display:flex;flex-direction:row;flex-grow:1;align-items:flex-end;padding-bottom:20px">
+            <div class="listing-info">
+              Selected listing
+            </div>
+            <div class="listing-info">
+              ID: <span id="selected-id"></span>
+            </div>
+            <div class="listing-info">
+              Quality: <span id="selected-quality"></span>
+            </div>
+            <div class="listing-info">
+              Photo ID: <span id="selected-photo"></span>
+            </div>
+            <div class="listing-info">
+              Property type: <span id="selected-type"></span>
+            </div>
+            <div class="listing-info">
+              <a href="" id="selected-link" target="_blank">Link to PDP</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Photo Grid -->
+      <div class="photo-grid">
+        ${parsedData.images.map(createImage).join("\n")}
+      </div>
     `;
   }
 
@@ -305,8 +360,9 @@
     nextButton.style.opacity = hasNext ? 1 : 0.2;
     nextButton.style.cursor = hasNext ? "pointer" : "inherit";
 
+    const assetData = JSON.parse(asset.data);
     if ((state.currentAsset && state.currentAsset.data) !== asset.data) {
-      document.querySelector("#asset").innerHTML = getHtmlForAsset(asset.data);
+      document.querySelector("#asset").innerHTML = getHtmlForAsset(assetData);
     }
     if ((state.currentAsset && state.currentAsset.id) !== asset.id) {
       if (asset.label) {
@@ -322,7 +378,8 @@
     }
     state = {
       ...state,
-      currentAsset: asset
+      currentAsset: asset,
+      currentAssetData: assetData,
     };
   }
 </script>
