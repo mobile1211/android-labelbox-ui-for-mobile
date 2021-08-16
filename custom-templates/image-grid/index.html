@@ -11,7 +11,6 @@
 <link rel="stylesheet" href="styles.css" />
 
 <div class="app flex-grow">
-
   <div class="flex-grow flex-column">
     <div style="display: flex; align-items: center; padding: 10px 0px;margin-left:20px;">
       <i
@@ -192,10 +191,6 @@
     });
   }
 
-  function pdpUrl(id) {
-    return `https://www.airbnb.com/rooms/${id}`;
-  }
-
   function getLabel() {
     const getAnswer = node => {
       const key = node.getAttribute("id");
@@ -262,56 +257,46 @@
     }
   }
 
-  function createImage(imageObj, idx) {
-    const imageLink = `${imageObj.image_link}?img_w=720`;
-    const listingId = imageObj.listing_id;
-
-    return `
-      <div class="image-container" onclick="{displayInfo(${idx})}" tabindex="${idx}">
-        <img src="${imageLink}" listing_id="${listingId}" class="image" />
-      </div>
-    `;
+  function pdpUrl(id) {
+    return `https://www.airbnb.com/rooms/${id}`;
   }
 
-  function createAdditionalImage(url, idx) {
-    // TODO replace idx with the photo ID
+  function createAdditionalImage(listingImage) {
     return `
       <div class="additional-image">
-        <div>Photo ID: ${idx}</div>
-        <img src="${url}" style="width:100%"/>
+        <div>Photo ID: ${listingImage.photoId}</div>
+        <img src="${listingImage.photoLink}" style="width:100%"/>
       </div>
     `;
   }
 
-  const otherImagesPlaceholders = [
-    'https://a0.muscache.com/im/pictures/87079999/a620977d_original.jpg?img_w=720',
-    'https://a0.muscache.com/im/pictures/cf89911e-8e4e-49af-9f1e-9aa662abf6af.jpg?img_w=720',
-    'https://a0.muscache.com/im/pictures/17e14ce8-2f39-4d79-9e12-a0355dc6c448.jpg?img_w=720',
-    'https://a0.muscache.com/im/pictures/f3e52aa8-1646-4d4b-a9c1-11cfbc0f9f86.jpg?img_w=720',
-    'https://a0.muscache.com/im/pictures/87079999/a620977d_original.jpg?img_w=720',
-    'https://a0.muscache.com/im/pictures/cf89911e-8e4e-49af-9f1e-9aa662abf6af.jpg?img_w=720',
-    'https://a0.muscache.com/im/pictures/17e14ce8-2f39-4d79-9e12-a0355dc6c448.jpg?img_w=720',
-    'https://a0.muscache.com/im/pictures/f3e52aa8-1646-4d4b-a9c1-11cfbc0f9f86.jpg?img_w=720',
-  ]
-
   function displayInfo(itemIdx) {
-    // TODO: remove placeholders
+    console.log("Image state:", state.currentAssetData.images[itemIdx]);
     const {
-      listing_id: id,
-      photoQuality = 'High',
-      photoId = 123,
-      propertyType = 'House',
-      allPhotos = otherImagesPlaceholders,
+      listingId: listingId,
+      photoId: photoId,
+      propertyType: propertyType,
+      listingImages: listingImages,
     } = state.currentAssetData.images[itemIdx];
 
-    document.querySelector("#selected-id").innerHTML = id;
-    document.querySelector("#selected-quality").innerHTML = photoQuality;
+    document.querySelector("#selected-id").innerHTML = listingId;
     document.querySelector("#selected-photo").innerHTML = photoId;
-    document.querySelector("#selected-link").href = pdpUrl(id);
+    document.querySelector("#selected-link").href = pdpUrl(listingId);
     document.querySelector("#selected-type").innerHTML = propertyType;
-    // window.open(pdpUrl(id), '_blank');
+    // window.open(pdpUrl(listingId), '_blank');
 
-    document.querySelector("#panel").innerHTML = otherImagesPlaceholders.map(createAdditionalImage).join("\n");
+    document.querySelector("#panel").innerHTML = listingImages.map(createAdditionalImage).join("\n");
+  }
+
+  function createImage(imageObj, idx) {
+    const imageLink = `${imageObj.imageLink}?img_w=720`;
+    const listingId = imageObj.listingId;
+
+    return `
+        <div class="image-container" onclick="{displayInfo(${idx})}" tabindex="${idx}">
+        <img src="${imageLink}" listingId="${listingId}" class="image" />
+      </div>
+    `;
   }
 
   function getHtmlForAsset(parsedData) {
@@ -319,7 +304,7 @@
     return `
       <div class="header sticky">
         <div style="display:flex;flex-direction:column;">
-          <h3>Pool - High</h3>
+          <h3>${parsedData.attribute} - ${parsedData.qualityTier}</h3>
 
           <div style="display:flex;flex-direction:row;flex-grow:1;align-items:flex-end;padding-bottom:20px">
             <div class="listing-info">
@@ -327,9 +312,6 @@
             </div>
             <div class="listing-info">
               ID: <span id="selected-id"></span>
-            </div>
-            <div class="listing-info">
-              Quality: <span id="selected-quality"></span>
             </div>
             <div class="listing-info">
               Photo ID: <span id="selected-photo"></span>
