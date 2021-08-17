@@ -271,30 +271,32 @@
   }
 
   function displayInfo(itemIdx) {
-    console.log("Image state:", state.currentAssetData.images[itemIdx]);
+    console.log("Image state:", state.currentAssetData.gridImages[itemIdx]);
     const {
       listingId: listingId,
       photoId: photoId,
       propertyType: propertyType,
+      roomType: roomType,
       listingImages: listingImages,
-    } = state.currentAssetData.images[itemIdx];
+    } = state.currentAssetData.gridImages[itemIdx];
 
     document.querySelector("#selected-id").innerHTML = listingId;
     document.querySelector("#selected-photo").innerHTML = photoId;
     document.querySelector("#selected-link").href = pdpUrl(listingId);
-    document.querySelector("#selected-type").innerHTML = propertyType;
+    document.querySelector("#selected-property-type").innerHTML = propertyType;
+    document.querySelector("#selected-room-type").innerHTML = roomType;
     // window.open(pdpUrl(listingId), '_blank');
 
     document.querySelector("#panel").innerHTML = listingImages.map(createAdditionalImage).join("\n");
   }
 
   function createImage(imageObj, idx) {
-    const imageLink = `${imageObj.imageLink}?img_w=720`;
+    const photoLink = `${imageObj.photoLink}?img_w=720`;
     const listingId = imageObj.listingId;
 
     return `
         <div class="image-container" onclick="{displayInfo(${idx})}" tabindex="${idx}">
-        <img src="${imageLink}" listingId="${listingId}" class="image" />
+        <img src="${photoLink}" listingId="${listingId}" class="image" />
       </div>
     `;
   }
@@ -317,7 +319,10 @@
               Photo ID: <span id="selected-photo"></span>
             </div>
             <div class="listing-info">
-              Property type: <span id="selected-type"></span>
+              Property type: <span id="selected-property-type"></span>
+            </div>
+            <div class="listing-info">
+              Room type: <span id="selected-room-type"></span>
             </div>
             <div class="listing-info">
               <a href="" id="selected-link" target="_blank">Link to PDP</a>
@@ -328,7 +333,7 @@
 
       <!-- Photo Grid -->
       <div class="photo-grid">
-        ${parsedData.images.map(createImage).join("\n")}
+        ${parsedData.gridImages.map(createImage).join("\n")}
       </div>
     `;
   }
