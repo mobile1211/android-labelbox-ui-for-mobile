@@ -128,8 +128,7 @@
     <div class="question" id="${id}" questiontype="text">
       <div class="input-field col s12">
         <div class="label">${label}</div>
-        <input class="materialize-textarea" data-length="120" value="${answer ||
-          ""}"></input>
+        <input class="materialize-textarea" data-length="120" value="${answer || ""}"></input>
       </div>
     </div>
   `;
@@ -174,8 +173,7 @@
 
   Labelbox.getTemplateCustomization().subscribe(customization => {
     classifications =
-      // (customization && customization.classifications) ||
-      defaultConfiguration.classifications;
+      (customization && customization.classifications) || defaultConfiguration.classifications;
     drawQuestions(classifications);
     markQuestionsAsLoaded();
   });
@@ -183,12 +181,6 @@
   function goHome() {
     window.location.href =
       "https://app.labelbox.com/projects/" + state.projectId;
-  }
-
-  function skip() {
-    Labelbox.skip().then(() => {
-      Labelbox.fetchNextAssetToLabel();
-    });
   }
 
   function getLabel() {
@@ -232,7 +224,7 @@
   function submit() {
     const label = JSON.stringify(getLabel());
     const jumpToNext = Boolean(!state.currentAsset.label);
-    // Progress is this asset is new
+    // Progress if this asset is new
     Labelbox.setLabelForAsset(label).then(() => {
       if (jumpToNext) {
         Labelbox.fetchNextAssetToLabel();
@@ -241,6 +233,12 @@
     if (jumpToNext) {
       document.querySelector("#asset").innerHTML = "loading...";
     }
+  }
+
+  function skip() {
+    Labelbox.skip().then(() => {
+      Labelbox.fetchNextAssetToLabel();
+    });
   }
 
   function goBack() {
