@@ -221,33 +221,46 @@
     return Object.assign({}, ...answers);
   }
 
+  function showLoadingAssets() {
+    document.querySelector("#asset").innerHTML = "loading...";
+    document.querySelector('.content').scrollTo(0,0);
+  }
+
   function submit() {
+    safelyClearSelectedMetadata();
+
     const label = JSON.stringify(getLabel());
     const jumpToNext = Boolean(!state.currentAsset.label);
     // Progress if this asset is new
+    if (jumpToNext) {
+      showLoadingAssets();
+    }
     Labelbox.setLabelForAsset(label).then(() => {
       if (jumpToNext) {
         Labelbox.fetchNextAssetToLabel();
       }
     });
-    if (jumpToNext) {
-      document.querySelector("#asset").innerHTML = "loading...";
-    }
   }
 
   function skip() {
+    safelyClearSelectedMetadata();
+    showLoadingAssets();
     Labelbox.skip().then(() => {
       Labelbox.fetchNextAssetToLabel();
     });
   }
 
   function goBack() {
+    safelyClearSelectedMetadata();
+    showLoadingAssets();
     if (state.currentAsset.previous) {
       Labelbox.setLabelAsCurrentAsset(state.currentAsset.previous);
     }
   }
 
   function goNext() {
+    safelyClearSelectedMetadata();
+    showLoadingAssets();
     if (state.currentAsset.next) {
       Labelbox.setLabelAsCurrentAsset(state.currentAsset.next);
     } else {
@@ -268,6 +281,26 @@
     `;
   }
 
+  function clearSelectedMetadata() {
+    document.querySelectorAll(".image-container.selected").forEach((node) => {
+      node.classList.remove('selected');
+    });
+    document.querySelector("#selected-id").innerHTML = '';
+    document.querySelector("#selected-photo").innerHTML = '';
+    document.querySelector("#selected-link").href = '';
+    document.querySelector("#selected-property-type").innerHTML = '';
+    document.querySelector("#selected-room-type").innerHTML = '';
+    document.querySelector("#panel").innerHTML = '';
+  }
+
+  function safelyClearSelectedMetadata() {
+    try {
+      clearSelectedMetadata()
+    } catch(e) {
+      console.warn('could not clear data', e);
+    }
+  }
+
   function displayInfo(itemIdx) {
     console.log("Image state:", state.currentAssetData.gridImages[itemIdx]);
     const {
@@ -278,6 +311,9 @@
       listingImages: listingImages,
     } = state.currentAssetData.gridImages[itemIdx];
 
+    clearSelectedMetadata();
+
+    document.querySelector(`#image-container-${listingId}`).classList.add('selected');
     document.querySelector("#selected-id").innerHTML = listingId;
     document.querySelector("#selected-photo").innerHTML = photoId;
     document.querySelector("#selected-link").href = pdpUrl(listingId);
@@ -293,7 +329,7 @@
     const listingId = imageObj.listingId;
 
     return `
-        <div class="image-container" onclick="{displayInfo(${idx})}" tabindex="${idx}">
+      <div class="image-container" onclick="{displayInfo(${idx})}" tabindex="${idx}" id="image-container-${listingId}">
         <img src="${photoLink}" listingId="${listingId}" class="image" />
       </div>
     `;

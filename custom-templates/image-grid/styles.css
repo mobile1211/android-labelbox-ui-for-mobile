@@ -19,8 +19,8 @@ body{
   max-height: calc(100vh - 60px);
 }
 .side-panel{
-  width: 300px;
-  min-width: 300px;
+  width: 400px;
+  min-width: 400px;
   border-left: 1px solid #DDDDDD;
   overflow-y: scroll;
   height: 100vh;
@@ -57,7 +57,7 @@ body{
   padding-left: 5px;
   overflow: hidden;
 }
-.image-container:focus{
+.image-container.selected{
   background-color: red;
 }
 
