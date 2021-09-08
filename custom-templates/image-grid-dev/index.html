@@ -68,17 +68,17 @@
     <div id="panel-info">
       <div style="padding-bottom:10px">
         <div class="listing-info">
-          Listing Title: <span id="selected-listing-title"></span>
+          Title: <span id="selected-listing-title"></span>
         </div>
       </div>
       <div style="padding-bottom:10px">
         <div class="listing-info">
-          Listing Description: <span id="selected-listing-description"></span>
+          Description: <span id="selected-listing-description"></span>
         </div>
       </div>
       <div style="padding-bottom:10px">
         <div class="listing-info">
-          Listing Location: <span id="selected-listing-location"></span>
+          Location: <span id="selected-listing-location"></span>
         </div>
       </div>
       <div style="padding-bottom:20px">
@@ -436,6 +436,13 @@
         .catch(errorCb);
   }
 
+  function get(yourUrl){
+    var Httpreq = new XMLHttpRequest(); // a new request
+    Httpreq.open("GET",yourUrl,false);
+    Httpreq.send(null);
+    return Httpreq.responseText;
+  }
+
   function drawAsset(asset) {
     const backButton = document.querySelector("#back");
     backButton.style.opacity = asset.previous ? 1 : 0.2;
@@ -447,7 +454,8 @@
 
     console.log("asset.data:", asset.data);
     // data = downloadObjectAsync(asset.data);
-    data = downloadObject(asset.data, successCb, errorCb);
+    // data = downloadObject(asset.data, successCb, errorCb);
+    data = get(asset.data)
     console.log("data:", data);
     const assetData = JSON.parse(data);
     console.log("assetData:", assetData);
