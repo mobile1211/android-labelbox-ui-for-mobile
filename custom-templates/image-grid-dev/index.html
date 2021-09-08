@@ -65,28 +65,7 @@
 
   <div class="flex-column side-panel">
     <h5>Listing Info</h5>
-    <div id="panel-info">
-      <div style="padding-bottom:10px">
-        <div class="listing-info">
-          Title: <span id="selected-listing-title"></span>
-        </div>
-      </div>
-      <div style="padding-bottom:10px">
-        <div class="listing-info">
-          Description: <span id="selected-listing-description"></span>
-        </div>
-      </div>
-      <div style="padding-bottom:10px">
-        <div class="listing-info">
-          Location: <span id="selected-listing-location"></span>
-        </div>
-      </div>
-      <div style="padding-bottom:20px">
-        <div class="listing-info">
-          Where You'll Be: <span id="selected-listing-where"></span>
-        </div>
-      </div>
-    </div>
+    <div id="panel-info"></div>
     <h5>Other pictures</h5>
     <div id="panel-pictures"></div>
   </div>
@@ -304,6 +283,34 @@
     `;
   }
 
+  function createPanelInfo(title, description, location, where) {
+    return `
+      <div style="display:flex;flex-direction:row;flex-grow:1;align-items:flex-end;padding-bottom:10px">
+        <div class="listing-info">
+          Title: ${title}
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:row;flex-grow:1;align-items:flex-end;padding-bottom:10px">
+        <div class="listing-info">
+          Description: ${description}
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:row;flex-grow:1;align-items:flex-end;padding-bottom:10px">
+        <div class="listing-info">
+          Location: ${location}
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:row;flex-grow:1;align-items:flex-end;padding-bottom:20px">
+        <div class="listing-info">
+          Where You'll Be: ${where}
+        </div>
+      </div>
+    `;
+  }
+
   function clearSelectedMetadata() {
     document.querySelectorAll(".image-container.selected").forEach((node) => {
       node.classList.remove('selected');
@@ -314,10 +321,10 @@
     document.querySelector("#selected-property-type").innerHTML = '';
     document.querySelector("#selected-room-type").innerHTML = '';
 
-    document.querySelector("#selected-listing-title").innerHTML = '';
-    document.querySelector("#selected-listing-description").innerHTML = '';
-    document.querySelector("#selected-listing-location").innerHTML = '';
-    document.querySelector("#selected-listing-where").innerHTML = '';
+    // document.querySelector("#selected-listing-title").innerHTML = '';
+    // document.querySelector("#selected-listing-description").innerHTML = '';
+    // document.querySelector("#selected-listing-location").innerHTML = '';
+    // document.querySelector("#selected-listing-where").innerHTML = '';
 
     document.querySelector("#panel-info").innerHTML = '';
     document.querySelector("#panel-pictures").innerHTML = '';
@@ -354,16 +361,15 @@
     document.querySelector("#selected-property-type").innerHTML = propertyType;
     document.querySelector("#selected-room-type").innerHTML = roomType;
 
-    document.querySelector("#selected-listing-title").innerHTML = listingTitle;
-    document.querySelector("#selected-listing-description").innerHTML = listingDescription;
-    document.querySelector("#selected-listing-location").innerHTML = listingLocation;
-    document.querySelector("#selected-listing-where").innerHTML = listingWhere;
+    // document.querySelector("#selected-listing-title").innerHTML = listingTitle;
+    // document.querySelector("#selected-listing-description").innerHTML = listingDescription;
+    // document.querySelector("#selected-listing-location").innerHTML = listingLocation;
+    // document.querySelector("#selected-listing-where").innerHTML = listingWhere;
 
     // window.open(pdpUrl(listingId), '_blank');
 
-    // document.querySelector("#panel-info").innerHTML =
-    //   createPanelInfo(listingTitle, listingLocation, listingDescription, listingWhere);
-
+    document.querySelector("#panel-info").innerHTML =
+      createPanelInfo(listingTitle, listingDescription, listingLocation, listingWhere);
     document.querySelector("#panel-pictures").innerHTML = listingImages.map(createAdditionalImage).join("\n");
   }
 
@@ -452,14 +458,7 @@
     nextButton.style.opacity = hasNext ? 1 : 0.2;
     nextButton.style.cursor = hasNext ? "pointer" : "inherit";
 
-    console.log("asset.data:", asset.data);
-    // data = downloadObjectAsync(asset.data);
-    // data = downloadObject(asset.data, successCb, errorCb);
-    data = get(asset.data)
-    console.log("data:", data);
-    const assetData = JSON.parse(data);
-    console.log("assetData:", assetData);
-
+    const assetData = JSON.parse(get(asset.data));
     // const assetData = JSON.parse(asset.data);
     if ((state.currentAsset && state.currentAsset.data) !== asset.data) {
       document.querySelector("#asset").innerHTML = getHtmlForAsset(assetData);
