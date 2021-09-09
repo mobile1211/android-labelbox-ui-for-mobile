@@ -337,7 +337,7 @@
     // document.querySelector("#selected-listing-title").innerHTML = '';
     // document.querySelector("#selected-listing-description").innerHTML = '';
     // document.querySelector("#selected-listing-location").innerHTML = '';
-    // document.querySelector("#selected-listing-where").innerHTML = '';
+    // document.querySelector("#selected-listing-neighborhood").innerHTML = '';
 
     document.querySelector("#panel-info").innerHTML = '';
     document.querySelector("#panel-pictures").innerHTML = '';
@@ -359,10 +359,10 @@
       propertyType: propertyType,
       roomType: roomType,
       listingImages: listingImages,
-      listingTitle: title = "N/A",
-      listingDescription: description = "N/A",
-      listingLocation: location = "N/A",
-      listingWhere: neighborhood = "N/A",
+      listingTitle: title,
+      listingDescription: description,
+      listingLocation: location,
+      listingNeighborhood: neighborhood,
       lat: lat,
       lng: lng,
     } = state.currentAssetData.gridImages[itemIdx];
@@ -376,10 +376,10 @@
     document.querySelector("#selected-property-type").innerHTML = propertyType;
     document.querySelector("#selected-room-type").innerHTML = roomType;
 
-    // document.querySelector("#selected-listing-title").innerHTML = listingTitle;
-    // document.querySelector("#selected-listing-description").innerHTML = listingDescription;
-    // document.querySelector("#selected-listing-location").innerHTML = listingLocation;
-    // document.querySelector("#selected-listing-where").innerHTML = listingWhere;
+    // document.querySelector("#selected-listing-title").innerHTML = title;
+    // document.querySelector("#selected-listing-description").innerHTML = description;
+    // document.querySelector("#selected-listing-location").innerHTML = location;
+    // document.querySelector("#selected-listing-neighborhood").innerHTML = neighborhood;
 
     // window.open(pdpUrl(listingId), '_blank');
 
