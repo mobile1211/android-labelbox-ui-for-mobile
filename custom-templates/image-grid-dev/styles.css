@@ -19,8 +19,8 @@ body{
   max-height: calc(100vh - 60px);
 }
 .side-panel{
-  width: 475px;
-  min-width: 475px;
+  width: 500px;
+  min-width: 500px;
   border-left: 1px solid #DDDDDD;
   overflow-y: scroll;
   height: 100vh;

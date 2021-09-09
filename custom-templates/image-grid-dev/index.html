@@ -233,6 +233,7 @@
 
     const label = JSON.stringify(getLabel());
     const jumpToNext = Boolean(!state.currentAsset.label);
+    console.log("jumpToNext:", jumpToNext)
     // Progress if this asset is new
     if (jumpToNext) {
       showLoadingAssets();
