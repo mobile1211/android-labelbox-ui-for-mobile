@@ -283,7 +283,7 @@
     `;
   }
 
-  function createPanelInfo(title, description, location, where) {
+  function createPanelInfo(title, description, location, where, lat, lng) {
     return `
       <div style="display:flex;flex-direction:row;flex-grow:1;align-items:flex-end;padding-bottom:10px">
         <div class="listing-info">
@@ -303,9 +303,26 @@
         </div>
       </div>
 
-      <div style="display:flex;flex-direction:row;flex-grow:1;align-items:flex-end;padding-bottom:20px">
+      <div style="display:flex;flex-direction:row;flex-grow:1;align-items:flex-end;padding-bottom:10px">
         <div class="listing-info">
           Where You'll Be: ${where}
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:row;flex-grow:1;align-items:flex-end;padding-bottom:20px">
+        <div class="listing-info">
+          <iframe width="300" height="170" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
+            src="https://maps.google.com/maps?q=${lat},${lng}&hl=es&z=14&amp;output=embed"
+          >
+          </iframe>
+          <br>
+          <small>
+            <a
+              href="https://maps.google.com/maps?q=${lat},${lng}&hl=es;z=14&amp;output=embed"
+              style="color:#0000FF;text-align:left"
+              target="_blank"
+            >See bigger map</a>
+          </small>
         </div>
       </div>
     `;
@@ -350,6 +367,8 @@
       listingDescription: listingDescription = "N/A",
       listingLocation: listingLocation = "N/A",
       listingWhere: listingWhere = "N/A",
+      lat: lat,
+      lng: lng,
     } = state.currentAssetData.gridImages[itemIdx];
 
     clearSelectedMetadata();
@@ -369,7 +388,7 @@
     // window.open(pdpUrl(listingId), '_blank');
 
     document.querySelector("#panel-info").innerHTML =
-      createPanelInfo(listingTitle, listingDescription, listingLocation, listingWhere);
+      createPanelInfo(listingTitle, listingDescription, listingLocation, listingWhere, lat, lng);
     document.querySelector("#panel-pictures").innerHTML = listingImages.map(createAdditionalImage).join("\n");
   }
 
