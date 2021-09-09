@@ -363,10 +363,10 @@
       propertyType: propertyType,
       roomType: roomType,
       listingImages: listingImages,
-      listingTitle: listingTitle = "N/A",
-      listingDescription: listingDescription = "N/A",
-      listingLocation: listingLocation = "N/A",
-      listingWhere: listingWhere = "N/A",
+      listingTitle: title = "N/A",
+      listingDescription: description = "N/A",
+      listingLocation: location = "N/A",
+      listingWhere: neighborhood = "N/A",
       lat: lat,
       lng: lng,
     } = state.currentAssetData.gridImages[itemIdx];
@@ -387,8 +387,7 @@
 
     // window.open(pdpUrl(listingId), '_blank');
 
-    document.querySelector("#panel-info").innerHTML =
-      createPanelInfo(listingTitle, listingDescription, listingLocation, listingWhere, lat, lng);
+    document.querySelector("#panel-info").innerHTML = createPanelInfo(title, description, location, neighborhood, lat, lng);
     document.querySelector("#panel-pictures").innerHTML = listingImages.map(createAdditionalImage).join("\n");
   }
 
