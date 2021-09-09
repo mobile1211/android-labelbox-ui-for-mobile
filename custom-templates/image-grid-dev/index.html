@@ -238,7 +238,7 @@
     if (jumpToNext) {
       showLoadingAssets();
     }
-    Labelbox.setLabelForAsset(label).then(() => {
+    Labelbox.setLabelForAsset(label, 'ANY').then(() => {
       if (jumpToNext) {
         Labelbox.fetchNextAssetToLabel();
       }
