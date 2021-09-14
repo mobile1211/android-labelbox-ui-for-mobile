@@ -291,25 +291,25 @@
     return `
       <div style="display:flex;flex-direction:row;flex-grow:1;align-items:flex-end;padding-bottom:10px">
         <div class="listing-info">
-          Title: ${title}
+          <b>Title</b>: ${title}
         </div>
       </div>
 
       <div style="display:flex;flex-direction:row;flex-grow:1;align-items:flex-end;padding-bottom:10px">
         <div class="listing-info">
-          Description: ${description}
+          <b>Description</b>: ${description}
         </div>
       </div>
 
       <div style="display:flex;flex-direction:row;flex-grow:1;align-items:flex-end;padding-bottom:10px">
         <div class="listing-info">
-          Location: ${location}
+          <b>Location</b>: ${location}
         </div>
       </div>
 
       <div style="display:flex;flex-direction:row;flex-grow:1;align-items:flex-end;padding-bottom:10px">
         <div class="listing-info">
-          Where You'll Be: ${where}
+          <b>Where You'll Be</b>: ${where}
         </div>
       </div>
 
@@ -383,6 +383,7 @@
 
     // window.open(pdpUrl(listingId), '_blank');
 
+    document.querySelector("div.flex-column.side-panel").scrollTo(0,0);
     document.querySelector("#panel-info").innerHTML = createPanelInfo(title, description, location, neighborhood, lat, lng);
     document.querySelector("#panel-pictures").innerHTML = listingImages.map(createAdditionalImage).join("\n");
   }
