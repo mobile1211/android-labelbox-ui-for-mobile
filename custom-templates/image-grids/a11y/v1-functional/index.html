@@ -64,8 +64,10 @@
   </div>
 
   <div class="flex-column side-panel">
+    <h5>Listing Info</h5>
+    <div id="panel-info"></div>
     <h5>Other pictures</h5>
-    <div id="panel"></div>
+    <div id="panel-pictures"></div>
   </div>
 </div>
 
@@ -231,11 +233,12 @@
 
     const label = JSON.stringify(getLabel());
     const jumpToNext = Boolean(!state.currentAsset.label);
+    console.log("jumpToNext:", jumpToNext)
     // Progress if this asset is new
     if (jumpToNext) {
       showLoadingAssets();
     }
-    Labelbox.setLabelForAsset(label).then(() => {
+    Labelbox.setLabelForAsset(label, 'ANY').then(() => {
       if (jumpToNext) {
         Labelbox.fetchNextAssetToLabel();
       }
@@ -281,6 +284,46 @@
     `;
   }
 
+  function createPanelInfo(title, description, location, where, lat, lng) {
+    // https://www.google.com/maps/search/?api=1&query={lat}%2C{lng}
+    // src="https://maps.google.com/maps?q=${lat},${lng}&hl=es&z=14&amp;output=embed"
+    // href="https://maps.google.com/maps?q=${lat},${lng};z=14&amp;output=embed"
+    return `
+      <div style="display:flex;flex-direction:row;flex-grow:1;align-items:flex-end;padding-bottom:10px">
+        <div class="listing-info">
+          <b>Title</b>: ${title}
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:row;flex-grow:1;align-items:flex-end;padding-bottom:10px">
+        <div class="listing-info">
+          <b>Description</b>: ${description}
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:row;flex-grow:1;align-items:flex-end;padding-bottom:10px">
+        <div class="listing-info">
+          <b>Location</b>: ${location}
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:row;flex-grow:1;align-items:flex-end;padding-bottom:10px">
+        <div class="listing-info">
+          <b>Where You'll Be</b>: ${where}
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:row;flex-grow:1;align-items:flex-end;padding-bottom:20px">
+        <div class="listing-info">
+          <iframe width="450" height="450" frameborder="0" scrolling="yes" marginheight="0" marginwidth="0"
+            src="https://maps.google.com/maps?q=${lat},${lng}&z=14&amp;output=embed"
+          >
+          </iframe>
+        </div>
+      </div>
+    `;
+  }
+
   function clearSelectedMetadata() {
     document.querySelectorAll(".image-container.selected").forEach((node) => {
       node.classList.remove('selected');
@@ -290,7 +333,14 @@
     document.querySelector("#selected-link").href = '';
     document.querySelector("#selected-property-type").innerHTML = '';
     document.querySelector("#selected-room-type").innerHTML = '';
-    document.querySelector("#panel").innerHTML = '';
+
+    // document.querySelector("#selected-listing-title").innerHTML = '';
+    // document.querySelector("#selected-listing-description").innerHTML = '';
+    // document.querySelector("#selected-listing-location").innerHTML = '';
+    // document.querySelector("#selected-listing-neighborhood").innerHTML = '';
+
+    document.querySelector("#panel-info").innerHTML = '';
+    document.querySelector("#panel-pictures").innerHTML = '';
   }
 
   function safelyClearSelectedMetadata() {
@@ -309,6 +359,12 @@
       propertyType: propertyType,
       roomType: roomType,
       listingImages: listingImages,
+      listingTitle: title,
+      listingDescription: description,
+      listingLocation: location,
+      listingNeighborhood: neighborhood,
+      lat: lat,
+      lng: lng,
     } = state.currentAssetData.gridImages[itemIdx];
 
     clearSelectedMetadata();
@@ -319,9 +375,17 @@
     document.querySelector("#selected-link").href = pdpUrl(listingId);
     document.querySelector("#selected-property-type").innerHTML = propertyType;
     document.querySelector("#selected-room-type").innerHTML = roomType;
+
+    // document.querySelector("#selected-listing-title").innerHTML = title;
+    // document.querySelector("#selected-listing-description").innerHTML = description;
+    // document.querySelector("#selected-listing-location").innerHTML = location;
+    // document.querySelector("#selected-listing-neighborhood").innerHTML = neighborhood;
+
     // window.open(pdpUrl(listingId), '_blank');
 
-    document.querySelector("#panel").innerHTML = listingImages.map(createAdditionalImage).join("\n");
+    document.querySelector("div.flex-column.side-panel").scrollTo(0,0);
+    document.querySelector("#panel-info").innerHTML = createPanelInfo(title, description, location, neighborhood, lat, lng);
+    document.querySelector("#panel-pictures").innerHTML = listingImages.map(createAdditionalImage).join("\n");
   }
 
   function createImage(imageObj, idx) {
@@ -342,12 +406,9 @@
         <div style="display:flex;flex-direction:column;">
           <h3>${parsedData.attribute} - ${parsedData.qualityTier}</h3>
 
-          <div style="display:flex;flex-direction:row;flex-grow:1;align-items:flex-end;padding-bottom:20px">
+          <div style="display:flex;flex-direction:row;flex-grow:1;align-items:flex-end;padding-bottom:10px">
             <div class="listing-info">
-              Selected listing
-            </div>
-            <div class="listing-info">
-              ID: <span id="selected-id"></span>
+              Listing ID: <span id="selected-id"></span>
             </div>
             <div class="listing-info">
               Photo ID: <span id="selected-photo"></span>
@@ -372,6 +433,37 @@
     `;
   }
 
+  async function downloadObjectAsync(url) {
+    try {
+      const fetchResponse = await fetch(url);
+      return await fetchResponse.json();
+    } catch (err) {
+      console.error('Error: ', err);
+    }
+  }
+
+  const successCb = (resp) => {
+      console.log(resp);
+  };
+
+  const errorCb = (err) => {
+      console.error('Error - ', err);
+  };
+
+  function downloadObject(url, successCb, errorCb) {
+      fetch(url)
+        .then(response => response.json())
+        .then(successCb)
+        .catch(errorCb);
+  }
+
+  function get(yourUrl){
+    var Httpreq = new XMLHttpRequest(); // a new request
+    Httpreq.open("GET",yourUrl,false);
+    Httpreq.send(null);
+    return Httpreq.responseText;
+  }
+
   function drawAsset(asset) {
     const backButton = document.querySelector("#back");
     backButton.style.opacity = asset.previous ? 1 : 0.2;
@@ -381,7 +473,8 @@
     nextButton.style.opacity = hasNext ? 1 : 0.2;
     nextButton.style.cursor = hasNext ? "pointer" : "inherit";
 
-    const assetData = JSON.parse(asset.data);
+    const assetData = JSON.parse(get(asset.data));
+    // const assetData = JSON.parse(asset.data);
     if ((state.currentAsset && state.currentAsset.data) !== asset.data) {
       document.querySelector("#asset").innerHTML = getHtmlForAsset(assetData);
     }
