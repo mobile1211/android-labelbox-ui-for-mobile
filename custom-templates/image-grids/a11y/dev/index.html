@@ -64,6 +64,9 @@
   </div>
 
   <div class="flex-column side-panel">
+    <h5>External ID</h5>
+    <div id="panel-info"></div>
+    <h5>Other pictures</h5>
     <h5>Listing pictures</h5>
     <div id="panel-pictures"></div>
   </div>
@@ -123,7 +126,7 @@
   `;
   }
 
-  function createTextInput({ id, label }, answer) {
+  function createTextInput(id, label, answer) {
     return `
     <div class="question" id="${id}" questiontype="text">
       <div class="input-field col s12">
@@ -135,13 +138,12 @@
   }
 
   function createQuestion(question, answers) {
+    console.log("Question", question);
     const optionalAnswer = (answers || {})[question.name];
     if (question.type === "text") {
       return createTextInput(
-        {
-          id: question.name,
-          label: question.instructions
-        },
+        id: question.name,
+        label: question.instructions,
         optionalAnswer
       );
     }
@@ -297,10 +299,11 @@
 
     document.querySelector("#selected-room-type").innerHTML = '';
     document.querySelector("#selected-room-number").innerHTML = '';
-    document.querySelector("#selected-external-id").innerHTML = '';
+    // document.querySelector("#selected-external-id").innerHTML = '';
     document.querySelector("#selected-pdp-link").href = '';
     document.querySelector("#selected-a11y-link").href = '';
 
+    document.querySelector("#panel-info").innerHTML = '';
     document.querySelector("#panel-pictures").innerHTML = '';
   }
 
@@ -329,7 +332,7 @@
 
     document.querySelector("#selected-room-type").innerHTML = roomType;
     document.querySelector("#selected-room-number").innerHTML = roomNumber;
-    document.querySelector("#selected-external-id").innerHTML = externalId;
+    // document.querySelector("#selected-external-id").innerHTML = externalId;
 
     document.querySelector("#selected-pdp-link").href = pdpUrl(listingId);
     document.querySelector("#selected-a11y-link").href = a11yUrl(listingId);
@@ -337,6 +340,11 @@
     // window.open(pdpUrl(listingId), '_blank');
 
     document.querySelector("div.flex-column.side-panel").scrollTo(0,0);
+    document.querySelector("#panel-info").innerHTML = `
+      <div style="display:flex;flex-direction:row;flex-grow:1;align-items:flex-end;padding-bottom:10px">
+        <div class="listing-info">${externalId}</div>
+      </div>
+      `
     document.querySelector("#panel-pictures").innerHTML = listingImages.map(createAdditionalImage).join("\n");
   }
 
@@ -371,9 +379,11 @@
               Room Number: <span id="selected-room-number"></span>
             </div>
 
+            <!--
             <div class="listing-info">
               External ID: <span id="selected-external-id"></span>
             </div>
+            -->
 
             <div class="listing-info">
               <a href="" id="selected-pdp-link" target="_blank">PDP Link</a>
