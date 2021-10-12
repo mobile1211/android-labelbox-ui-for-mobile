@@ -6,22 +6,20 @@ body{
   height: 100vh;
   overflow: hidden;
 }
-.flex-column{
-  flex-direction: column;
-}
+.flex-column{flex-direction: column;}
 .flex-grow{
   display: flex;
   flex-grow: 1;
 }
 
 .left-side-panel{
-  width: 400px;
-  min-width: 400px;
+  width: 300px;
+  min-width: 300px;
   border-right: 1px solid #DDDDDD;
   overflow-y: scroll;
   height: 100vh;
   margin-left: 0px !important;
-  padding: 20px;
+  padding: 10px;
 }
 .questions{
   display: flex;
@@ -30,25 +28,19 @@ body{
   min-width: 200px;
 }
 #questions{
-padding: 10px;
-overflow-y: auto;
-height: 100%;
+  padding: 5px;
+  overflow-y: auto;
+  height: 100%;
 }
-.label{
-color: #717171;
-}
-.question{
-margin-bottom: 15px;
-}
+.label{color: #717171;}
+.question{margin-bottom: 5px;}
 
 [type="radio"]:checked+span:after,
 [type="radio"].with-gap:checked+span:before,
-[type="radio"].with-gap:checked+span:after {
-border-color: #03a9f4 !important;
-}
+[type="radio"].with-gap:checked+span:after {border-color: #03a9f4 !important;}
 [type="checkbox"].filled-in:checked+span:not(.lever):after {
-border-color: #03a9f4 !important;
-background-color: #03a9f4 !important;
+  border-color: #03a9f4 !important;
+  background-color: #03a9f4 !important;
 }
 
 .content{
@@ -86,7 +78,7 @@ background-color: #03a9f4 !important;
   height: 200px;
 }
 
-.side-panel{
+.right-side-panel{
   width: 500px;
   min-width: 500px;
   border-left: 1px solid #DDDDDD;
@@ -107,34 +99,24 @@ background-color: #03a9f4 !important;
 }
 
 .text{
-background-color: #ececec;
-padding: 30px;
-font-size: 20px;
-overflow: auto;
-font-style: italic;
+  background-color: #ececec;
+  padding: 30px;
+  font-size: 20px;
+  overflow: auto;
+  font-style: italic;
 }
 
 .navbar{
- padding: 10px;
- border-bottom: 1px solid #e8e8e8;
+  padding: 10px;
+  border-bottom: 1px solid #e8e8e8;
 }
 
-.btn{
-background-color: aqua
-}
-.btn:visited{
-background-color: yellow
-}
-.btn:hover {
-background-color: skyblue
-}
-.btn:active{
-background-color: pink;
-}
-.btn:focus{
-background-color: pink;
-}
+.btn{background-color: aqua}
+.btn:visited{background-color: yellow}
+.btn:hover{background-color: skyblue}
+.btn:active{background-color: pink;}
+.btn:focus{background-color: pink;}
 
 input.materialize-textarea:focus:not([readonly]) {
-border-color: #03a9f4 !important;
+  border-color: #03a9f4 !important;
 }
