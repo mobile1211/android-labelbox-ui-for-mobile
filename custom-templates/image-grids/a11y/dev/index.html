@@ -11,6 +11,29 @@
 <link rel="stylesheet" href="styles.css" />
 
 <div class="app flex-grow">
+  <div class="flex-column left-side-panel">
+    <h5>Qestions</h5>
+    <div class="flex-column questions">
+        <div id="questions"></div>
+
+        <div class="flex-grow"></div>
+        <div style="display: flex;">
+          <a
+            class="waves-effect waves-light btn-large"
+            style="background-color: white; color: black; width: 100%; margin-right: 10px"
+            onclick="skip()"
+            >Skip</a
+          >
+          <a
+            class="waves-effect waves-light btn-large"
+            style="background-color: #03a9f4; width: 100%;"
+            onclick="submit()"
+            >Submit</a
+          >
+        </div>
+      </div>
+  </div>
+
   <div class="flex-grow flex-column">
     <div style="display: flex; align-items: center; padding: 10px 0px;margin-left:20px;">
       <i
@@ -41,29 +64,10 @@
       <div id="asset">
         loading...
       </div>
-      <div class="flex-column questions">
-        <div id="questions"></div>
-
-        <div class="flex-grow"></div>
-        <div style="display: flex;">
-          <a
-            class="waves-effect waves-light btn-large"
-            style="background-color: white; color: black; width: 100%; margin-right: 10px"
-            onclick="skip()"
-            >Skip</a
-          >
-          <a
-            class="waves-effect waves-light btn-large"
-            style="background-color: #03a9f4; width: 100%;"
-            onclick="submit()"
-            >Submit</a
-          >
-        </div>
-      </div>
     </div>
   </div>
 
-  <div class="flex-column side-panel">
+  <div class="flex-column right-side-panel">
     <h5>External ID</h5>
     <div id="panel-info"></div>
     <h5>Other pictures</h5>
@@ -338,7 +342,7 @@
 
     // window.open(pdpUrl(listingId), '_blank');
 
-    document.querySelector("div.flex-column.side-panel").scrollTo(0,0);
+    document.querySelector("div.flex-column.right-side-panel").scrollTo(0,0);
     document.querySelector("#panel-info").innerHTML = `
       <div style="display:flex;flex-direction:row;flex-grow:1;align-items:flex-end;padding-bottom:10px">
         <div class="listing-info">${externalId}</div>
