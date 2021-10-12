@@ -142,8 +142,8 @@
     const optionalAnswer = (answers || {})[question.name];
     if (question.type === "text") {
       return createTextInput(
-        id: question.name,
-        label: question.instructions,
+        question.name,
+        question.instructions,
         optionalAnswer
       );
     }
