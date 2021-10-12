@@ -12,7 +12,7 @@
 
 <div class="app flex-grow">
   <div class="flex-column left-side-panel">
-    <h5>Qestions</h5>
+    <h5>Questions</h5>
     <div class="flex-column questions">
         <div id="questions"></div>
 
@@ -97,7 +97,7 @@
   function createOptionQuestion({ type, name, options, instructions }, answer) {
     const createOption = ({ value, label }) => {
       return `
-      <p value=${value}>
+      <p value=${value} style="margin-top: 5px; margin-bottom: 5px;">
         <label>
           ${
             type == "radio"
@@ -115,7 +115,7 @@
     };
     return `
     <div class="question" id="${name}" questiontype="${type}">
-      <div class="label">${instructions}</div>
+      <div class="label"><b>${instructions}</b></div>
       <form action="#">
         ${options.map(createOption).join("")}
       </form>
@@ -126,9 +126,9 @@
   function createTextInput(id, label, answer) {
     return `
     <div class="question" id="${id}" questiontype="text">
-      <div class="input-field col s12">
-        <div class="label">${label}</div>
-        <input class="materialize-textarea" data-length="120" value="${answer || ""}"></input>
+      <div class="input-field col s12 style="margin-top: 50px; margin-bottom: 5px;">
+        <div class="label"><b>${label}</b></div>
+        <input class="materialize-textarea" data-length="120" style="height: 40px;" value="${answer || ""}"></input>
       </div>
     </div>
   `;
@@ -229,6 +229,7 @@
     safelyClearSelectedMetadata();
 
     const label = JSON.stringify(getLabel());
+    console.log("label:", label)
     const jumpToNext = Boolean(!state.currentAsset.label);
     console.log("jumpToNext:", jumpToNext)
     // Progress if this asset is new
