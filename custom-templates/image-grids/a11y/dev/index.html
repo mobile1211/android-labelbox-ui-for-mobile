@@ -330,7 +330,7 @@
 
     clearSelectedMetadata();
 
-    document.querySelector(`#image-container-${listingId}`).classList.add('selected');
+    document.querySelector(`#image-container-${listingId}-${roomNumber}`).classList.add('selected');
     document.querySelector("#selected-listing-id").innerHTML = listingId;
 
     document.querySelector("#selected-room-type").innerHTML = roomType;
@@ -354,9 +354,15 @@
   function createImage(imageObj, idx) {
     const photoLink = `${imageObj.photoLink}?img_w=720`;
     const listingId = imageObj.listingId;
+    const roomNumber = imageObj.roomNumber;
 
     return `
-      <div class="image-container" onclick="{displayInfo(${idx})}" tabindex="${idx}" id="image-container-${listingId}">
+      <div
+        class="image-container"
+        onclick="{displayInfo(${idx})}"
+        tabindex="${idx}"
+        id="image-container-${listingId}-${roomNumber}"
+      >
         <img src="${photoLink}" listingId="${listingId}" class="image" />
       </div>
     `;
