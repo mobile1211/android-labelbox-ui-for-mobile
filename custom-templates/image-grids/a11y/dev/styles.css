@@ -38,12 +38,13 @@ body{
 [type="radio"]:checked+span:after,
 [type="radio"].with-gap:checked+span:before,
 [type="radio"].with-gap:checked+span:after {border-color: #03a9f4 !important;}
-
+/*
 [type="radio"]:checked {
   position: relative !important;
   opacity: 0;
   pointer-events: none;
 }
+*/
 
 [type="checkbox"].filled-in:checked+span:not(.lever):after {
   border-color: #03a9f4 !important;
