@@ -305,6 +305,7 @@
 
   function safelyClearSelectedMetadata() {
     try {
+      document.querySelector("div.flex-column.left-side-panel").scrollTo(0,0);
       clearSelectedMetadata()
     } catch(e) {
       console.warn('could not clear data', e);
