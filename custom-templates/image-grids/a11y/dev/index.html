@@ -455,9 +455,9 @@
     nextButton.style.opacity = hasNext ? 1 : 0.2;
     nextButton.style.cursor = hasNext ? "pointer" : "inherit";
 
-    console.log("Asset data", asset.data);
-    const assetData = JSON.parse(get(asset.data));
-    // const assetData = JSON.parse(asset.data);
+    console.log("S3 asset link", asset.data);
+    const assetDataStr = get(asset.data).replace(/NaN/g, "null");
+    const assetData = JSON.parse(assetDataStr);
     if ((state.currentAsset && state.currentAsset.data) !== asset.data) {
       document.querySelector("#asset").innerHTML = getHtmlForAsset(assetData);
     }
