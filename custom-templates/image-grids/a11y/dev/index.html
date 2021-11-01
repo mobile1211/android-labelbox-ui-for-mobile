@@ -346,7 +346,7 @@
   }
 
   function createImage(imageObj, idx) {
-    const photoLink = imageObj.photoLink.includes("?")
+    const photoLink = imageObj.photoLink?.includes("?")
       ? `${imageObj.photoLink}`
       : `${imageObj.photoLink}?img_w=720`;
     const listingId = imageObj.listingId;
