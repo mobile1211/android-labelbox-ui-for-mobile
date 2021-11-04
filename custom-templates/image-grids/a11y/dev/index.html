@@ -93,15 +93,26 @@
   };
 
   function createOptionQuestion({ type, name, options, instructions }, answer) {
+    function uncheckRadio(radio, e){
+      if(e.ctrlKey || e.metaKey) {
+        radio.checked = false;
+      }
+    }
+
     const createOption = ({ value, label }) => {
       return `
       <p value=${value} style="margin-top: 5px; margin-bottom: 5px;">
         <label>
           ${
             type == "radio"
-              ? `<input class="with-gap" type="radio" name="group-${name}" valuetosubmit="${value}" ${
-                  answer === value ? "checked" : ""
-                } />`
+              ? `<input
+                  class="with-gap"
+                  type="radio"
+                  name="group-${name}"
+                  valuetosubmit="${value}"
+                  ${ answer === value ? "checked" : "" }
+                  onclick="uncheckRadio(this, event)"
+                />`
               : `<input type="checkbox" class="filled-in" valuetosubmit="${value}" ${
                   (answer || []).indexOf(value) !== -1 ? "checked" : ""
                 } />`
