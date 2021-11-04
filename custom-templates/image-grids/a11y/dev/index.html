@@ -92,13 +92,14 @@
     ]
   };
 
-  function createOptionQuestion({ type, name, options, instructions }, answer) {
-    function uncheckRadio(radio, e){
-      if(e.ctrlKey || e.metaKey) {
-        radio.checked = false;
-      }
+  function uncheckRadio(radio, e){
+    if(e.ctrlKey || e.metaKey) {
+      console.log("Unchecked");
+      radio.checked = false;
     }
+  }
 
+  function createOptionQuestion({ type, name, options, instructions }, answer) {
     const createOption = ({ value, label }) => {
       return `
       <p value=${value} style="margin-top: 5px; margin-bottom: 5px;">
