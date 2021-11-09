@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <link
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
@@ -328,6 +329,8 @@
     document.querySelectorAll(".image-container.selected").forEach((node) => {
       node.classList.remove('selected');
     });
+
+    if
     document.querySelector("#selected-id").innerHTML = '';
     document.querySelector("#selected-photo").innerHTML = '';
     document.querySelector("#selected-link").href = '';
@@ -457,9 +460,9 @@
         .catch(errorCb);
   }
 
-  function get(yourUrl){
-    var Httpreq = new XMLHttpRequest(); // a new request
-    Httpreq.open("GET",yourUrl,false);
+  function get(url){
+    var Httpreq = new XMLHttpRequest();
+    Httpreq.open("GET", url, false);
     Httpreq.send(null);
     return Httpreq.responseText;
   }
@@ -473,8 +476,11 @@
     nextButton.style.opacity = hasNext ? 1 : 0.2;
     nextButton.style.cursor = hasNext ? "pointer" : "inherit";
 
-    const assetData = JSON.parse(get(asset.data));
-    // const assetData = JSON.parse(asset.data);
+    console.log("Asset", asset);
+
+    console.log("S3 asset link", asset.data);
+    const assetDataStr = get(asset.data).replace(/NaN/g, "null");
+    const assetData = JSON.parse(assetDataStr);
     if ((state.currentAsset && state.currentAsset.data) !== asset.data) {
       document.querySelector("#asset").innerHTML = getHtmlForAsset(assetData);
     }
