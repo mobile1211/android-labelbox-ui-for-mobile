@@ -302,12 +302,8 @@
     });
     document.querySelector("#selected-listing-id").innerHTML = '';
 
-    // document.querySelector("#selected-amenity-id").innerHTML = '';
-    // document.querySelector("#selected-room-id").innerHTML = '';
-
     document.querySelector("#selected-room-type").innerHTML = '';
     document.querySelector("#selected-room-number").innerHTML = '';
-    // document.querySelector("#selected-external-id").innerHTML = '';
     document.querySelector("#selected-pdp-link").href = '';
     document.querySelector("#selected-a11y-link").href = '';
 
@@ -341,7 +337,6 @@
 
     document.querySelector("#selected-room-type").innerHTML = roomType;
     document.querySelector("#selected-room-number").innerHTML = roomNumber;
-    // document.querySelector("#selected-external-id").innerHTML = externalId;
 
     document.querySelector("#selected-pdp-link").href = pdpUrl(listingId);
     document.querySelector("#selected-a11y-link").href = a11yUrl(listingId);
@@ -396,12 +391,6 @@
               Room Number: <span id="selected-room-number"></span>
             </div>
 
-            <!--
-            <div class="listing-info">
-              External ID: <span id="selected-external-id"></span>
-            </div>
-            -->
-
             <div class="listing-info">
               <a href="" id="selected-pdp-link" target="_blank">PDP Link</a>
             </div>
@@ -409,16 +398,6 @@
             <div class="listing-info">
               <a href="" id="selected-a11y-link" target="_blank">A11y Features Link</a>
             </div>
-
-            <!--
-            <div class="listing-info">
-              Amenity ID: <span id="selected-amenity-id"></span>
-            </div>
-
-            <div class="listing-info">
-              Room ID: <span id="selected-room-id"></span>
-            </div>
-            -->
           </div>
         </div>
       </div>
@@ -454,9 +433,9 @@
         .catch(errorCb);
   }
 
-  function get(yourUrl){
-    var Httpreq = new XMLHttpRequest(); // a new request
-    Httpreq.open("GET",yourUrl,false);
+  function get(url){
+    var Httpreq = new XMLHttpRequest();
+    Httpreq.open("GET", url, false);
     Httpreq.send(null);
     return Httpreq.responseText;
   }
@@ -469,6 +448,8 @@
     const nextButton = document.querySelector("#next");
     nextButton.style.opacity = hasNext ? 1 : 0.2;
     nextButton.style.cursor = hasNext ? "pointer" : "inherit";
+
+    console.log("Asset", asset);
 
     console.log("S3 asset link", asset.data);
     const assetDataStr = get(asset.data).replace(/NaN/g, "null");
