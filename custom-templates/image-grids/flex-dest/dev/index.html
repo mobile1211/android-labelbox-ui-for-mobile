@@ -272,8 +272,18 @@
     }
   }
 
-  function pdpUrl(id) {
-    return `https://www.airbnb.com/rooms/${id}`;
+  function pdpUrl(listingId) {
+    return `https://www.airbnb.com/rooms/${listingId}`;
+  }
+
+  function gsheetUrl(listingId, photoLink) {
+    const gsheetUrlMain = "https://docs.google.com/forms/d/e/1FAIpQLSdZuDncKFE3pSUd_vMTkKIrnA3PDOY2x7uupe_RzAERSc6wVQ/viewform?usp=pp_url";
+    const paramAttribute = `entry.1331702945=${state.currentAssetData.attribute}`;
+    const paramQuality = `entry.1305733443=${state.currentAssetData.qualityTier}`;
+    const paramListingId = `entry.1673408678=${listing_id}`;
+    const paramPhotoLink = `entry.709101333=${encodeURIComponent(photoLink)}`;
+
+    return `${gsheetUrlMain}&${paramAttribute}&${paramQuality}&${paramListingId}&${paramPhotoLink}`;
   }
 
   function createAdditionalImage(listingImage) {
@@ -332,7 +342,8 @@
 
     document.querySelector("#selected-id").innerHTML = '';
     document.querySelector("#selected-photo").innerHTML = '';
-    document.querySelector("#selected-link").href = '';
+    document.querySelector("#selected-pdp-link").href = '';
+    document.querySelector("#selected-gsheet-link").href = '';
     document.querySelector("#selected-property-type").innerHTML = '';
     document.querySelector("#selected-room-type").innerHTML = '';
 
@@ -353,7 +364,7 @@
     }
   }
 
-  function displayInfo(itemIdx) {
+  function displayInfo(itemIdx, photoLink) {
     console.log("Image state:", state.currentAssetData.gridImages[itemIdx]);
     const {
       listingId: listingId,
@@ -374,7 +385,8 @@
     document.querySelector(`#image-container-${listingId}`).classList.add('selected');
     document.querySelector("#selected-id").innerHTML = listingId;
     document.querySelector("#selected-photo").innerHTML = photoId;
-    document.querySelector("#selected-link").href = pdpUrl(listingId);
+    document.querySelector("#selected-pdp-link").href = pdpUrl(listingId);
+    document.querySelector("#selected-gsheet-link").href = gsheetUrl(listingId, photoLink);
     document.querySelector("#selected-property-type").innerHTML = propertyType;
     document.querySelector("#selected-room-type").innerHTML = roomType;
 
@@ -391,11 +403,18 @@
   }
 
   function createImage(imageObj, idx) {
-    const photoLink = `${imageObj.photoLink}?img_w=720`;
+    const photoLink = imageObj.photoLink?.includes("?")
+      ? `${imageObj.photoLink}`
+      : `${imageObj.photoLink}?img_w=720`;
     const listingId = imageObj.listingId;
 
     return `
-      <div class="image-container" onclick="{displayInfo(${idx})}" tabindex="${idx}" id="image-container-${listingId}">
+      <div
+        class="image-container"
+        onclick="{displayInfo(${idx},${photoLink})}"
+        tabindex="${idx}"
+        id="image-container-${listingId}"
+      >
         <img src="${photoLink}" listingId="${listingId}" class="image" />
       </div>
     `;
@@ -422,7 +441,10 @@
               Room type: <span id="selected-room-type"></span>
             </div>
             <div class="listing-info">
-              <a href="" id="selected-link" target="_blank">Link to PDP</a>
+              <a href="" id="selected-pdp-link" target="_blank">Link to PDP</a>
+            </div>
+            <div class="listing-info">
+              <a href="" id="selected-gsheet-link" target="_blank">Link to GSheet</a>
             </div>
           </div>
         </div>
