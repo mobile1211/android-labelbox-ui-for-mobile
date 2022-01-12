@@ -8,7 +8,7 @@ function Header() {
       }}
     >
       <i
-      class="material-icons"
+      className="material-icons"
       style={{ 
         color: '#9b9b9b', 
         cursor: 'pointer', 

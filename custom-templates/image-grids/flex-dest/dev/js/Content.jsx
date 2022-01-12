@@ -6,7 +6,7 @@ function Content() {
       </div>
       <div className="flex-column questions">
         <div id="questions" />
-        <div class="flex-grow" />
+        <div className="flex-grow" />
         <div 
           style={{ display: 'flex' }}
         >
