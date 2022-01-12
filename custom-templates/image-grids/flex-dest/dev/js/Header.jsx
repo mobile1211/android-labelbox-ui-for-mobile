@@ -3,7 +3,7 @@ function Header() {
     <div style={{ display: 'flex', alignItems: 'center', padding: '10px 0px', marginLeft:'20px'}}>
       <i
       class="material-icons"
-      style={{ color: '#9b9b9b' cursor: 'pointer', marginRight: '20px' }}
+      style={{ color: '#9b9b9b', cursor: 'pointer', marginRight: '20px' }}
       onclick="goHome()"
       >
         home
