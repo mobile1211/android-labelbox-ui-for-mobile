@@ -1,9 +1,16 @@
+const { useState, useCallback } = React;
+
 function Header() {
+  const handleGoHome = useCallback(() => {
+    window.location.href =
+    "https://app.labelbox.com/projects/" + state.projectId;
+  }, []);
+
   return (
     <div className="header-container">
       <i
       className="material-icons home-icon"
-      onClick="goHome()"
+      onClick={handleGoHome}
       >
         home
       </i>

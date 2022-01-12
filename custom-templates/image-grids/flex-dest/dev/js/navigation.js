@@ -3,11 +3,6 @@ function showLoadingAssets() {
     document.querySelector('.content').scrollTo(0,0);
 }
 
-function goHome() {
-    window.location.href =
-      "https://app.labelbox.com/projects/" + state.projectId;
-  }
-
 function goBack() {
     safelyClearSelectedMetadata();
     showLoadingAssets();
