@@ -223,6 +223,14 @@ function clearSelectedMetadata() {
     document.querySelector("#panel-pictures").innerHTML = '';
   }
 
+  function safelyClearSelectedMetadata() {
+    try {
+      clearSelectedMetadata()
+    } catch(e) {
+      console.warn('could not clear data', e);
+    }
+  }
+
   function displayInfo(itemIdx) {
     console.log("Image state:", state.currentAssetData.gridImages[itemIdx]);
     const {
