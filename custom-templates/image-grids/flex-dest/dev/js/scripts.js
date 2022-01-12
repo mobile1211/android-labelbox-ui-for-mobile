@@ -1,7 +1,7 @@
 let state = {
     projectId: new URL(window.location.href).searchParams.get("project"),
     currentAsset: undefined
-  };
+};
   const defaultConfiguration = {
     classifications: [
       {
@@ -106,11 +106,6 @@ let state = {
     markQuestionsAsLoaded();
   });
 
-  function goHome() {
-    window.location.href =
-      "https://app.labelbox.com/projects/" + state.projectId;
-  }
-
   function getLabel() {
     const getAnswer = node => {
       const key = node.getAttribute("id");
@@ -147,54 +142,6 @@ let state = {
     ).map(getAnswer);
 
     return Object.assign({}, ...answers);
-  }
-
-  function showLoadingAssets() {
-    document.querySelector("#asset").innerHTML = "loading...";
-    document.querySelector('.content').scrollTo(0,0);
-  }
-
-  function submit() {
-    safelyClearSelectedMetadata();
-
-    const label = JSON.stringify(getLabel());
-    const jumpToNext = Boolean(!state.currentAsset.label);
-    console.log("jumpToNext:", jumpToNext)
-    // Progress if this asset is new
-    if (jumpToNext) {
-      showLoadingAssets();
-    }
-    Labelbox.setLabelForAsset(label, 'ANY').then(() => {
-      if (jumpToNext) {
-        Labelbox.fetchNextAssetToLabel();
-      }
-    });
-  }
-
-  function skip() {
-    safelyClearSelectedMetadata();
-    showLoadingAssets();
-    Labelbox.skip().then(() => {
-      Labelbox.fetchNextAssetToLabel();
-    });
-  }
-
-  function goBack() {
-    safelyClearSelectedMetadata();
-    showLoadingAssets();
-    if (state.currentAsset.previous) {
-      Labelbox.setLabelAsCurrentAsset(state.currentAsset.previous);
-    }
-  }
-
-  function goNext() {
-    safelyClearSelectedMetadata();
-    showLoadingAssets();
-    if (state.currentAsset.next) {
-      Labelbox.setLabelAsCurrentAsset(state.currentAsset.next);
-    } else {
-      Labelbox.fetchNextAssetToLabel();
-    }
   }
 
   function pdpUrl(listingId) {
@@ -261,7 +208,7 @@ let state = {
     `;
   }
 
-  function clearSelectedMetadata() {
+function clearSelectedMetadata() {
     document.querySelectorAll(".image-container.selected").forEach((node) => {
       node.classList.remove('selected');
     });
@@ -274,14 +221,6 @@ let state = {
     document.querySelector("#selected-room-type").innerHTML = '';
     document.querySelector("#panel-info").innerHTML = '';
     document.querySelector("#panel-pictures").innerHTML = '';
-  }
-
-  function safelyClearSelectedMetadata() {
-    try {
-      clearSelectedMetadata()
-    } catch(e) {
-      console.warn('could not clear data', e);
-    }
   }
 
   function displayInfo(itemIdx) {
