@@ -7,17 +7,26 @@ function Content() {
       <div className="flex-column questions">
         <div id="questions" />
         <div class="flex-grow" />
-        <div style={{ display: 'flex' }}>
+        <div 
+          style={{ display: 'flex' }}
+        >
           <a
           className="waves-effect waves-light btn-large"
-          style={{ backgroundColor: 'white', color: 'black', width: '100%', marginRight: '10px' }}
+          style={{ 
+            backgroundColor: 'white', 
+            color: 'black', width: '100%', 
+            marginRight: '10px' 
+          }}
           onclick="skip()"
           >
             Skip
           </a>
           <a
           className="waves-effect waves-light btn-large"
-          style={{ backgroundColor: '#03a9f4', width: '100%' }}
+          style={{ 
+            backgroundColor: '#03a9f4', 
+            width: '100%' 
+          }}
           onclick="submit()"
           >
             Submit
