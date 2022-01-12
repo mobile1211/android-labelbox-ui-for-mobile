@@ -1,40 +1,21 @@
 function Header() {
   return (
-    <div style={{ 
-      display: 'flex', 
-      alignItems: 'center', 
-      padding: '10px 0px', 
-      marginLeft:'20px',
-      }}
-    >
+    <div className="header-container">
       <i
-      className="material-icons"
-      style={{ 
-        color: '#9b9b9b', 
-        cursor: 'pointer', 
-        marginRight: '20px',
-      }}
+      className="material-icons home-icon"
       onClick="goHome()"
       >
         home
       </i>
       <i
       id="back"
-      className="material-icons"
-      style={{ 
-        color: '#9b9b9b', 
-        marginLeft: '-5px', 
-        opacity: 0.2,
-      }}
+      className="material-icons back-icon"
       onClick="goBack()"
       >
         keyboard_arrow_left
       </i>
       <div 
-        style={{ 
-        color: '#717171', 
-        padding: '0px 10px',
-        }} 
+        className="header-title"
         id="externalid"
       >
         Label this asset
@@ -42,11 +23,6 @@ function Header() {
       <i
       id="next"
       className="material-icons"
-      style={{ 
-        color: '#9b9b9b', 
-        marginLeft: '-5px', 
-        opacity: 0.2 
-      }}
       onClick="goNext()"
       >
         keyboard_arrow_right
