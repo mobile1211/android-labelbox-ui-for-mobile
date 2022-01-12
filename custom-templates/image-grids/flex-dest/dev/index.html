@@ -18,58 +18,7 @@
 <link rel="stylesheet" href="styles.css" />
 
 <div class="app flex-grow">
-  <div class="flex-grow flex-column">
-    <div id="root">
-      <i
-        class="material-icons"
-        style="color: #9b9b9b; cursor: pointer; margin-right: 20px"
-        onclick="goHome()"
-        >home</i
-      >
-      <i
-        id="back"
-        class="material-icons"
-        style="color: #9b9b9b; margin-left: -5px; opacity: 0.2;"
-        onclick="goBack()"
-        >keyboard_arrow_left</i
-      >
-      <div style="color: #717171; padding: 0px 10px;" id="externalid">
-        Label this asset
-      </div>
-      <i
-        id="next"
-        class="material-icons"
-        style="color: #9b9b9b; margin-left: -5px; opacity: 0.2;"
-        onclick="goNext()"
-        >keyboard_arrow_right</i
-      >
-    </div>
-    <div class="content">
-      <div id="asset">
-        loading...
-      </div>
-      <div class="flex-column questions">
-        <div id="questions"></div>
-
-        <div class="flex-grow"></div>
-        <div style="display: flex;">
-          <a
-            class="waves-effect waves-light btn-large"
-            style="background-color: white; color: black; width: 100%; margin-right: 10px"
-            onclick="skip()"
-          >
-            Skip
-          </a>
-          <a
-            class="waves-effect waves-light btn-large"
-            style="background-color: #03a9f4; width: 100%;"
-            onclick="submit()"
-          >
-            Submit
-          </a>
-        </div>
-      </div>
-    </div>
+  <div class="flex-grow flex-column" id="root">
   </div>
 
   <div class="flex-column side-panel">
