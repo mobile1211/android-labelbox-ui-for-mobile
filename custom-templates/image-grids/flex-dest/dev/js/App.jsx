@@ -14,7 +14,7 @@ function Header() {
         cursor: 'pointer', 
         marginRight: '20px',
       }}
-      onclick="goHome()"
+      onClick="goHome()"
       >
         home
       </i>
@@ -26,7 +26,7 @@ function Header() {
         marginLeft: '-5px', 
         opacity: 0.2,
       }}
-      onclick="goBack()"
+      onClick="goBack()"
       >
         keyboard_arrow_left
       </i>
@@ -47,7 +47,7 @@ function Header() {
         marginLeft: '-5px', 
         opacity: 0.2 
       }}
-      onclick="goNext()"
+      onClick="goNext()"
       >
         keyboard_arrow_right
       </i>
@@ -74,7 +74,7 @@ function Content() {
             color: 'black', width: '100%', 
             marginRight: '10px' 
           }}
-          onclick="skip()"
+          onClick="skip()"
           >
             Skip
           </a>
@@ -84,7 +84,7 @@ function Content() {
             backgroundColor: '#03a9f4', 
             width: '100%' 
           }}
-          onclick="submit()"
+          onClick="submit()"
           >
             Submit
           </a>
