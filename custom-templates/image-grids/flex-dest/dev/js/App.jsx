@@ -113,7 +113,7 @@ function PhotoGridWithHeader({ assetData }) {
   );
 }
 
-function Content({ currentAsset, isLoading }) {
+function Content({ assetData, currentAsset, isLoading }) {
   const handleSkip = useCallback(() => {
     safelyClearSelectedMetadata();
     showLoadingAssets();
@@ -284,6 +284,7 @@ useEffect(() => {
         projectId={projectId}
       />
       <Content 
+        assetData={assetData}
         currentAsset={currentAsset}
         isLoading={isLoading}
       />
