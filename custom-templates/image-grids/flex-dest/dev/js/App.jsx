@@ -152,6 +152,19 @@ function get(url){
   return Httpreq.responseText;
 }
 
+function drawQuestions(classifications, answers) {
+  document.querySelector("#questions").innerHTML = classifications
+    .map(classification => createQuestion(classification, answers))
+    .join("");
+}
+
+Labelbox.getTemplateCustomization().subscribe(customization => {
+  classifications =
+    (customization && customization.classifications) || defaultConfiguration.classifications;
+  drawQuestions(classifications);
+  markQuestionsAsLoaded();
+});
+
 function drawAsset(asset, currentAsset, setCurrentAsset, setAssetS3Link) {
   console.log("Asset", asset);
   console.log("S3 asset link", asset.data);

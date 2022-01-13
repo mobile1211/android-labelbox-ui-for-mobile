@@ -94,18 +94,18 @@ function createQuestion(question, answers) {
 //   });
 // });
 
-function drawQuestions(classifications, answers) {
-  document.querySelector("#questions").innerHTML = classifications
-    .map(classification => createQuestion(classification, answers))
-    .join("");
-}
+// function drawQuestions(classifications, answers) {
+//   document.querySelector("#questions").innerHTML = classifications
+//     .map(classification => createQuestion(classification, answers))
+//     .join("");
+// }
 
-Labelbox.getTemplateCustomization().subscribe(customization => {
-  classifications =
-    (customization && customization.classifications) || defaultConfiguration.classifications;
-  drawQuestions(classifications);
-  markQuestionsAsLoaded();
-});
+// Labelbox.getTemplateCustomization().subscribe(customization => {
+//   classifications =
+//     (customization && customization.classifications) || defaultConfiguration.classifications;
+//   drawQuestions(classifications);
+//   markQuestionsAsLoaded();
+// });
 
 function getLabel() {
   const getAnswer = node => {
