@@ -1,40 +1,46 @@
+const { useCallback } = React;
+
 function Header() {
+  const handleGoHome = useCallback(() => {
+    window.location.href =
+    "https://app.labelbox.com/projects/" + state.projectId;
+  }, []);
+
+  const handleGoBack = useCallback(() => {
+    safelyClearSelectedMetadata();
+    showLoadingAssets();
+    if (state.currentAsset.previous) {
+        Labelbox.setLabelAsCurrentAsset(state.currentAsset.previous);
+    }
+  })
+
+  const handleGoNext = useCallback(() => {
+    safelyClearSelectedMetadata();
+    showLoadingAssets();
+    if (state.currentAsset.next) {
+      Labelbox.setLabelAsCurrentAsset(state.currentAsset.next);
+    } else {
+      Labelbox.fetchNextAssetToLabel();
+    }
+  }, [])
+
   return (
-    <div style={{ 
-      display: 'flex', 
-      alignItems: 'center', 
-      padding: '10px 0px', 
-      marginLeft:'20px',
-      }}
-    >
+    <div className="header-container">
       <i
-      className="material-icons"
-      style={{ 
-        color: '#9b9b9b', 
-        cursor: 'pointer', 
-        marginRight: '20px',
-      }}
-      onclick="goHome()"
+      className="material-icons home-icon"
+      onClick={handleGoHome}
       >
         home
       </i>
       <i
       id="back"
-      className="material-icons"
-      style={{ 
-        color: '#9b9b9b', 
-        marginLeft: '-5px', 
-        opacity: 0.2,
-      }}
-      onclick="goBack()"
+      className="material-icons back-icon"
+      onClick={handleGoBack}
       >
         keyboard_arrow_left
       </i>
       <div 
-        style={{ 
-        color: '#717171', 
-        padding: '0px 10px',
-        }} 
+        className="header-title"
         id="externalid"
       >
         Label this asset
@@ -42,17 +48,10 @@ function Header() {
       <i
       id="next"
       className="material-icons"
-      style={{ 
-        color: '#9b9b9b', 
-        marginLeft: '-5px', 
-        opacity: 0.2 
-      }}
-      onclick="goNext()"
+      onClick={handleGoNext}
       >
         keyboard_arrow_right
       </i>
     </div>
   );
 }
-
-export default Header;
