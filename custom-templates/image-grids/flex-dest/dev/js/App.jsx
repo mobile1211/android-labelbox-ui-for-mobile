@@ -79,16 +79,65 @@ function Header({ currentAsset, hasPrev, hasNext, projectId }) {
   );
 }
 
+function Image({ assetData, imgObj, idx }) {
+  const photoLink = imgObj.photoLink?.includes("?")
+    ? `${imgObj.photoLink}`
+    : `${imgObj.photoLink}?img_w=720`;
+  const listingId = imgObj.listingId;
+
+
+function displayInfo(itemIdx) {
+  // console.log("Image state:", assetData.gridImages[itemIdx]);
+  const {
+    listingId,
+    photoId,
+    propertyType,
+    roomType,
+    listingImages,
+    listingTitle: title,
+    listingDescription: description,
+    listingLocation: location,
+    listingNeighborhood: neighborhood,
+    lat,
+    lng,
+  } = assetData.gridImages[itemIdx];
+
+  clearSelectedMetadata();
+
+  document.querySelector(`#image-container-${listingId}`).classList.add('selected');
+  document.querySelector("#selected-id").innerHTML = listingId;
+  document.querySelector("#selected-photo").innerHTML = photoId;
+  document.querySelector("#selected-pdp-link").href = pdpUrl(listingId);
+  document.querySelector("#selected-property-type").innerHTML = propertyType;
+  document.querySelector("#selected-room-type").innerHTML = roomType;
+  document.querySelector("div.flex-column.side-panel").scrollTo(0,0);
+  document.querySelector("#panel-info").innerHTML = createPanelInfo(title, description, location, neighborhood, lat, lng);
+  document.querySelector("#panel-pictures").innerHTML = listingImages.map(createAdditionalImage).join("\n");
+}
+
+  return (
+    <div
+      className="image-container"
+      onClick={() => displayInfo(idx)}
+      tabindex={idx}
+      id={`image-container-${listingId}`}
+    >
+      <img src={photoLink} listingId={listingId} class="image" />
+    </div>
+  );
+}
+
 function PhotoGridWithHeader({ assetData }) {
   if (!assetData) return null;
+
   return (
     <>
       <div className="header sticky">
         <div className="listing-title">
-          <h3>${assetData.attribute} - ${assetData.qualityTier}</h3>
+          <h3>{assetData.attribute} - {assetData.qualityTier}</h3>
 
           <div className='listing-header'>
-            <div class="listing-info">
+            <div className="listing-info">
               Listing ID: <span id="selected-id"></span>
             </div>
             <div className="listing-info">
@@ -108,7 +157,9 @@ function PhotoGridWithHeader({ assetData }) {
       </div>
 
       <div className="photo-grid">
-        {assetData.gridImages.map(createImage).join("\n")}
+        {assetData.gridImages.map((imgObj, idx) => 
+          <Image assetData={assetData} imgObj={imgObj} index={idx} />
+        )}
       </div>
     </>
   );
@@ -199,36 +250,6 @@ Labelbox.getTemplateCustomization().subscribe(customization => {
     (customization && customization.classifications) || defaultConfiguration.classifications;
   drawQuestions(classifications);
 });
-
-function displayInfo(itemIdx) {
-  console.log("Image state:", state.currentAssetData.gridImages[itemIdx]);
-  const {
-    listingId: listingId,
-    photoId: photoId,
-    propertyType: propertyType,
-    roomType: roomType,
-    listingImages: listingImages,
-    listingTitle: title,
-    listingDescription: description,
-    listingLocation: location,
-    listingNeighborhood: neighborhood,
-    lat: lat,
-    lng: lng,
-  } = state.currentAssetData.gridImages[itemIdx];
-
-  clearSelectedMetadata();
-
-  document.querySelector(`#image-container-${listingId}`).classList.add('selected');
-  document.querySelector("#selected-id").innerHTML = listingId;
-  document.querySelector("#selected-photo").innerHTML = photoId;
-  document.querySelector("#selected-pdp-link").href = pdpUrl(listingId);
-  document.querySelector("#selected-gsheet-link").href = gsheetUrl(listingId, photoId);
-  document.querySelector("#selected-property-type").innerHTML = propertyType;
-  document.querySelector("#selected-room-type").innerHTML = roomType;
-  document.querySelector("div.flex-column.side-panel").scrollTo(0,0);
-  document.querySelector("#panel-info").innerHTML = createPanelInfo(title, description, location, neighborhood, lat, lng);
-  document.querySelector("#panel-pictures").innerHTML = listingImages.map(createAdditionalImage).join("\n");
-}
 
 // Root app
 function App() {

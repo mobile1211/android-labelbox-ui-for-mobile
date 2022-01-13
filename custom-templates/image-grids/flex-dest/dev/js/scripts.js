@@ -182,20 +182,4 @@ function safelyClearSelectedMetadata() {
   }
 }
 
-function createImage(imageObj, idx) {
-  const photoLink = imageObj.photoLink?.includes("?")
-    ? `${imageObj.photoLink}`
-    : `${imageObj.photoLink}?img_w=720`;
-  const listingId = imageObj.listingId;
 
-  return `
-    <div
-      class="image-container"
-      onclick="{displayInfo(${idx})}"
-      tabindex="${idx}"
-      id="image-container-${listingId}"
-    >
-      <img src="${photoLink}" listingId="${listingId}" class="image" />
-    </div>
-  `;
-}
