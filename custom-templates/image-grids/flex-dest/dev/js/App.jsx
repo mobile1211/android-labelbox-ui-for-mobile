@@ -1,3 +1,8 @@
+// Components
+// Cannot split into separate files / modules unless we add webpack config
+// https://stackoverflow.com/questions/36698354/require-is-not-defined
+
+const { useState, useCallback } = React;
 function Header() {
   const handleGoHome = useCallback(() => {
     window.location.href =
@@ -119,6 +124,11 @@ function Content() {
 }
 
 function App() {
+  const [curr, setCurr] = useState({
+    projectId: new URL(window.location.href).searchParams.get("project"),
+    currentAsset: undefined
+});
+
   return (
     <>
       <Header />
