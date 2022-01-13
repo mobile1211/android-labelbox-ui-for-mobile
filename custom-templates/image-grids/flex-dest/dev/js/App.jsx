@@ -121,7 +121,7 @@ function Image({ assetData, imgObj, idx }) {
       tabIndex={idx}
       id={`image-container-${listingId}`}
     >
-      <img src={photoLink} listingId={listingId} className="image" />
+      <img src={photoLink} className="image" />
     </div>
   );
 }

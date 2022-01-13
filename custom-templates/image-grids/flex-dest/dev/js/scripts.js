@@ -156,7 +156,6 @@ function clearSelectedMetadata() {
   document.querySelector("#selected-id").innerHTML = '';
   document.querySelector("#selected-photo").innerHTML = '';
   document.querySelector("#selected-pdp-link").href = '';
-  document.querySelector("#selected-gsheet-link").href = '';
   document.querySelector("#selected-property-type").innerHTML = '';
   document.querySelector("#selected-room-type").innerHTML = '';
   document.querySelector("#panel-info").innerHTML = '';
