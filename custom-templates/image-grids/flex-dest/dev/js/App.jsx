@@ -24,25 +24,25 @@ const DEFAULT_CONFIG = {
   ]
 };
 
-function Header({ hasPrev, hasNext }) {
+function Header({ currentAsset, hasPrev, hasNext, projectId }) {
   const handleGoHome = useCallback(() => {
     window.location.href =
-    "https://app.labelbox.com/projects/" + state.projectId;
+    "https://app.labelbox.com/projects/" + projectId;
   }, []);
 
   const handleGoBack = useCallback(() => {
     safelyClearSelectedMetadata();
     showLoadingAssets();
-    if (state.currentAsset.previous) {
-        Labelbox.setLabelAsCurrentAsset(state.currentAsset.previous);
+    if (currentAsset.previous) {
+        Labelbox.setLabelAsCurrentAsset(currentAsset.previous);
     }
   })
 
   const handleGoNext = useCallback(() => {
     safelyClearSelectedMetadata();
     showLoadingAssets();
-    if (state.currentAsset.next) {
-      Labelbox.setLabelAsCurrentAsset(state.currentAsset.next);
+    if (currentAsset.next) {
+      Labelbox.setLabelAsCurrentAsset(currentAsset.next);
     } else {
       Labelbox.fetchNextAssetToLabel();
     }
@@ -80,7 +80,7 @@ function Header({ hasPrev, hasNext }) {
   );
 }
 
-function Content() {
+function Content({ currentAsset }) {
   const handleSkip = useCallback(() => {
     safelyClearSelectedMetadata();
     showLoadingAssets();
@@ -93,7 +93,7 @@ function Content() {
       safelyClearSelectedMetadata();
   
       const label = JSON.stringify(getLabel());
-      const jumpToNext = Boolean(!state.currentAsset.label);
+      const jumpToNext = Boolean(!currentAsset.label);
       console.log("jumpToNext:", jumpToNext)
       // Progress if this asset is new
       if (jumpToNext) {
@@ -203,13 +203,17 @@ function App() {
   return (
     <>
       <Header 
+        currentAsset={currentAsset}
         hasNext={
           Boolean((currentAsset && currentAsset.next) || 
           (currentAsset && currentAsset.label))
         }
         hasPrev={currentAsset?.previous} 
+        projectId={projectId}
       />
-      <Content />
+      <Content 
+        currentAsset={currentAsset}
+      />
     </>
   );
 }
