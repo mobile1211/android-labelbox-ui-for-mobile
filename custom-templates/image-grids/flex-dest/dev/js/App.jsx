@@ -199,28 +199,6 @@ Labelbox.getTemplateCustomization().subscribe(customization => {
   drawQuestions(classifications);
 });
 
-function drawAsset(asset, currentAsset, setCurrentAsset, setAssetData) {
-  // console.log("Asset", asset);
-  // console.log("S3 asset link", asset.data);
-  const assetDataStr = get(asset.data).replace(/NaN/g, "null");
-  const assetData = JSON.parse(assetDataStr);
-  if ((currentAsset && currentAsset.id) !== asset.id) {
-    if (asset.label) {
-      try {
-        const label = JSON.parse(asset.label);
-        drawQuestions(label);
-      } catch (e) {
-        console.log("failed to read label", e);
-      }
-    } else {
-      drawQuestions();
-    }
-  }
-  setCurrentAsset(asset);
-  setAssetData(assetData);
-}
-
-
 function displayInfo(itemIdx) {
   console.log("Image state:", state.currentAssetData.gridImages[itemIdx]);
   const {
@@ -254,20 +232,45 @@ function displayInfo(itemIdx) {
 // Root app
 function App() {
   const projectId = new URL(window.location.href).searchParams.get("project");
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [currentAsset, setCurrentAsset] = useState();
-  const [assetS3Link, setAssetData] = useState();
+  const [assetData, setAssetData] = useState();
+
+
+function handleAssetChange() {
+  // console.log("Asset", asset);
+  // console.log("S3 asset link", asset.data);
+  const assetDataStr = get(asset.data).replace(/NaN/g, "null");
+  const parsedAssetData = JSON.parse(assetDataStr);
+  if ((currentAsset && currentAsset.id) !== asset.id) {
+    if (asset.label) {
+      try {
+        const label = JSON.parse(asset.label);
+        drawQuestions(label);
+      } catch (e) {
+        console.log("failed to read label", e);
+      }
+    } else {
+      drawQuestions();
+    }
+  }
+  setCurrentAsset(asset);
+  setAssetData(parsedAssetData);
+}
 
 //  fetch asset on componentDidMount
-  new Promise(resolve => {
-    setIsLoading(false);
+useEffect(() => {
+  new Promise(() => {
+    setIsLoading(true);
   }).then(() => {
+    setIsLoading(false);
     Labelbox.currentAsset().subscribe(asset => {
       if (asset) {
-        drawAsset(asset, currentAsset, setCurrentAsset, setAssetData);
+        handleAssetChange();
       }
     });
   });
+}, [currentAsset])
 
   return (
     <>
