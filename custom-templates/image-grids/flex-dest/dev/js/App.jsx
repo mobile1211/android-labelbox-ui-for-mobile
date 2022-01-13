@@ -241,23 +241,23 @@ function App() {
 function handleAssetChange(asset) {
   // console.log("Asset", asset);
   // console.log("S3 asset link", asset.data);
-  const assetDataStr = get(asset.data).replace(/NaN/g, "null");
-  const parsedAssetData = JSON.parse(assetDataStr);
-  if ((currentAsset && currentAsset.id) !== asset.id) {
-    if (asset.label) {
-      try {
-        const label = JSON.parse(asset.label);
-        drawQuestions(label);
-      } catch (e) {
-        console.log("failed to read label", e);
-      }
-    } else {
-      drawQuestions();
-    }
-  }
   if (asset) {
-    setCurrentAsset(asset);
-    setAssetData(parsedAssetData);
+    const assetDataStr = get(asset.data).replace(/NaN/g, "null");
+    const parsedAssetData = JSON.parse(assetDataStr);
+    if ((currentAsset && currentAsset.id) !== asset.id) {
+      if (asset.label) {
+        try {
+          const label = JSON.parse(asset.label);
+          drawQuestions(label);
+        } catch (e) {
+          console.log("failed to read label", e);
+        }
+      } else {
+        drawQuestions();
+      }
+      setCurrentAsset(asset);
+      setAssetData(parsedAssetData);
+    }
     setIsLoading(false);
   }
 }
