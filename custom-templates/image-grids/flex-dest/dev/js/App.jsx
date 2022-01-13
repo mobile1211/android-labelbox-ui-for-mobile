@@ -152,7 +152,9 @@ function get(url){
   return Httpreq.responseText;
 }
 
-function drawQuestions(classifications, answers) {
+let classifications = [];
+
+function drawQuestions(answers) {
   document.querySelector("#questions").innerHTML = classifications
     .map(classification => createQuestion(classification, answers))
     .join("");
@@ -177,12 +179,12 @@ function drawAsset(asset, currentAsset, setCurrentAsset, setAssetS3Link) {
     if (asset.label) {
       try {
         const label = JSON.parse(asset.label);
-        drawQuestions(classifications, label);
+        drawQuestions(label);
       } catch (e) {
         console.log("failed to read label", e);
       }
     } else {
-      drawQuestions(classifications);
+      drawQuestions();
     }
   }
   setCurrentAsset(asset);
@@ -197,8 +199,6 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [currentAsset, setCurrentAsset] = useState();
   const [assetS3Link, setAssetS3Link] = useState();
-
-  let classifications = [];
 
 //  fetch asset on componentDidMount
   new Promise(resolve => {
