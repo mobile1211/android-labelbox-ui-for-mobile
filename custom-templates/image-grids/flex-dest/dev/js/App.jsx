@@ -189,6 +189,7 @@ function drawAsset(asset, currentAsset, setCurrentAsset, setAssetS3Link) {
   setAssetS3Link(assetData);
 }
 
+let markQuestionsAsLoaded;
 
 // Root app
 function App() {
@@ -198,7 +199,6 @@ function App() {
   const [assetS3Link, setAssetS3Link] = useState();
 
   let classifications = [];
-  let markQuestionsAsLoaded;
 
 //  fetch asset on componentDidMount
   useEffect(() => {
