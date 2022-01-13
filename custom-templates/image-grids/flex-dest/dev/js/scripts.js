@@ -1,28 +1,3 @@
-// let state = {
-//     projectId: new URL(window.location.href).searchParams.get("project"),
-//     currentAsset: undefined
-// };
-
-const defaultConfiguration = {
-  classifications: [
-    {
-      name: "image_grid_update",
-      instructions: "Done updating image grid?",
-      type: "radio",
-      options: [
-        {
-          "label": "Yes",
-          "value": "yes"
-        },
-        {
-          "label": "No",
-          "value": "no"
-        }
-      ]
-    }
-  ]
-};
-
 function createOptionQuestion({ type, name, options, instructions }, answer) {
   const createOption = ({ value, label }) => {
     return `
@@ -81,31 +56,6 @@ function createQuestion(question, answers) {
 
   console.log("Unknown question type", question);
 }
-
-// let classifications = [];
-// let markQuestionsAsLoaded;
-// new Promise(resolve => {
-//   markQuestionsAsLoaded = resolve;
-// }).then(() => {
-//   Labelbox.currentAsset().subscribe(asset => {
-//     if (asset) {
-//       drawAsset(asset);
-//     }
-//   });
-// });
-
-// function drawQuestions(classifications, answers) {
-//   document.querySelector("#questions").innerHTML = classifications
-//     .map(classification => createQuestion(classification, answers))
-//     .join("");
-// }
-
-// Labelbox.getTemplateCustomization().subscribe(customization => {
-//   classifications =
-//     (customization && customization.classifications) || defaultConfiguration.classifications;
-//   drawQuestions(classifications);
-//   markQuestionsAsLoaded();
-// });
 
 function getLabel() {
   const getAnswer = node => {
@@ -232,36 +182,6 @@ function safelyClearSelectedMetadata() {
   }
 }
 
-function displayInfo(itemIdx) {
-  console.log("Image state:", state.currentAssetData.gridImages[itemIdx]);
-  const {
-    listingId: listingId,
-    photoId: photoId,
-    propertyType: propertyType,
-    roomType: roomType,
-    listingImages: listingImages,
-    listingTitle: title,
-    listingDescription: description,
-    listingLocation: location,
-    listingNeighborhood: neighborhood,
-    lat: lat,
-    lng: lng,
-  } = state.currentAssetData.gridImages[itemIdx];
-
-  clearSelectedMetadata();
-
-  document.querySelector(`#image-container-${listingId}`).classList.add('selected');
-  document.querySelector("#selected-id").innerHTML = listingId;
-  document.querySelector("#selected-photo").innerHTML = photoId;
-  document.querySelector("#selected-pdp-link").href = pdpUrl(listingId);
-  document.querySelector("#selected-gsheet-link").href = gsheetUrl(listingId, photoId);
-  document.querySelector("#selected-property-type").innerHTML = propertyType;
-  document.querySelector("#selected-room-type").innerHTML = roomType;
-  document.querySelector("div.flex-column.side-panel").scrollTo(0,0);
-  document.querySelector("#panel-info").innerHTML = createPanelInfo(title, description, location, neighborhood, lat, lng);
-  document.querySelector("#panel-pictures").innerHTML = listingImages.map(createAdditionalImage).join("\n");
-}
-
 function createImage(imageObj, idx) {
   const photoLink = imageObj.photoLink?.includes("?")
     ? `${imageObj.photoLink}`
@@ -279,107 +199,3 @@ function createImage(imageObj, idx) {
     </div>
   `;
 }
-
-function getHtmlForAsset(parsedData) {
-  console.log(parsedData);
-  return `
-    <div class="header sticky">
-      <div style="display:flex;flex-direction:column;">
-        <h3>${parsedData.attribute} - ${parsedData.qualityTier}</h3>
-
-        <div style="display:flex;flex-direction:row;flex-grow:1;align-items:flex-end;padding-bottom:10px">
-          <div class="listing-info">
-            Listing ID: <span id="selected-id"></span>
-          </div>
-          <div class="listing-info">
-            Photo ID: <span id="selected-photo"></span>
-          </div>
-          <div class="listing-info">
-            Property type: <span id="selected-property-type"></span>
-          </div>
-          <div class="listing-info">
-            Room type: <span id="selected-room-type"></span>
-          </div>
-          <div class="listing-info">
-            <a href="" id="selected-pdp-link" target="_blank">Link to PDP</a>
-          </div>
-          <div class="listing-info">
-            <a href="" id="selected-gsheet-link" target="_blank">Link to GSheet</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Photo Grid -->
-    <div class="photo-grid">
-      ${parsedData.gridImages.map(createImage).join("\n")}
-    </div>
-  `;
-}
-
-// async function downloadObjectAsync(url) {
-//   try {
-//     const fetchResponse = await fetch(url);
-//     return await fetchResponse.json();
-//   } catch (err) {
-//     console.error('Error: ', err);
-//   }
-// }
-
-// const successCb = (resp) => {
-//     console.log(resp);
-// };
-
-// const errorCb = (err) => {
-//     console.error('Error - ', err);
-// };
-
-// function downloadObject(url, successCb, errorCb) {
-//     fetch(url)
-//       .then(response => response.json())
-//       .then(successCb)
-//       .catch(errorCb);
-// }
-
-// function get(url){
-//   var Httpreq = new XMLHttpRequest();
-//   Httpreq.open("GET", url, false);
-//   Httpreq.send(null);
-//   return Httpreq.responseText;
-// }
-
-// function drawAsset(asset) {
-//   const backButton = document.querySelector("#back");
-//   backButton.style.opacity = asset.previous ? 1 : 0.2;
-//   backButton.style.cursor = asset.previous ? "pointer" : "inherit";
-//   const hasNext = Boolean(asset.next || asset.label);
-//   const nextButton = document.querySelector("#next");
-//   nextButton.style.opacity = hasNext ? 1 : 0.2;
-//   nextButton.style.cursor = hasNext ? "pointer" : "inherit";
-
-//   console.log("Asset", asset);
-
-//   console.log("S3 asset link", asset.data);
-//   const assetDataStr = get(asset.data).replace(/NaN/g, "null");
-//   const assetData = JSON.parse(assetDataStr);
-//   if ((state.currentAsset && state.currentAsset.data) !== asset.data) {
-//     document.querySelector("#asset").innerHTML = getHtmlForAsset(assetData);
-//   }
-//   if ((state.currentAsset && state.currentAsset.id) !== asset.id) {
-//     if (asset.label) {
-//       try {
-//         const label = JSON.parse(asset.label);
-//         drawQuestions(classifications, label);
-//       } catch (e) {
-//         console.log("failed to read label", e);
-//       }
-//     } else {
-//       drawQuestions(classifications);
-//     }
-//   }
-//   state = {
-//     ...state,
-//     currentAsset: asset,
-//     currentAssetData: assetData,
-//   };
-// }

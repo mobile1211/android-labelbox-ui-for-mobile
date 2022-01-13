@@ -1,7 +1,3 @@
-// Components
-// Cannot split into separate files / modules unless we add webpack config
-// https://stackoverflow.com/questions/36698354/require-is-not-defined
-
 const { useEffect, useState, useCallback } = React;
 
 const DEFAULT_CONFIG = {
@@ -24,6 +20,9 @@ const DEFAULT_CONFIG = {
   ]
 };
 
+// Components
+// Cannot split into separate files / modules unless we add webpack config
+// https://stackoverflow.com/questions/36698354/require-is-not-defined
 function Header({ currentAsset, hasPrev, hasNext, projectId }) {
   const handleGoHome = useCallback(() => {
     window.location.href =
@@ -80,6 +79,40 @@ function Header({ currentAsset, hasPrev, hasNext, projectId }) {
   );
 }
 
+function PhotoGridWithHeader({ assetData }) {
+  return (
+    <>
+      <div className="header sticky">
+        <div className="listing-title">
+          <h3>${assetData.attribute} - ${assetData.qualityTier}</h3>
+
+          <div className='listing-header'>
+            <div class="listing-info">
+              Listing ID: <span id="selected-id"></span>
+            </div>
+            <div className="listing-info">
+              Photo ID: <span id="selected-photo"></span>
+            </div>
+            <div className="listing-info">
+              Property type: <span id="selected-property-type"></span>
+            </div>
+            <div className="listing-info">
+              Room type: <span id="selected-room-type"></span>
+            </div>
+            <div className="listing-info">
+              <a href="" id="selected-pdp-link" target="_blank">Link to PDP</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="photo-grid">
+        {assetData.gridImages.map(createImage).join("\n")}
+      </div>
+    </>
+  );
+}
+
 function Content({ currentAsset }) {
   const handleSkip = useCallback(() => {
     safelyClearSelectedMetadata();
@@ -109,7 +142,7 @@ function Content({ currentAsset }) {
   return (
     <div className="content">
       <div id="asset">
-        loading...
+        {isLoading ? 'loading...' : <PhotoGridWithHeader assetData={assetData} />}
       </div>
       <div className="flex-column questions">
         <div id="questions" />
@@ -164,17 +197,13 @@ Labelbox.getTemplateCustomization().subscribe(customization => {
   classifications =
     (customization && customization.classifications) || defaultConfiguration.classifications;
   drawQuestions(classifications);
-  markQuestionsAsLoaded();
 });
 
-function drawAsset(asset, currentAsset, setCurrentAsset, setAssetS3Link) {
-  console.log("Asset", asset);
-  console.log("S3 asset link", asset.data);
+function drawAsset(asset, currentAsset, setCurrentAsset, setAssetData) {
+  // console.log("Asset", asset);
+  // console.log("S3 asset link", asset.data);
   const assetDataStr = get(asset.data).replace(/NaN/g, "null");
   const assetData = JSON.parse(assetDataStr);
-  if ((currentAsset && currentAsset.data) !== asset.data) {
-    document.querySelector("#asset").innerHTML = getHtmlForAsset(assetData);
-  }
   if ((currentAsset && currentAsset.id) !== asset.id) {
     if (asset.label) {
       try {
@@ -188,25 +217,54 @@ function drawAsset(asset, currentAsset, setCurrentAsset, setAssetS3Link) {
     }
   }
   setCurrentAsset(asset);
-  setAssetS3Link(assetData);
+  setAssetData(assetData);
 }
 
-let markQuestionsAsLoaded;
+
+function displayInfo(itemIdx) {
+  console.log("Image state:", state.currentAssetData.gridImages[itemIdx]);
+  const {
+    listingId: listingId,
+    photoId: photoId,
+    propertyType: propertyType,
+    roomType: roomType,
+    listingImages: listingImages,
+    listingTitle: title,
+    listingDescription: description,
+    listingLocation: location,
+    listingNeighborhood: neighborhood,
+    lat: lat,
+    lng: lng,
+  } = state.currentAssetData.gridImages[itemIdx];
+
+  clearSelectedMetadata();
+
+  document.querySelector(`#image-container-${listingId}`).classList.add('selected');
+  document.querySelector("#selected-id").innerHTML = listingId;
+  document.querySelector("#selected-photo").innerHTML = photoId;
+  document.querySelector("#selected-pdp-link").href = pdpUrl(listingId);
+  document.querySelector("#selected-gsheet-link").href = gsheetUrl(listingId, photoId);
+  document.querySelector("#selected-property-type").innerHTML = propertyType;
+  document.querySelector("#selected-room-type").innerHTML = roomType;
+  document.querySelector("div.flex-column.side-panel").scrollTo(0,0);
+  document.querySelector("#panel-info").innerHTML = createPanelInfo(title, description, location, neighborhood, lat, lng);
+  document.querySelector("#panel-pictures").innerHTML = listingImages.map(createAdditionalImage).join("\n");
+}
 
 // Root app
 function App() {
   const projectId = new URL(window.location.href).searchParams.get("project");
   const [isLoading, setIsLoading] = useState(true);
   const [currentAsset, setCurrentAsset] = useState();
-  const [assetS3Link, setAssetS3Link] = useState();
+  const [assetS3Link, setAssetData] = useState();
 
 //  fetch asset on componentDidMount
   new Promise(resolve => {
-    markQuestionsAsLoaded = resolve;
+    setIsLoading(false);
   }).then(() => {
     Labelbox.currentAsset().subscribe(asset => {
       if (asset) {
-        drawAsset(asset, currentAsset, setCurrentAsset, setAssetS3Link);
+        drawAsset(asset, currentAsset, setCurrentAsset, setAssetData);
       }
     });
   });
@@ -224,6 +282,7 @@ function App() {
       />
       <Content 
         currentAsset={currentAsset}
+        isLoading={isLoading}
       />
     </>
   );

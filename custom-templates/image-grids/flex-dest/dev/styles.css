@@ -166,3 +166,16 @@ border-color: #03a9f4 !important;
   margin-left: -5px; 
   opacity: 0.2; 
 }
+
+.listing-title {
+  display:flex;
+  flex-direction:column;
+}
+
+.listing-header {
+  display:flex;
+  flex-direction:row;
+  flex-grow:1;
+  align-items:flex-end;
+  padding-bottom:10px;
+}
