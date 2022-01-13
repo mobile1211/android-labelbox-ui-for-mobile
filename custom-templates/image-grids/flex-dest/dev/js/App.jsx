@@ -6,6 +6,24 @@ function Header() {
     "https://app.labelbox.com/projects/" + state.projectId;
   }, []);
 
+  const handleGoBack = useCallback(() => {
+    safelyClearSelectedMetadata();
+    showLoadingAssets();
+    if (state.currentAsset.previous) {
+        Labelbox.setLabelAsCurrentAsset(state.currentAsset.previous);
+    }
+  })
+
+  const handleGoNext = useCallback(() => {
+    safelyClearSelectedMetadata();
+    showLoadingAssets();
+    if (state.currentAsset.next) {
+      Labelbox.setLabelAsCurrentAsset(state.currentAsset.next);
+    } else {
+      Labelbox.fetchNextAssetToLabel();
+    }
+  }, [])
+
   return (
     <div className="header-container">
       <i
@@ -17,7 +35,7 @@ function Header() {
       <i
       id="back"
       className="material-icons back-icon"
-      onClick="goBack()"
+      onClick={handleGoBack}
       >
         keyboard_arrow_left
       </i>
@@ -30,7 +48,7 @@ function Header() {
       <i
       id="next"
       className="material-icons"
-      onClick="goNext()"
+      onClick={handleGoNext}
       >
         keyboard_arrow_right
       </i>
@@ -39,6 +57,31 @@ function Header() {
 }
 
 function Content() {
+  const handleSkip = useCallback(() => {
+    safelyClearSelectedMetadata();
+    showLoadingAssets();
+    Labelbox.skip().then(() => {
+      Labelbox.fetchNextAssetToLabel();
+    });
+  }, []);
+
+  const handleSubmit = useCallback(() => {
+      safelyClearSelectedMetadata();
+  
+      const label = JSON.stringify(getLabel());
+      const jumpToNext = Boolean(!state.currentAsset.label);
+      console.log("jumpToNext:", jumpToNext)
+      // Progress if this asset is new
+      if (jumpToNext) {
+          showLoadingAssets();
+      }
+      Labelbox.setLabelForAsset(label, 'ANY').then(() => {
+          if (jumpToNext) {
+          Labelbox.fetchNextAssetToLabel();
+          }
+      });
+  }, []);
+
   return (
     <div className="content">
       <div id="asset">
@@ -57,7 +100,7 @@ function Content() {
             color: 'black', width: '100%', 
             marginRight: '10px' 
           }}
-          onClick="skip()"
+          onClick={handleSkip}
           >
             Skip
           </a>
@@ -67,7 +110,7 @@ function Content() {
             backgroundColor: '#03a9f4', 
             width: '100%' 
           }}
-          onClick="submit()"
+          onClick={handleSubmit}
           >
             Submit
           </a>
