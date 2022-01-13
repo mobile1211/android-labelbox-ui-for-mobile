@@ -85,41 +85,40 @@ function Image({ assetData, imgObj, idx }) {
     : `${imgObj.photoLink}?img_w=720`;
   const listingId = imgObj.listingId;
 
-
-function displayInfo(itemIdx) {
-  console.log("Image state:", assetData.gridImages[itemIdx]);
-  const {
-    listingId,
-    photoId,
-    propertyType,
-    roomType,
-    listingImages,
-    listingTitle: title,
-    listingDescription: description,
-    listingLocation: location,
-    listingNeighborhood: neighborhood,
-    lat,
-    lng,
-  } = assetData.gridImages[itemIdx];
-
-  clearSelectedMetadata();
-
-  document.querySelector(`#image-container-${listingId}`).classList.add('selected');
-  document.querySelector("#selected-id").innerHTML = listingId;
-  document.querySelector("#selected-photo").innerHTML = photoId;
-  document.querySelector("#selected-pdp-link").href = pdpUrl(listingId);
-  document.querySelector("#selected-property-type").innerHTML = propertyType;
-  document.querySelector("#selected-room-type").innerHTML = roomType;
-  document.querySelector("div.flex-column.side-panel").scrollTo(0,0);
-  document.querySelector("#panel-info").innerHTML = createPanelInfo(title, description, location, neighborhood, lat, lng);
-  document.querySelector("#panel-pictures").innerHTML = listingImages.map(createAdditionalImage).join("\n");
-}
+  function displayInfo(idx) {
+    console.log("Image state:", assetData.gridImages[idx]);
+    const {
+      listingId,
+      photoId,
+      propertyType,
+      roomType,
+      listingImages,
+      listingTitle: title,
+      listingDescription: description,
+      listingLocation: location,
+      listingNeighborhood: neighborhood,
+      lat,
+      lng,
+    } = assetData.gridImages[idx];
+  
+    clearSelectedMetadata();
+  
+    document.querySelector(`#image-container-${listingId}`).classList.add('selected');
+    document.querySelector("#selected-id").innerHTML = listingId;
+    document.querySelector("#selected-photo").innerHTML = photoId;
+    document.querySelector("#selected-pdp-link").href = pdpUrl(listingId);
+    document.querySelector("#selected-property-type").innerHTML = propertyType;
+    document.querySelector("#selected-room-type").innerHTML = roomType;
+    document.querySelector("div.flex-column.side-panel").scrollTo(0,0);
+    document.querySelector("#panel-info").innerHTML = createPanelInfo(title, description, location, neighborhood, lat, lng);
+    document.querySelector("#panel-pictures").innerHTML = listingImages.map(createAdditionalImage).join("\n");
+  }
 
   return (
     <div
       className="image-container"
       onClick={() => displayInfo(idx)}
-      tabindex={idx}
+      tabindex={itemIdx}
       id={`image-container-${listingId}`}
     >
       <img src={photoLink} listingId={listingId} class="image" />
