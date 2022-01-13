@@ -99,17 +99,6 @@ function pdpUrl(listingId) {
   return `https://www.airbnb.com/rooms/${listingId}`;
 }
 
-// function gsheetUrl(listingId, photoId) {
-//   const gsheetUrlMain = "https://docs.google.com/forms/d/e/1FAIpQLSdZuDncKFE3pSUd_vMTkKIrnA3PDOY2x7uupe_RzAERSc6wVQ/viewform?usp=pp_url";
-//   const paramListingId = `entry.1673408678=${listingId}`;
-//   const paramAttribute = `entry.1331702945=${state.currentAssetData.attribute}`;
-//   const paramPhotoLink = `entry.709101333=https://www.airbnb.com/rooms/${listingId}/photos/${photoId}`;
-//   const paramQuality = `entry.1305733443=${state.currentAssetData.qualityTier}`;
-
-//   // Param ordering apparently matters!!!
-//   return `${gsheetUrlMain}&${paramListingId}&${paramAttribute}&${paramPhotoLink}&${paramQuality}`;
-// }
-
 function createAdditionalImage(listingImage) {
   return `
     <div class="additional-image">

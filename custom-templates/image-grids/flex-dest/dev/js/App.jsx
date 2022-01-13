@@ -87,7 +87,7 @@ function Image({ assetData, imgObj, idx }) {
 
 
 function displayInfo(itemIdx) {
-  // console.log("Image state:", assetData.gridImages[itemIdx]);
+  console.log("Image state:", assetData.gridImages[itemIdx]);
   const {
     listingId,
     photoId,
@@ -158,7 +158,7 @@ function PhotoGridWithHeader({ assetData }) {
 
       <div className="photo-grid">
         {assetData.gridImages.map((imgObj, idx) => 
-          <Image assetData={assetData} imgObj={imgObj} index={idx} />
+          <Image assetData={assetData} imgObj={imgObj} index={idx} key={imgObj.photoId} />
         )}
       </div>
     </>
