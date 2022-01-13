@@ -1,5 +1,5 @@
-import Header from './Header.jsx';
-import Content from './Content.jsx';
+import Header from '../Header.jsx';
+import Content from '../Content.jsx';
 
 // function Header() {
 //   const handleGoHome = useCallback(() => {
