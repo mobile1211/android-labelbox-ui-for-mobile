@@ -118,10 +118,10 @@ function Image({ assetData, imgObj, idx }) {
     <div
       className="image-container"
       onClick={() => displayInfo(idx)}
-      tabindex={idx}
+      tabIndex={idx}
       id={`image-container-${listingId}`}
     >
-      <img src={photoLink} listingId={listingId} class="image" />
+      <img src={photoLink} listingId={listingId} className="image" />
     </div>
   );
 }
@@ -157,7 +157,7 @@ function PhotoGridWithHeader({ assetData }) {
 
       <div className="photo-grid">
         {assetData.gridImages.map((imgObj, idx) => 
-          <Image assetData={assetData} imgObj={imgObj} index={idx} key={imgObj.photoId} />
+          <Image assetData={assetData} imgObj={imgObj} idx={idx} key={imgObj.photoId} />
         )}
       </div>
     </>
