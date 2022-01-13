@@ -238,7 +238,7 @@ function App() {
   const [assetData, setAssetData] = useState();
 
 
-function handleAssetChange() {
+function handleAssetChange(asset) {
   // console.log("Asset", asset);
   // console.log("S3 asset link", asset.data);
   const assetDataStr = get(asset.data).replace(/NaN/g, "null");
@@ -255,23 +255,20 @@ function handleAssetChange() {
       drawQuestions();
     }
   }
-  setCurrentAsset(asset);
-  setAssetData(parsedAssetData);
+  if (asset) {
+    setCurrentAsset(asset);
+    setAssetData(parsedAssetData);
+    setIsLoading(false);
+  }
 }
 
 //  fetch asset on componentDidMount
 useEffect(() => {
-  new Promise(() => {
-    setIsLoading(true);
-  }).then(() => {
-    setIsLoading(false);
-    Labelbox.currentAsset().subscribe(asset => {
-      if (asset) {
-        handleAssetChange();
-      }
-    });
+  setIsLoading(true);
+  Labelbox.currentAsset().subscribe(asset => {
+    handleAssetChange(asset);
   });
-}, [currentAsset])
+})
 
   return (
     <>
