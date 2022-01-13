@@ -201,17 +201,15 @@ function App() {
   let classifications = [];
 
 //  fetch asset on componentDidMount
-  useEffect(() => {
-    new Promise(resolve => {
-      markQuestionsAsLoaded = resolve;
-    }).then(() => {
-      Labelbox.currentAsset().subscribe(asset => {
-        if (asset) {
-          drawAsset(asset, currentAsset, setCurrentAsset, setAssetS3Link);
-        }
-      });
+  new Promise(resolve => {
+    markQuestionsAsLoaded = resolve;
+  }).then(() => {
+    Labelbox.currentAsset().subscribe(asset => {
+      if (asset) {
+        drawAsset(asset, currentAsset, setCurrentAsset, setAssetS3Link);
+      }
     });
-  }, []);
+  });
 
   return (
     <>
