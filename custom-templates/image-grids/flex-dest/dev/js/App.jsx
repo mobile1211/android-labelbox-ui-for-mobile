@@ -85,7 +85,7 @@ function Image({ assetData, imgObj, idx }) {
     : `${imgObj.photoLink}?img_w=720`;
   const listingId = imgObj.listingId;
 
-  function displayInfo(idx) {
+  const displayInfo = useCallback((idx) => {
     console.log("Image state:", assetData.gridImages[idx]);
     const {
       listingId,
@@ -112,13 +112,13 @@ function Image({ assetData, imgObj, idx }) {
     document.querySelector("div.flex-column.side-panel").scrollTo(0,0);
     document.querySelector("#panel-info").innerHTML = createPanelInfo(title, description, location, neighborhood, lat, lng);
     document.querySelector("#panel-pictures").innerHTML = listingImages.map(createAdditionalImage).join("\n");
-  }
+  }, [])
 
   return (
     <div
       className="image-container"
       onClick={() => displayInfo(idx)}
-      tabindex={itemIdx}
+      tabindex={idx}
       id={`image-container-${listingId}`}
     >
       <img src={photoLink} listingId={listingId} class="image" />
