@@ -80,6 +80,7 @@ function Header({ currentAsset, hasPrev, hasNext, projectId }) {
 }
 
 function PhotoGridWithHeader({ assetData }) {
+  if (!assetData) return null;
   return (
     <>
       <div className="header sticky">
