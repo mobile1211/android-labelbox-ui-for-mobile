@@ -113,7 +113,7 @@ function PhotoGridWithHeader({ assetData }) {
   );
 }
 
-function Content({ currentAsset }) {
+function Content({ currentAsset, isLoading }) {
   const handleSkip = useCallback(() => {
     safelyClearSelectedMetadata();
     showLoadingAssets();
