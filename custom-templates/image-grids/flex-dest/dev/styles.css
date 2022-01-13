@@ -151,6 +151,11 @@ border-color: #03a9f4 !important;
   opacity: 0.2;
 }
 
+.button-default {
+  opacity: 1;
+  cursor: pointer;
+}
+
 .header-title {
   color: #717171;
   padding: 0px 10px;

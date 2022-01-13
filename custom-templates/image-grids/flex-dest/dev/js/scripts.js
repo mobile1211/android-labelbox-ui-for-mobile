@@ -1,7 +1,7 @@
-let state = {
-    projectId: new URL(window.location.href).searchParams.get("project"),
-    currentAsset: undefined
-};
+// let state = {
+//     projectId: new URL(window.location.href).searchParams.get("project"),
+//     currentAsset: undefined
+// };
 
 const defaultConfiguration = {
   classifications: [
@@ -82,17 +82,17 @@ function createQuestion(question, answers) {
   console.log("Unknown question type", question);
 }
 
-let classifications = [];
-let markQuestionsAsLoaded;
-new Promise(resolve => {
-  markQuestionsAsLoaded = resolve;
-}).then(() => {
-  Labelbox.currentAsset().subscribe(asset => {
-    if (asset) {
-      drawAsset(asset);
-    }
-  });
-});
+// let classifications = [];
+// let markQuestionsAsLoaded;
+// new Promise(resolve => {
+//   markQuestionsAsLoaded = resolve;
+// }).then(() => {
+//   Labelbox.currentAsset().subscribe(asset => {
+//     if (asset) {
+//       drawAsset(asset);
+//     }
+//   });
+// });
 
 function drawQuestions(classifications, answers) {
   document.querySelector("#questions").innerHTML = classifications
@@ -149,16 +149,16 @@ function pdpUrl(listingId) {
   return `https://www.airbnb.com/rooms/${listingId}`;
 }
 
-function gsheetUrl(listingId, photoId) {
-  const gsheetUrlMain = "https://docs.google.com/forms/d/e/1FAIpQLSdZuDncKFE3pSUd_vMTkKIrnA3PDOY2x7uupe_RzAERSc6wVQ/viewform?usp=pp_url";
-  const paramListingId = `entry.1673408678=${listingId}`;
-  const paramAttribute = `entry.1331702945=${state.currentAssetData.attribute}`;
-  const paramPhotoLink = `entry.709101333=https://www.airbnb.com/rooms/${listingId}/photos/${photoId}`;
-  const paramQuality = `entry.1305733443=${state.currentAssetData.qualityTier}`;
+// function gsheetUrl(listingId, photoId) {
+//   const gsheetUrlMain = "https://docs.google.com/forms/d/e/1FAIpQLSdZuDncKFE3pSUd_vMTkKIrnA3PDOY2x7uupe_RzAERSc6wVQ/viewform?usp=pp_url";
+//   const paramListingId = `entry.1673408678=${listingId}`;
+//   const paramAttribute = `entry.1331702945=${state.currentAssetData.attribute}`;
+//   const paramPhotoLink = `entry.709101333=https://www.airbnb.com/rooms/${listingId}/photos/${photoId}`;
+//   const paramQuality = `entry.1305733443=${state.currentAssetData.qualityTier}`;
 
-  // Param ordering apparently matters!!!
-  return `${gsheetUrlMain}&${paramListingId}&${paramAttribute}&${paramPhotoLink}&${paramQuality}`;
-}
+//   // Param ordering apparently matters!!!
+//   return `${gsheetUrlMain}&${paramListingId}&${paramAttribute}&${paramPhotoLink}&${paramQuality}`;
+// }
 
 function createAdditionalImage(listingImage) {
   return `
@@ -317,69 +317,69 @@ function getHtmlForAsset(parsedData) {
   `;
 }
 
-async function downloadObjectAsync(url) {
-  try {
-    const fetchResponse = await fetch(url);
-    return await fetchResponse.json();
-  } catch (err) {
-    console.error('Error: ', err);
-  }
-}
+// async function downloadObjectAsync(url) {
+//   try {
+//     const fetchResponse = await fetch(url);
+//     return await fetchResponse.json();
+//   } catch (err) {
+//     console.error('Error: ', err);
+//   }
+// }
 
-const successCb = (resp) => {
-    console.log(resp);
-};
+// const successCb = (resp) => {
+//     console.log(resp);
+// };
 
-const errorCb = (err) => {
-    console.error('Error - ', err);
-};
+// const errorCb = (err) => {
+//     console.error('Error - ', err);
+// };
 
-function downloadObject(url, successCb, errorCb) {
-    fetch(url)
-      .then(response => response.json())
-      .then(successCb)
-      .catch(errorCb);
-}
+// function downloadObject(url, successCb, errorCb) {
+//     fetch(url)
+//       .then(response => response.json())
+//       .then(successCb)
+//       .catch(errorCb);
+// }
 
-function get(url){
-  var Httpreq = new XMLHttpRequest();
-  Httpreq.open("GET", url, false);
-  Httpreq.send(null);
-  return Httpreq.responseText;
-}
+// function get(url){
+//   var Httpreq = new XMLHttpRequest();
+//   Httpreq.open("GET", url, false);
+//   Httpreq.send(null);
+//   return Httpreq.responseText;
+// }
 
-function drawAsset(asset) {
-  const backButton = document.querySelector("#back");
-  backButton.style.opacity = asset.previous ? 1 : 0.2;
-  backButton.style.cursor = asset.previous ? "pointer" : "inherit";
-  const hasNext = Boolean(asset.next || asset.label);
-  const nextButton = document.querySelector("#next");
-  nextButton.style.opacity = hasNext ? 1 : 0.2;
-  nextButton.style.cursor = hasNext ? "pointer" : "inherit";
+// function drawAsset(asset) {
+//   const backButton = document.querySelector("#back");
+//   backButton.style.opacity = asset.previous ? 1 : 0.2;
+//   backButton.style.cursor = asset.previous ? "pointer" : "inherit";
+//   const hasNext = Boolean(asset.next || asset.label);
+//   const nextButton = document.querySelector("#next");
+//   nextButton.style.opacity = hasNext ? 1 : 0.2;
+//   nextButton.style.cursor = hasNext ? "pointer" : "inherit";
 
-  console.log("Asset", asset);
+//   console.log("Asset", asset);
 
-  console.log("S3 asset link", asset.data);
-  const assetDataStr = get(asset.data).replace(/NaN/g, "null");
-  const assetData = JSON.parse(assetDataStr);
-  if ((state.currentAsset && state.currentAsset.data) !== asset.data) {
-    document.querySelector("#asset").innerHTML = getHtmlForAsset(assetData);
-  }
-  if ((state.currentAsset && state.currentAsset.id) !== asset.id) {
-    if (asset.label) {
-      try {
-        const label = JSON.parse(asset.label);
-        drawQuestions(classifications, label);
-      } catch (e) {
-        console.log("failed to read label", e);
-      }
-    } else {
-      drawQuestions(classifications);
-    }
-  }
-  state = {
-    ...state,
-    currentAsset: asset,
-    currentAssetData: assetData,
-  };
-}
+//   console.log("S3 asset link", asset.data);
+//   const assetDataStr = get(asset.data).replace(/NaN/g, "null");
+//   const assetData = JSON.parse(assetDataStr);
+//   if ((state.currentAsset && state.currentAsset.data) !== asset.data) {
+//     document.querySelector("#asset").innerHTML = getHtmlForAsset(assetData);
+//   }
+//   if ((state.currentAsset && state.currentAsset.id) !== asset.id) {
+//     if (asset.label) {
+//       try {
+//         const label = JSON.parse(asset.label);
+//         drawQuestions(classifications, label);
+//       } catch (e) {
+//         console.log("failed to read label", e);
+//       }
+//     } else {
+//       drawQuestions(classifications);
+//     }
+//   }
+//   state = {
+//     ...state,
+//     currentAsset: asset,
+//     currentAssetData: assetData,
+//   };
+// }
