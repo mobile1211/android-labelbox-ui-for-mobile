@@ -36,12 +36,3 @@ function getLabel() {
 
   return Object.assign({}, ...answers);
 }
-
-function createAdditionalImage(listingImage) {
-  return `
-    <div class="additional-image">
-      <div>Photo ID: ${listingImage.photoId}</div>
-      <img src="${listingImage.photoLink}" style="width:100%"/>
-    </div>
-  `;
-}

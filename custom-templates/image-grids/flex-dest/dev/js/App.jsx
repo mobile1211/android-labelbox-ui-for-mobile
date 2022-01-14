@@ -9,7 +9,7 @@ function Header({
   hasNext, 
   projectId, 
   setIsLoading, 
-  setSelectedImage,
+  setSelectedListing,
   setSelectedImageIdx,
 }) {
   const handleGoHome = useCallback(() => {
@@ -18,7 +18,7 @@ function Header({
   }, []);
 
   const handleGoBack = useCallback(() => {
-    setSelectedImage();
+    setSelectedListing();
     setSelectedImageIdx();
     setIsLoading(true);
 
@@ -28,7 +28,7 @@ function Header({
   })
 
   const handleGoNext = useCallback(() => {
-    setSelectedImage();
+    setSelectedListing();
     setSelectedImageIdx();
     setIsLoading(true);
 
@@ -71,7 +71,7 @@ function Header({
   );
 }
 
-function Image({ imgObj, idx, isSelected, onClickImage }) {
+function DefaultImage({ imgObj, idx, isSelected, onClickImage }) {
   const photoLink = imgObj.photoLink?.includes("?")
     ? `${imgObj.photoLink}`
     : `${imgObj.photoLink}?img_w=720`;
@@ -92,6 +92,15 @@ function Image({ imgObj, idx, isSelected, onClickImage }) {
       <img src={photoLink} className={`image ${isSelected ? 'image-selected' : ''}`} />
     </div>
   );
+}
+
+function GenericImage({ listingImage }) {
+  return (
+    <div className="additional-image">
+    <div>Photo ID: {listingImage.photoId}</div>
+    <img src={listingImage.photoLink} />
+  </div>
+  )
 }
 
 function PhotoGridWithHeader({ 
@@ -130,7 +139,7 @@ function PhotoGridWithHeader({
 
       <div className="photo-grid">
         {assetData.gridImages.map((imgObj, idx) => 
-          <Image 
+          <DefaultImage 
             imgObj={imgObj} 
             idx={idx} 
             key={imgObj.photoId}
@@ -201,11 +210,11 @@ function Content({
   selectedImage, 
   selectedImageIdx,
   setIsLoading,
-  setSelectedImage,
+  setSelectedListing,
   setSelectedImageIdx,
 }) {
   const handleSkip = useCallback(() => {
-    setSelectedImage();
+    setSelectedListing();
     setSelectedImageIdx();
     setIsLoading(true);
     Labelbox.skip().then(() => {
@@ -214,7 +223,7 @@ function Content({
   }, []);
 
   const handleSubmit = useCallback(() => {
-      setSelectedImage();
+      setSelectedListing();
       setSelectedImageIdx();
 
       const label = JSON.stringify(getLabel());
@@ -282,7 +291,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [currentAsset, setCurrentAsset] = useState();
   const [assetData, setAssetData] = useState();
-  const [selectedImage, setSelectedImage] = useState();
+  const [selectedListing, setSelectedListing] = useState();
   const [selectedImageIdx, setSelectedImageIdx] = useState();
 
 function handleAssetChange(asset) {
@@ -301,7 +310,7 @@ function handleAssetChange(asset) {
 
 const onClickImage = useCallback((imageIdx) => {
   setSelectedImageIdx(imageIdx);
-  setSelectedImage(assetData.gridImages[imageIdx]);
+  setSelectedListing(assetData.gridImages[imageIdx]);
 })
 
 //  fetch asset on componentDidMount
@@ -324,7 +333,7 @@ useEffect(() => {
           hasPrev={currentAsset?.previous} 
           projectId={projectId}
           setIsLoading={setIsLoading}
-          setSelectedImage={setSelectedImage}
+          setSelectedListing={setSelectedListing}
           setSelectedImageIdx={setSelectedImageIdx}
         />
         <Content 
@@ -334,7 +343,7 @@ useEffect(() => {
           onClickImage={onClickImage}
           selectedImage={selectedImage}
           selectedImageIdx={selectedImageIdx}
-          setSelectedImage={setSelectedImage}
+          setSelectedListing={setSelectedListing}
           setSelectedImageIdx={setSelectedImageIdx}
           setIsLoading={setIsLoading}
         />
@@ -354,7 +363,12 @@ useEffect(() => {
           ) : null
         }
         <h5>Other pictures</h5>
-        <div id="panel-pictures"></div>
+        {
+          selectedImage ? 
+            selectedListing.listingImages.map((image) => (
+              <GenericImage listingImage={image} />
+            )) : null
+        }
       </div>
     </>
   );
