@@ -59,34 +59,13 @@ function Header({ currentAsset, hasPrev, hasNext, projectId }) {
   );
 }
 
-function Image({ assetData, imgObj, idx, isSelected, onClickImage }) {
+function Image({ imgObj, idx, isSelected, onClickImage }) {
   const photoLink = imgObj.photoLink?.includes("?")
     ? `${imgObj.photoLink}`
     : `${imgObj.photoLink}?img_w=720`;
   const listingId = imgObj.listingId;
 
   const displayInfo = useCallback((idx) => {
-    // console.log("Image state:", assetData.gridImages[idx]);
-    // const {
-    //   listingId,
-    //   photoId,
-    //   propertyType,
-    //   roomType,
-    //   listingImages,
-    //   listingTitle: title,
-    //   listingDescription: description,
-    //   listingLocation: location,
-    //   listingNeighborhood: neighborhood,
-    //   lat,
-    //   lng,
-    // } = assetData.gridImages[idx];
-  
-    // clearSelectedMetadata();
-    document.querySelector("#selected-id").innerHTML = listingId;
-    document.querySelector("#selected-photo").innerHTML = photoId;
-    document.querySelector("#selected-pdp-link").href = pdpUrl(listingId);
-    document.querySelector("#selected-property-type").innerHTML = propertyType;
-    document.querySelector("#selected-room-type").innerHTML = roomType;
     document.querySelector("div.flex-column.side-panel").scrollTo(0,0);
     document.querySelector("#panel-info").innerHTML = createPanelInfo(title, description, location, neighborhood, lat, lng);
     document.querySelector("#panel-pictures").innerHTML = listingImages.map(createAdditionalImage).join("\n");
@@ -104,7 +83,12 @@ function Image({ assetData, imgObj, idx, isSelected, onClickImage }) {
   );
 }
 
-function PhotoGridWithHeader({ assetData, onClickImage, selectedImageIdx }) {
+function PhotoGridWithHeader({ 
+  assetData, 
+  onClickImage, 
+  selectedImage = {}, 
+  selectedImageIdx 
+}) {
   if (!assetData) return null;
 
   return (
@@ -115,19 +99,19 @@ function PhotoGridWithHeader({ assetData, onClickImage, selectedImageIdx }) {
 
           <div className='listing-header'>
             <div className="listing-info">
-              Listing ID: <span id="selected-id"></span>
+              Listing ID: {selectedImage.listingId}
             </div>
             <div className="listing-info">
-              Photo ID: <span id="selected-photo"></span>
+              Photo ID: {selectedImage.photoId}
             </div>
             <div className="listing-info">
-              Property type: <span id="selected-property-type"></span>
+              Property type: {selectedImage.propertyType}
             </div>
             <div className="listing-info">
-              Room type: <span id="selected-room-type"></span>
+              Room type: {selectedImage.roomType}
             </div>
             <div className="listing-info">
-              <a href="" id="selected-pdp-link" target="_blank">Link to PDP</a>
+              <a href={`https://www.airbnb.com/rooms/${selectedImage.listingId}`} id="selected-pdp-link" target="_blank">Link to PDP</a>
             </div>
           </div>
         </div>
@@ -136,7 +120,6 @@ function PhotoGridWithHeader({ assetData, onClickImage, selectedImageIdx }) {
       <div className="photo-grid">
         {assetData.gridImages.map((imgObj, idx) => 
           <Image 
-            assetData={assetData} 
             imgObj={imgObj} 
             idx={idx} 
             key={imgObj.photoId}
@@ -149,7 +132,14 @@ function PhotoGridWithHeader({ assetData, onClickImage, selectedImageIdx }) {
   );
 }
 
-function Content({ assetData, currentAsset, isLoading, onClickImage, selectedImageIdx }) {
+function Content({ 
+  assetData, 
+  currentAsset, 
+  isLoading, 
+  onClickImage, 
+  selectedImage, 
+  selectedImageIdx 
+}) {
   const handleSkip = useCallback(() => {
     safelyClearSelectedMetadata();
     showLoadingAssets();
@@ -182,6 +172,7 @@ function Content({ assetData, currentAsset, isLoading, onClickImage, selectedIma
           <PhotoGridWithHeader 
             assetData={assetData} 
             onClickImage={onClickImage} 
+            selectedImage={selectedImage}
             selectedImageIdx={selectedImageIdx}
           />
           )
@@ -295,6 +286,7 @@ useEffect(() => {
           currentAsset={currentAsset}
           isLoading={isLoading}
           onClickImage={onClickImage}
+          selectedImage={selectedImage}
           selectedImageIdx={selectedImageIdx}
         />
       </div>
