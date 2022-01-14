@@ -192,7 +192,7 @@ function PanelInfo({
     <div className='listing-info-container'>
       <div className="listing-info">
         <iframe width="450" height="450" frameBorder="0" scrolling="yes" marginHeight="0" marginWidth="0"
-          src={`https://maps.google.com/maps?q=${lat},${lng}&z=14&amp;output=embed`}
+          src={`https://maps.google.com/maps?q=${lat},${lng}&z=14&output=embed`}
         >
         </iframe>
       </div>
@@ -225,6 +225,8 @@ function Content({
   const handleSubmit = useCallback(() => {
       setSelectedListing();
       setSelectedImageIdx();
+
+      console.log('getLabel', getLabel())
 
       const label = JSON.stringify(getLabel());
       const jumpToNext = Boolean(!currentAsset.label);
