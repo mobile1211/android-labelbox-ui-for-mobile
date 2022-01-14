@@ -225,12 +225,6 @@ function Content({
       setSelectedListing();
       setSelectedImageIdx();
 
-      console.log('getLabel', getLabel())
-
-      const label = JSON.stringify(getLabel());
-      const jumpToNext = Boolean(!currentAsset.label);
-      console.log("jumpToNext:", jumpToNext)
-      // Progress if this asset is new
       if (jumpToNext) {
         setIsLoading(true);
       }
@@ -314,7 +308,7 @@ const onClickImage = useCallback((imageIdx) => {
   setSelectedListing(assetData.gridImages[imageIdx]);
 })
 
-//  fetch asset on componentDidMount
+// fetch asset on componentDidMount
 useEffect(() => {
   setIsLoading(true);
   Labelbox.currentAsset().subscribe(asset => {
