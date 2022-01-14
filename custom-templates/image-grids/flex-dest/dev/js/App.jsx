@@ -99,12 +99,12 @@ function Image({ assetData, imgObj, idx, isSelected, onClickImage }) {
       tabIndex={idx}
       id={`image-container-${listingId}`}
     >
-      <img src={photoLink} className="image" />
+      <img src={photoLink} className={`image ${isSelected ? 'image-selected' : ''}`} />
     </div>
   );
 }
 
-function PhotoGridWithHeader({ assetData, onClickImage }) {
+function PhotoGridWithHeader({ assetData, onClickImage, selectedImageIdx }) {
   if (!assetData) return null;
 
   return (
@@ -140,7 +140,7 @@ function PhotoGridWithHeader({ assetData, onClickImage }) {
             imgObj={imgObj} 
             idx={idx} 
             key={imgObj.photoId}
-            isSelected={selectedPhotoIdx === idx}
+            isSelected={selectedImageIdx === idx}
             onClickImage={(photoIdx) => { onClickImage(photoIdx) }}
           />
         )}
@@ -149,7 +149,7 @@ function PhotoGridWithHeader({ assetData, onClickImage }) {
   );
 }
 
-function Content({ assetData, currentAsset, isLoading, onClickImage }) {
+function Content({ assetData, currentAsset, isLoading, onClickImage, selectedImageIdx }) {
   const handleSkip = useCallback(() => {
     safelyClearSelectedMetadata();
     showLoadingAssets();
@@ -178,7 +178,14 @@ function Content({ assetData, currentAsset, isLoading, onClickImage }) {
   return (
     <div className="content">
       <div id="asset">
-        {isLoading ? 'loading...' : <PhotoGridWithHeader assetData={assetData} onClickImage={onClickImage} />}
+        {isLoading ? 'loading...' : (
+          <PhotoGridWithHeader 
+            assetData={assetData} 
+            onClickImage={onClickImage} 
+            selectedImageIdx={selectedImageIdx}
+          />
+          )
+        }
       </div>
       <div className="flex-column questions">
         <div id="questions" />
@@ -228,6 +235,7 @@ function App() {
   const [currentAsset, setCurrentAsset] = useState();
   const [assetData, setAssetData] = useState();
   const [selectedImage, setSelectedImage] = useState();
+  const [selectedImageIdx, setSelectedImageIdx] = useState();
 
 function handleAssetChange(asset) {
   // console.log("Asset", asset);
@@ -258,6 +266,7 @@ const onClickImage = useCallback((imageIdx) => {
     lng,
   } = assetData.gridImages[imageIdx];
 
+  setSelectedImageIdx(imageIdx);
   setSelectedImage(assetData.gridImages[imageIdx]);
 })
 
@@ -286,6 +295,7 @@ useEffect(() => {
           currentAsset={currentAsset}
           isLoading={isLoading}
           onClickImage={onClickImage}
+          selectedImageIdx={selectedImageIdx}
         />
       </div>
       <div className="flex-column side-panel">

@@ -179,3 +179,7 @@ border-color: #03a9f4 !important;
   align-items:flex-end;
   padding-bottom:10px;
 }
+
+.image-selected {
+  border: 5px solid red;
+}
