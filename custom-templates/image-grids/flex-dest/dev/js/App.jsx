@@ -106,7 +106,7 @@ function GenericImage({ listingImage }) {
 function PhotoGridWithHeader({ 
   assetData, 
   onClickImage, 
-  selectedImage = {}, 
+  selectedListing = {}, 
   selectedImageIdx 
 }) {
   if (!assetData) return null;
@@ -119,19 +119,19 @@ function PhotoGridWithHeader({
 
           <div className='listing-header'>
             <div className="listing-info">
-              Listing ID: {selectedImage.listingId}
+              Listing ID: {selectedListing.listingId}
             </div>
             <div className="listing-info">
-              Photo ID: {selectedImage.photoId}
+              Photo ID: {selectedListing.photoId}
             </div>
             <div className="listing-info">
-              Property type: {selectedImage.propertyType}
+              Property type: {selectedListing.propertyType}
             </div>
             <div className="listing-info">
-              Room type: {selectedImage.roomType}
+              Room type: {selectedListing.roomType}
             </div>
             <div className="listing-info">
-              <a href={`https://www.airbnb.com/rooms/${selectedImage.listingId}`} id="selected-pdp-link" target="_blank">Link to PDP</a>
+              <a href={`https://www.airbnb.com/rooms/${selectedListing.listingId}`} id="selected-pdp-link" target="_blank">Link to PDP</a>
             </div>
           </div>
         </div>
@@ -207,7 +207,7 @@ function Content({
   currentAsset, 
   isLoading, 
   onClickImage, 
-  selectedImage, 
+  selectedListing, 
   selectedImageIdx,
   setIsLoading,
   setSelectedListing,
@@ -247,7 +247,7 @@ function Content({
           <PhotoGridWithHeader 
             assetData={assetData} 
             onClickImage={onClickImage} 
-            selectedImage={selectedImage}
+            selectedListing={selectedListing}
             selectedImageIdx={selectedImageIdx}
           />
           )
@@ -341,7 +341,7 @@ useEffect(() => {
           currentAsset={currentAsset}
           isLoading={isLoading}
           onClickImage={onClickImage}
-          selectedImage={selectedImage}
+          selectedListing={selectedListing}
           selectedImageIdx={selectedImageIdx}
           setSelectedListing={setSelectedListing}
           setSelectedImageIdx={setSelectedImageIdx}
@@ -351,20 +351,20 @@ useEffect(() => {
       <div className="flex-column side-panel">
         <h5>Listing Info</h5>
         {
-          selectedImage ? (
+          selectedListing ? (
             <PanelInfo 
-              title={selectedImage.listingTitle}
-              description={selectedImage.listingDescription}
-              location={selectedImage.listingLocation}
-              where={selectedImage.listingNeighborhood} 
-              lat={selectedImage.lat}
-              lng={selectedImage.lng}
+              title={selectedListing.listingTitle}
+              description={selectedListing.listingDescription}
+              location={selectedListing.listingLocation}
+              where={selectedListing.listingNeighborhood} 
+              lat={selectedListing.lat}
+              lng={selectedListing.lng}
             />
           ) : null
         }
         <h5>Other pictures</h5>
         {
-          selectedImage ? 
+          selectedListing ? 
             selectedListing.listingImages.map((image) => (
               <GenericImage listingImage={image} />
             )) : null
