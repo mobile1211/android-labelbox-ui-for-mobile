@@ -1,25 +1,5 @@
 const { useEffect, useState, useCallback } = React;
 
-const DEFAULT_CONFIG = {
-  classifications: [
-    {
-      name: "image_grid_update",
-      instructions: "Done updating image grid?",
-      type: "radio",
-      options: [
-        {
-          "label": "Yes",
-          "value": "yes"
-        },
-        {
-          "label": "No",
-          "value": "no"
-        }
-      ]
-    }
-  ]
-};
-
 // Components
 // Cannot split into separate files / modules unless we add webpack config
 // https://stackoverflow.com/questions/36698354/require-is-not-defined
@@ -79,31 +59,29 @@ function Header({ currentAsset, hasPrev, hasNext, projectId }) {
   );
 }
 
-function Image({ assetData, imgObj, idx }) {
+function Image({ assetData, imgObj, idx, isSelected, onClickImage }) {
   const photoLink = imgObj.photoLink?.includes("?")
     ? `${imgObj.photoLink}`
     : `${imgObj.photoLink}?img_w=720`;
   const listingId = imgObj.listingId;
 
   const displayInfo = useCallback((idx) => {
-    console.log("Image state:", assetData.gridImages[idx]);
-    const {
-      listingId,
-      photoId,
-      propertyType,
-      roomType,
-      listingImages,
-      listingTitle: title,
-      listingDescription: description,
-      listingLocation: location,
-      listingNeighborhood: neighborhood,
-      lat,
-      lng,
-    } = assetData.gridImages[idx];
+    // console.log("Image state:", assetData.gridImages[idx]);
+    // const {
+    //   listingId,
+    //   photoId,
+    //   propertyType,
+    //   roomType,
+    //   listingImages,
+    //   listingTitle: title,
+    //   listingDescription: description,
+    //   listingLocation: location,
+    //   listingNeighborhood: neighborhood,
+    //   lat,
+    //   lng,
+    // } = assetData.gridImages[idx];
   
-    clearSelectedMetadata();
-  
-    document.querySelector(`#image-container-${listingId}`).classList.add('selected');
+    // clearSelectedMetadata();
     document.querySelector("#selected-id").innerHTML = listingId;
     document.querySelector("#selected-photo").innerHTML = photoId;
     document.querySelector("#selected-pdp-link").href = pdpUrl(listingId);
@@ -117,7 +95,7 @@ function Image({ assetData, imgObj, idx }) {
   return (
     <div
       className="image-container"
-      onClick={() => displayInfo(idx)}
+      onClick={() => onClickImage(idx)}
       tabIndex={idx}
       id={`image-container-${listingId}`}
     >
@@ -126,7 +104,7 @@ function Image({ assetData, imgObj, idx }) {
   );
 }
 
-function PhotoGridWithHeader({ assetData }) {
+function PhotoGridWithHeader({ assetData, onClickImage }) {
   if (!assetData) return null;
 
   return (
@@ -157,14 +135,21 @@ function PhotoGridWithHeader({ assetData }) {
 
       <div className="photo-grid">
         {assetData.gridImages.map((imgObj, idx) => 
-          <Image assetData={assetData} imgObj={imgObj} idx={idx} key={imgObj.photoId} />
+          <Image 
+            assetData={assetData} 
+            imgObj={imgObj} 
+            idx={idx} 
+            key={imgObj.photoId}
+            isSelected={selectedPhotoIdx === idx}
+            onClickImage={(photoIdx) => { onClickImage(photoIdx) }}
+          />
         )}
       </div>
     </>
   );
 }
 
-function Content({ assetData, currentAsset, isLoading }) {
+function Content({ assetData, currentAsset, isLoading, onClickImage }) {
   const handleSkip = useCallback(() => {
     safelyClearSelectedMetadata();
     showLoadingAssets();
@@ -193,7 +178,7 @@ function Content({ assetData, currentAsset, isLoading }) {
   return (
     <div className="content">
       <div id="asset">
-        {isLoading ? 'loading...' : <PhotoGridWithHeader assetData={assetData} />}
+        {isLoading ? 'loading...' : <PhotoGridWithHeader assetData={assetData} onClickImage={onClickImage} />}
       </div>
       <div className="flex-column questions">
         <div id="questions" />
@@ -236,27 +221,13 @@ function get(url){
   return Httpreq.responseText;
 }
 
-let classifications = [];
-
-function drawQuestions(answers) {
-  document.querySelector("#questions").innerHTML = classifications
-    .map(classification => createQuestion(classification, answers))
-    .join("");
-}
-
-Labelbox.getTemplateCustomization().subscribe(customization => {
-  classifications =
-    (customization && customization.classifications) || defaultConfiguration.classifications;
-  drawQuestions(classifications);
-});
-
 // Root app
 function App() {
   const projectId = new URL(window.location.href).searchParams.get("project");
   const [isLoading, setIsLoading] = useState(false);
   const [currentAsset, setCurrentAsset] = useState();
   const [assetData, setAssetData] = useState();
-
+  const [selectedImage, setSelectedImage] = useState();
 
 function handleAssetChange(asset) {
   // console.log("Asset", asset);
@@ -282,6 +253,24 @@ function handleAssetChange(asset) {
   }
 }
 
+const onClickImage = useCallback((imageIdx) => {
+  const {
+    listingId,
+    photoId,
+    propertyType,
+    roomType,
+    listingImages,
+    listingTitle: title,
+    listingDescription: description,
+    listingLocation: location,
+    listingNeighborhood: neighborhood,
+    lat,
+    lng,
+  } = assetData.gridImages[imageIdx];
+
+  setSelectedImage(assetData.gridImages[imageIdx]);
+})
+
 //  fetch asset on componentDidMount
 useEffect(() => {
   setIsLoading(true);
@@ -292,20 +281,29 @@ useEffect(() => {
 
   return (
     <>
-      <Header 
-        currentAsset={currentAsset}
-        hasNext={
-          Boolean((currentAsset && currentAsset.next) || 
-          (currentAsset && currentAsset.label))
-        }
-        hasPrev={currentAsset?.previous} 
-        projectId={projectId}
-      />
-      <Content 
-        assetData={assetData}
-        currentAsset={currentAsset}
-        isLoading={isLoading}
-      />
+      <div class="flex-grow flex-column">
+        <Header 
+          currentAsset={currentAsset}
+          hasNext={
+            Boolean((currentAsset && currentAsset.next) || 
+            (currentAsset && currentAsset.label))
+          }
+          hasPrev={currentAsset?.previous} 
+          projectId={projectId}
+        />
+        <Content 
+          assetData={assetData}
+          currentAsset={currentAsset}
+          isLoading={isLoading}
+          onClickImage={onClickImage}
+        />
+      </div>
+      <div class="flex-column side-panel">
+        <h5>Listing Info</h5>
+        <div id="panel-info"></div>
+        <h5>Other pictures</h5>
+        <div id="panel-pictures"></div>
+      </div>
     </>
   );
 }
