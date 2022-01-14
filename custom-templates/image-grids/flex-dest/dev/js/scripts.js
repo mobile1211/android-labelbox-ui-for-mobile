@@ -37,10 +37,6 @@ function getLabel() {
   return Object.assign({}, ...answers);
 }
 
-function pdpUrl(listingId) {
-  return `https://www.airbnb.com/rooms/${listingId}`;
-}
-
 function createAdditionalImage(listingImage) {
   return `
     <div class="additional-image">
@@ -89,27 +85,4 @@ function createPanelInfo(title, description, location, where, lat, lng) {
     </div>
   `;
 }
-
-function clearSelectedMetadata() {
-  document.querySelectorAll(".image-container.selected").forEach((node) => {
-    node.classList.remove('selected');
-  });
-
-  document.querySelector("#selected-id").innerHTML = '';
-  document.querySelector("#selected-photo").innerHTML = '';
-  document.querySelector("#selected-pdp-link").href = '';
-  document.querySelector("#selected-property-type").innerHTML = '';
-  document.querySelector("#selected-room-type").innerHTML = '';
-  document.querySelector("#panel-info").innerHTML = '';
-  document.querySelector("#panel-pictures").innerHTML = '';
-}
-
-function safelyClearSelectedMetadata() {
-  try {
-    clearSelectedMetadata()
-  } catch(e) {
-    console.warn('could not clear data', e);
-  }
-}
-
 

@@ -183,3 +183,15 @@ border-color: #03a9f4 !important;
 .image-selected {
   border: 5px solid red;
 }
+
+.skip-button {
+  background-color: white; 
+  color: black; 
+  margin-right: 10px; 
+  width: 100%; 
+}
+
+.submit-button {
+  background-color: #03a9f4;
+  width: 100%; 
+}

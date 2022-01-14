@@ -3,23 +3,35 @@ const { useEffect, useState, useCallback } = React;
 // Components
 // Cannot split into separate files / modules unless we add webpack config
 // https://stackoverflow.com/questions/36698354/require-is-not-defined
-function Header({ currentAsset, hasPrev, hasNext, projectId }) {
+function Header({ 
+  currentAsset, 
+  hasPrev, 
+  hasNext, 
+  projectId, 
+  setIsLoading, 
+  setSelectedImage,
+  setSelectedImageIdx,
+}) {
   const handleGoHome = useCallback(() => {
     window.location.href =
     "https://app.labelbox.com/projects/" + projectId;
   }, []);
 
   const handleGoBack = useCallback(() => {
-    safelyClearSelectedMetadata();
-    showLoadingAssets();
+    setSelectedImage();
+    setSelectedImageIdx();
+    setIsLoading(true);
+    
     if (currentAsset.previous) {
-        Labelbox.setLabelAsCurrentAsset(currentAsset.previous);
+      Labelbox.setLabelAsCurrentAsset(currentAsset.previous);
     }
   })
 
   const handleGoNext = useCallback(() => {
-    safelyClearSelectedMetadata();
-    showLoadingAssets();
+    setSelectedImage();
+    setSelectedImageIdx();
+    setIsLoading(true);
+
     if (currentAsset.next) {
       Labelbox.setLabelAsCurrentAsset(currentAsset.next);
     } else {
@@ -138,25 +150,30 @@ function Content({
   isLoading, 
   onClickImage, 
   selectedImage, 
-  selectedImageIdx 
+  selectedImageIdx,
+  setIsLoading,
+  setSelectedImage,
+  setSelectedImageIdx,
 }) {
   const handleSkip = useCallback(() => {
-    safelyClearSelectedMetadata();
-    showLoadingAssets();
+    setSelectedImage();
+    setSelectedImageIdx();
+    setIsLoading(true);
     Labelbox.skip().then(() => {
       Labelbox.fetchNextAssetToLabel();
     });
   }, []);
 
   const handleSubmit = useCallback(() => {
-      safelyClearSelectedMetadata();
-  
+      setSelectedImage();
+      setSelectedImageIdx();
+
       const label = JSON.stringify(getLabel());
       const jumpToNext = Boolean(!currentAsset.label);
       console.log("jumpToNext:", jumpToNext)
       // Progress if this asset is new
       if (jumpToNext) {
-          showLoadingAssets();
+        setIsLoading(true);
       }
       Labelbox.setLabelForAsset(label, 'ANY').then(() => {
           if (jumpToNext) {
@@ -185,22 +202,13 @@ function Content({
           style={{ display: 'flex' }}
         >
           <a
-          className="waves-effect waves-light btn-large"
-          style={{ 
-            backgroundColor: 'white', 
-            color: 'black', width: '100%', 
-            marginRight: '10px' 
-          }}
+          className="waves-effect waves-light btn-large skip-button"
           onClick={handleSkip}
           >
             Skip
           </a>
           <a
-          className="waves-effect waves-light btn-large"
-          style={{ 
-            backgroundColor: '#03a9f4', 
-            width: '100%' 
-          }}
+          className="waves-effect waves-light btn-large submit-button"
           onClick={handleSubmit}
           >
             Submit
@@ -280,6 +288,9 @@ useEffect(() => {
           }
           hasPrev={currentAsset?.previous} 
           projectId={projectId}
+          setIsLoading={setIsLoading}
+          setSelectedImage={setSelectedImage}
+          setSelectedImageIdx={setSelectedImageIdx}
         />
         <Content 
           assetData={assetData}
@@ -288,6 +299,9 @@ useEffect(() => {
           onClickImage={onClickImage}
           selectedImage={selectedImage}
           selectedImageIdx={selectedImageIdx}
+          setSelectedImage={setSelectedImage}
+          setSelectedImageIdx={setSelectedImageIdx}
+          setIsLoading={setIsLoading}
         />
       </div>
       <div className="flex-column side-panel">
