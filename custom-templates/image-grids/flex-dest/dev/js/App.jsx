@@ -21,7 +21,7 @@ function Header({
     setSelectedImage();
     setSelectedImageIdx();
     setIsLoading(true);
-    
+
     if (currentAsset.previous) {
       Labelbox.setLabelAsCurrentAsset(currentAsset.previous);
     }
@@ -79,7 +79,6 @@ function Image({ imgObj, idx, isSelected, onClickImage }) {
 
   const displayInfo = useCallback((idx) => {
     document.querySelector("div.flex-column.side-panel").scrollTo(0,0);
-    document.querySelector("#panel-info").innerHTML = createPanelInfo(title, description, location, neighborhood, lat, lng);
     document.querySelector("#panel-pictures").innerHTML = listingImages.map(createAdditionalImage).join("\n");
   }, [])
 
@@ -143,6 +142,56 @@ function PhotoGridWithHeader({
     </>
   );
 }
+
+function PanelInfo({
+  title, 
+  description, 
+  location, 
+  where, 
+  lat, 
+  lng,
+}) {
+  // https://www.google.com/maps/search/?api=1&query={lat}%2C{lng}
+  // src="https://maps.google.com/maps?q=${lat},${lng}&hl=es&z=14&amp;output=embed"
+  // href="https://maps.google.com/maps?q=${lat},${lng};z=14&amp;output=embed"
+  return (
+    <>
+    <div className='listing-info-container'>
+      <div class="listing-info">
+        <b>Title</b>: {title}
+      </div>
+    </div>
+
+    <div className='listing-info-container'>
+      <div class="listing-info">
+        <b>Description</b>: {description}
+      </div>
+    </div>
+
+    <div className='listing-info-container'>
+      <div class="listing-info">
+        <b>Location</b>: {location}
+      </div>
+    </div>
+
+    <div className='listing-info-container'>
+      <div class="listing-info">
+        <b>Where You'll Be</b>: {where}
+      </div>
+    </div>
+
+    <div className='listing-info-container'>
+      <div class="listing-info">
+        <iframe width="450" height="450" frameborder="0" scrolling="yes" marginHeight="0" marginWidth="0"
+          src={`https://maps.google.com/maps?q=${lat},${lng}&z=14&amp;output=embed`}
+        >
+        </iframe>
+      </div>
+    </div>
+    </>
+  );
+}
+
 
 function Content({ 
   assetData, 
@@ -251,20 +300,6 @@ function handleAssetChange(asset) {
 }
 
 const onClickImage = useCallback((imageIdx) => {
-  const {
-    listingId,
-    photoId,
-    propertyType,
-    roomType,
-    listingImages,
-    listingTitle: title,
-    listingDescription: description,
-    listingLocation: location,
-    listingNeighborhood: neighborhood,
-    lat,
-    lng,
-  } = assetData.gridImages[imageIdx];
-
   setSelectedImageIdx(imageIdx);
   setSelectedImage(assetData.gridImages[imageIdx]);
 })
@@ -306,7 +341,18 @@ useEffect(() => {
       </div>
       <div className="flex-column side-panel">
         <h5>Listing Info</h5>
-        <div id="panel-info"></div>
+        {
+          selectedImage ? (
+            <PanelInfo 
+              title={selectedImage.listingTitle}
+              description={selectedImage.listingDescription}
+              location={selectedImage.listingLocation}
+              where={selectedImage.listingNeighborhood} 
+              lat={selectedImage.lat}
+              lng={selectedImage.lng}
+            />
+          ) : null
+        }
         <h5>Other pictures</h5>
         <div id="panel-pictures"></div>
       </div>
