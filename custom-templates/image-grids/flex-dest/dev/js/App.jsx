@@ -15,7 +15,7 @@ function Header({
   const handleGoHome = useCallback(() => {
     window.location.href =
     "https://app.labelbox.com/projects/" + projectId;
-  }, []);
+  }, [projectId]);
 
   const handleGoBack = useCallback(() => {
     setSelectedListing();
@@ -25,7 +25,7 @@ function Header({
     if (currentAsset.previous) {
       Labelbox.setLabelAsCurrentAsset(currentAsset.previous);
     }
-  })
+  }, [currentAsset])
 
   const handleGoNext = useCallback(() => {
     setSelectedListing();
@@ -37,7 +37,7 @@ function Header({
     } else {
       Labelbox.fetchNextAssetToLabel();
     }
-  }, [])
+  }, [currentAsset])
 
   return (
     <div className="header-container">
@@ -76,11 +76,6 @@ function DefaultImage({ imgObj, idx, isSelected, onClickImage }) {
     ? `${imgObj.photoLink}`
     : `${imgObj.photoLink}?img_w=720`;
   const listingId = imgObj.listingId;
-
-  const displayInfo = useCallback((idx) => {
-    document.querySelector("div.flex-column.side-panel").scrollTo(0,0);
-    document.querySelector("#panel-pictures").innerHTML = listingImages.map(createAdditionalImage).join("\n");
-  }, [])
 
   return (
     <div
@@ -144,7 +139,7 @@ function PhotoGridWithHeader({
             idx={idx} 
             key={imgObj.photoId}
             isSelected={selectedImageIdx === idx}
-            onClickImage={(photoIdx) => { onClickImage(photoIdx) }}
+            onClickImage={(photoIdx) => onClickImage(photoIdx)}
           />
         )}
       </div>
@@ -160,6 +155,10 @@ function PanelInfo({
   lat, 
   lng,
 }) {
+  useEffect(() => {
+    document.querySelector("div.flex-column.side-panel").scrollTo(0,0);
+  }, [lat, lng])
+  
   // https://www.google.com/maps/search/?api=1&query={lat}%2C{lng}
   // src="https://maps.google.com/maps?q=${lat},${lng}&hl=es&z=14&amp;output=embed"
   // href="https://maps.google.com/maps?q=${lat},${lng};z=14&amp;output=embed"
