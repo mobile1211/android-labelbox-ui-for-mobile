@@ -157,32 +157,32 @@ function PanelInfo({
   return (
     <>
     <div className='listing-info-container'>
-      <div class="listing-info">
+      <div className="listing-info">
         <b>Title</b>: {title}
       </div>
     </div>
 
     <div className='listing-info-container'>
-      <div class="listing-info">
+      <div className="listing-info">
         <b>Description</b>: {description}
       </div>
     </div>
 
     <div className='listing-info-container'>
-      <div class="listing-info">
+      <div className="listing-info">
         <b>Location</b>: {location}
       </div>
     </div>
 
     <div className='listing-info-container'>
-      <div class="listing-info">
+      <div className="listing-info">
         <b>Where You'll Be</b>: {where}
       </div>
     </div>
 
     <div className='listing-info-container'>
-      <div class="listing-info">
-        <iframe width="450" height="450" frameborder="0" scrolling="yes" marginHeight="0" marginWidth="0"
+      <div className="listing-info">
+        <iframe width="450" height="450" frameBorder="0" scrolling="yes" marginHeight="0" marginWidth="0"
           src={`https://maps.google.com/maps?q=${lat},${lng}&z=14&amp;output=embed`}
         >
         </iframe>
