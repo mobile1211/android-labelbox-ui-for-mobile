@@ -97,10 +97,10 @@ function DefaultImage({ imgObj, idx, isSelected, onClickImage }) {
 function GenericImage({ listingImage }) {
   return (
     <div className="additional-image">
-    <div>Photo ID: {listingImage.photoId}</div>
-    <img src={listingImage.photoLink} />
-  </div>
-  )
+      <div>Photo ID: {listingImage.photoId}</div>
+      <img src={listingImage.photoLink} width="100%" />
+    </div>
+  );
 }
 
 function PhotoGridWithHeader({ 
@@ -366,7 +366,7 @@ useEffect(() => {
         {
           selectedListing ? 
             selectedListing.listingImages.map((image) => (
-              <GenericImage listingImage={image} />
+              <GenericImage key={image.photoId} listingImage={image} />
             )) : null
         }
       </div>
