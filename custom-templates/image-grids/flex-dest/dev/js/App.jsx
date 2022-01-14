@@ -236,16 +236,6 @@ function handleAssetChange(asset) {
     const assetDataStr = get(asset.data).replace(/NaN/g, "null");
     const parsedAssetData = JSON.parse(assetDataStr);
     if ((currentAsset && currentAsset.id) !== asset.id) {
-      if (asset.label) {
-        try {
-          const label = JSON.parse(asset.label);
-          drawQuestions(label);
-        } catch (e) {
-          console.log("failed to read label", e);
-        }
-      } else {
-        drawQuestions();
-      }
       setCurrentAsset(asset);
       setAssetData(parsedAssetData);
     }
@@ -281,7 +271,7 @@ useEffect(() => {
 
   return (
     <>
-      <div class="flex-grow flex-column">
+      <div className="flex-grow flex-column">
         <Header 
           currentAsset={currentAsset}
           hasNext={
@@ -298,7 +288,7 @@ useEffect(() => {
           onClickImage={onClickImage}
         />
       </div>
-      <div class="flex-column side-panel">
+      <div className="flex-column side-panel">
         <h5>Listing Info</h5>
         <div id="panel-info"></div>
         <h5>Other pictures</h5>
