@@ -7912,12 +7912,15 @@
 	  return /*#__PURE__*/React.createElement("div", {
 	    className: "additional-image"
 	  }, /*#__PURE__*/React.createElement("div", null, "Photo ID: ", listingImage.photoId), /*#__PURE__*/React.createElement("img", {
+	    onClick: function onClick() {
+	      return onClickImage(idx);
+	    },
 	    src: listingImage.photoLink,
 	    width: "100%"
 	  }));
 	}
 
-	function PanelInfo(_ref) {
+	function RightPanelInfo(_ref) {
 	  var title = _ref.title,
 	      description = _ref.description,
 	      location = _ref.location,
@@ -8045,7 +8048,7 @@
 	    setIsLoading: setIsLoading
 	  })), /*#__PURE__*/React.createElement("div", {
 	    className: "flex-column side-panel"
-	  }, /*#__PURE__*/React.createElement("h5", null, "Listing Info"), selectedListing ? /*#__PURE__*/React.createElement(PanelInfo, {
+	  }, /*#__PURE__*/React.createElement("h5", null, "Listing Info"), selectedListing ? /*#__PURE__*/React.createElement(RightPanelInfo, {
 	    title: selectedListing.listingTitle,
 	    description: selectedListing.listingDescription,
 	    location: selectedListing.listingLocation,
@@ -8055,7 +8058,8 @@
 	  }) : null, /*#__PURE__*/React.createElement("h5", null, "Other pictures"), selectedListing ? selectedListing.listingImages.map(function (image) {
 	    return /*#__PURE__*/React.createElement(GenericImage, {
 	      key: image.photoId,
-	      listingImage: image
+	      listingImage: image,
+	      onClickImage: function onClickImage() {}
 	    });
 	  }) : null));
 	}
