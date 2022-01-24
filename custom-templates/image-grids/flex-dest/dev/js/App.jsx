@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Header from './Header';
 import Content from './Content';
 import GenericImage from './GenericImage';
-import PanelInfo from './PanelInfo';
+import RightPanelInfo from './RightPanelInfo';
 import { get } from './utils';
 
 export default function App() {
@@ -71,7 +71,7 @@ useEffect(() => {
         <h5>Listing Info</h5>
         {
           selectedListing ? (
-            <PanelInfo 
+            <RightPanelInfo 
               title={selectedListing.listingTitle}
               description={selectedListing.listingDescription}
               location={selectedListing.listingLocation}
@@ -85,7 +85,11 @@ useEffect(() => {
         {
           selectedListing ? 
             selectedListing.listingImages.map((image) => (
-              <GenericImage key={image.photoId} listingImage={image} />
+              <GenericImage 
+                key={image.photoId} 
+                listingImage={image} 
+                onClickImage={() => {}}
+              />
             )) : null
         }
       </div>
