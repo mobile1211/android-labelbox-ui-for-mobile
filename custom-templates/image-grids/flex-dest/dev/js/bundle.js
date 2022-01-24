@@ -7959,16 +7959,14 @@
 	    marginWidth: "0",
 	    src: "https://maps.google.com/maps?q=".concat(lat, ",").concat(lng, "&z=14&output=embed")
 	  }))));
-	} // Utils
-
+	}
 
 	function get(url) {
 	  var Httpreq = new XMLHttpRequest();
 	  Httpreq.open("GET", url, false);
 	  Httpreq.send(null);
 	  return Httpreq.responseText;
-	} // Root app
-
+	}
 
 	function App() {
 	  var projectId = new URL(window.location.href).searchParams.get("project");
