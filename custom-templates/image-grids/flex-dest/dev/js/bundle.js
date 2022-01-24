@@ -7784,13 +7784,13 @@
 	  }, "keyboard_arrow_right"));
 	}
 
-	function DefaultImage(_ref2) {
+	function DefaultImage(_ref) {
 	  var _imgObj$photoLink;
 
-	  var imgObj = _ref2.imgObj,
-	      idx = _ref2.idx,
-	      isSelected = _ref2.isSelected,
-	      onClickImage = _ref2.onClickImage;
+	  var imgObj = _ref.imgObj,
+	      idx = _ref.idx,
+	      isSelected = _ref.isSelected,
+	      onClickImage = _ref.onClickImage;
 	  var photoLink = (_imgObj$photoLink = imgObj.photoLink) !== null && _imgObj$photoLink !== void 0 && _imgObj$photoLink.includes("?") ? "".concat(imgObj.photoLink) : "".concat(imgObj.photoLink, "?img_w=720");
 	  var listingId = imgObj.listingId;
 	  return /*#__PURE__*/React.createElement("div", {
@@ -7806,22 +7806,12 @@
 	  }));
 	}
 
-	function GenericImage(_ref3) {
-	  var listingImage = _ref3.listingImage;
-	  return /*#__PURE__*/React.createElement("div", {
-	    className: "additional-image"
-	  }, /*#__PURE__*/React.createElement("div", null, "Photo ID: ", listingImage.photoId), /*#__PURE__*/React.createElement("img", {
-	    src: listingImage.photoLink,
-	    width: "100%"
-	  }));
-	}
-
-	function PhotoGridWithHeader(_ref4) {
-	  var assetData = _ref4.assetData,
-	      _onClickImage = _ref4.onClickImage,
-	      _ref4$selectedListing = _ref4.selectedListing,
-	      selectedListing = _ref4$selectedListing === void 0 ? {} : _ref4$selectedListing,
-	      selectedImageIdx = _ref4.selectedImageIdx;
+	function PhotoGridWithHeader(_ref) {
+	  var assetData = _ref.assetData,
+	      _onClickImage = _ref.onClickImage,
+	      _ref$selectedListing = _ref.selectedListing,
+	      selectedListing = _ref$selectedListing === void 0 ? {} : _ref$selectedListing,
+	      selectedImageIdx = _ref.selectedImageIdx;
 	  if (!assetData) return null;
 	  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
 	    className: "header sticky"
@@ -7858,60 +7848,15 @@
 	  })));
 	}
 
-	function PanelInfo(_ref5) {
-	  var title = _ref5.title,
-	      description = _ref5.description,
-	      location = _ref5.location,
-	      where = _ref5.where,
-	      lat = _ref5.lat,
-	      lng = _ref5.lng;
-	  react.exports.useEffect(function () {
-	    document.querySelector("div.flex-column.side-panel").scrollTo(0, 0);
-	  }, [lat, lng]); // https://www.google.com/maps/search/?api=1&query={lat}%2C{lng}
-	  // src="https://maps.google.com/maps?q=${lat},${lng}&hl=es&z=14&amp;output=embed"
-	  // href="https://maps.google.com/maps?q=${lat},${lng};z=14&amp;output=embed"
-
-	  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-	    className: "listing-info-container"
-	  }, /*#__PURE__*/React.createElement("div", {
-	    className: "listing-info"
-	  }, /*#__PURE__*/React.createElement("b", null, "Title"), ": ", title)), /*#__PURE__*/React.createElement("div", {
-	    className: "listing-info-container"
-	  }, /*#__PURE__*/React.createElement("div", {
-	    className: "listing-info"
-	  }, /*#__PURE__*/React.createElement("b", null, "Description"), ": ", description)), /*#__PURE__*/React.createElement("div", {
-	    className: "listing-info-container"
-	  }, /*#__PURE__*/React.createElement("div", {
-	    className: "listing-info"
-	  }, /*#__PURE__*/React.createElement("b", null, "Location"), ": ", location)), /*#__PURE__*/React.createElement("div", {
-	    className: "listing-info-container"
-	  }, /*#__PURE__*/React.createElement("div", {
-	    className: "listing-info"
-	  }, /*#__PURE__*/React.createElement("b", null, "Where You'll Be"), ": ", where)), /*#__PURE__*/React.createElement("div", {
-	    className: "listing-info-container"
-	  }, /*#__PURE__*/React.createElement("div", {
-	    className: "listing-info"
-	  }, /*#__PURE__*/React.createElement("iframe", {
-	    width: "450",
-	    height: "450",
-	    frameBorder: "0",
-	    scrolling: "yes",
-	    marginHeight: "0",
-	    marginWidth: "0",
-	    src: "https://maps.google.com/maps?q=".concat(lat, ",").concat(lng, "&z=14&output=embed")
-	  }))));
-	}
-
-	function Content(_ref6) {
-	  var assetData = _ref6.assetData;
-	      _ref6.currentAsset;
-	      var isLoading = _ref6.isLoading,
-	      onClickImage = _ref6.onClickImage,
-	      selectedListing = _ref6.selectedListing,
-	      selectedImageIdx = _ref6.selectedImageIdx,
-	      setIsLoading = _ref6.setIsLoading,
-	      setSelectedListing = _ref6.setSelectedListing,
-	      setSelectedImageIdx = _ref6.setSelectedImageIdx;
+	function Content(_ref) {
+	  var assetData = _ref.assetData,
+	      isLoading = _ref.isLoading,
+	      onClickImage = _ref.onClickImage,
+	      selectedListing = _ref.selectedListing,
+	      selectedImageIdx = _ref.selectedImageIdx,
+	      setIsLoading = _ref.setIsLoading,
+	      setSelectedListing = _ref.setSelectedListing,
+	      setSelectedImageIdx = _ref.setSelectedImageIdx;
 	  var handleSkip = react.exports.useCallback(function () {
 	    setSelectedListing();
 	    setSelectedImageIdx();
@@ -7960,6 +7905,60 @@
 	    className: "waves-effect waves-light btn-large submit-button",
 	    onClick: handleSubmit
 	  }, "Submit"))));
+	}
+
+	function GenericImage(_ref) {
+	  var listingImage = _ref.listingImage;
+	  return /*#__PURE__*/React.createElement("div", {
+	    className: "additional-image"
+	  }, /*#__PURE__*/React.createElement("div", null, "Photo ID: ", listingImage.photoId), /*#__PURE__*/React.createElement("img", {
+	    src: listingImage.photoLink,
+	    width: "100%"
+	  }));
+	}
+
+	function PanelInfo(_ref) {
+	  var title = _ref.title,
+	      description = _ref.description,
+	      location = _ref.location,
+	      where = _ref.where,
+	      lat = _ref.lat,
+	      lng = _ref.lng;
+	  react.exports.useEffect(function () {
+	    document.querySelector("div.flex-column.side-panel").scrollTo(0, 0);
+	  }, [lat, lng]); // https://www.google.com/maps/search/?api=1&query={lat}%2C{lng}
+	  // src="https://maps.google.com/maps?q=${lat},${lng}&hl=es&z=14&amp;output=embed"
+	  // href="https://maps.google.com/maps?q=${lat},${lng};z=14&amp;output=embed"
+
+	  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+	    className: "listing-info-container"
+	  }, /*#__PURE__*/React.createElement("div", {
+	    className: "listing-info"
+	  }, /*#__PURE__*/React.createElement("b", null, "Title"), ": ", title)), /*#__PURE__*/React.createElement("div", {
+	    className: "listing-info-container"
+	  }, /*#__PURE__*/React.createElement("div", {
+	    className: "listing-info"
+	  }, /*#__PURE__*/React.createElement("b", null, "Description"), ": ", description)), /*#__PURE__*/React.createElement("div", {
+	    className: "listing-info-container"
+	  }, /*#__PURE__*/React.createElement("div", {
+	    className: "listing-info"
+	  }, /*#__PURE__*/React.createElement("b", null, "Location"), ": ", location)), /*#__PURE__*/React.createElement("div", {
+	    className: "listing-info-container"
+	  }, /*#__PURE__*/React.createElement("div", {
+	    className: "listing-info"
+	  }, /*#__PURE__*/React.createElement("b", null, "Where You'll Be"), ": ", where)), /*#__PURE__*/React.createElement("div", {
+	    className: "listing-info-container"
+	  }, /*#__PURE__*/React.createElement("div", {
+	    className: "listing-info"
+	  }, /*#__PURE__*/React.createElement("iframe", {
+	    width: "450",
+	    height: "450",
+	    frameBorder: "0",
+	    scrolling: "yes",
+	    marginHeight: "0",
+	    marginWidth: "0",
+	    src: "https://maps.google.com/maps?q=".concat(lat, ",").concat(lng, "&z=14&output=embed")
+	  }))));
 	} // Utils
 
 
