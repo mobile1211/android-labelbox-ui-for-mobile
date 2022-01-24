@@ -4,7 +4,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import replace from '@rollup/plugin-replace';
 
 export default {
-  input: "custom-templates/image-grids/flex-dest/dev/js/App.jsx",
+  input: "custom-templates/image-grids/flex-dest/dev/js/index.js",
   output: {
     file: "custom-templates/image-grids/flex-dest/dev/js/bundle.js",
     format: "iife",
@@ -12,7 +12,7 @@ export default {
   },
   plugins: [
     nodeResolve({
-      extensions: [".js"],
+      extensions: [".js", ".jsx"],
     }),
     replace({
       'process.env.NODE_ENV': JSON.stringify( 'development' )
