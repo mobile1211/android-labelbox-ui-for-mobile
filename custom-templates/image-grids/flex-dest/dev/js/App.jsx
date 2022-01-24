@@ -1,8 +1,5 @@
-const { useEffect, useState, useCallback } = React;
+import { useState, useEffect, useCallback } from 'react';
 
-// Components
-// Cannot split into separate files / modules unless we add webpack config
-// https://stackoverflow.com/questions/36698354/require-is-not-defined
 function Header({ 
   currentAsset, 
   hasPrev, 
@@ -281,7 +278,7 @@ function get(url){
 }
 
 // Root app
-function App() {
+export default function App() {
   const projectId = new URL(window.location.href).searchParams.get("project");
   const [isLoading, setIsLoading] = useState(false);
   const [currentAsset, setCurrentAsset] = useState();
@@ -368,5 +365,3 @@ useEffect(() => {
     </>
   );
 }
-
-ReactDOM.render(<App />, document.getElementById('root'));
