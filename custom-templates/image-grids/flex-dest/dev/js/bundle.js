@@ -2386,7 +2386,7 @@
 	  react.exports = react_development;
 	}
 
-	var React$1 = react.exports;
+	var React = react.exports;
 
 	var reactDom = {exports: {}};
 
@@ -8063,7 +8063,7 @@
 	  }) : null));
 	}
 
-	ReactDOM.render( /*#__PURE__*/React$1.createElement(App, null), document.getElementById('root'));
+	ReactDOM.render( /*#__PURE__*/React.createElement(App, null), document.getElementById('root'));
 
 })();
 //# sourceMappingURL=bundle.js.map
