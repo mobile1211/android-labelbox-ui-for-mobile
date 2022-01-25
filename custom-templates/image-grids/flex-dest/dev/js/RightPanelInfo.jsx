@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 
 export default function RightPanelInfo({
   title,
@@ -9,7 +9,7 @@ export default function RightPanelInfo({
   lng,
 }) {
   useEffect(() => {
-    document.querySelector("div.flex-column.right-side-panel").scrollTo(0, 0);
+    document.querySelector('div.flex-column.right-side-panel').scrollTo(0, 0);
   }, [lat, lng]);
 
   // https://www.google.com/maps/search/?api=1&query={lat}%2C{lng}

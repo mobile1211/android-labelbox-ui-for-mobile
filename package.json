@@ -21,8 +21,7 @@
     "rollup": "^2.66.0"
   },
   "scripts": {
-    "prepare": "husky install",
-    "pre-commit": "rollup -c rollup.config.js && git add -A ."
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",

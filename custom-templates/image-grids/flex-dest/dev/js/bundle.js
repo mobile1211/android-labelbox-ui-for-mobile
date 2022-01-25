@@ -7743,7 +7743,7 @@
 	      setSelectedListing = _ref.setSelectedListing,
 	      setSelectedImageIdx = _ref.setSelectedImageIdx;
 	  var handleGoHome = react.exports.useCallback(function () {
-	    window.location.href = "https://app.labelbox.com/projects/" + projectId;
+	    window.location.href = 'https://app.labelbox.com/projects/' + projectId;
 	  }, [projectId]);
 	  var handleGoBack = react.exports.useCallback(function () {
 	    setSelectedListing();
@@ -7772,14 +7772,14 @@
 	    onClick: handleGoHome
 	  }, "home"), /*#__PURE__*/React.createElement("i", {
 	    id: "back",
-	    className: "material-icons back-icon ".concat(hasPrev ? "button-default" : ""),
+	    className: "material-icons back-icon ".concat(hasPrev ? 'button-default' : ''),
 	    onClick: handleGoBack
 	  }, "keyboard_arrow_left"), /*#__PURE__*/React.createElement("div", {
 	    className: "header-title",
 	    id: "externalid"
 	  }, "Label this asset"), /*#__PURE__*/React.createElement("i", {
 	    id: "next",
-	    className: "material-icons next-icon ".concat(hasNext ? "button-default" : ""),
+	    className: "material-icons next-icon ".concat(hasNext ? 'button-default' : ''),
 	    onClick: handleGoNext
 	  }, "keyboard_arrow_right"));
 	}
@@ -7791,7 +7791,7 @@
 	      idx = _ref.idx,
 	      isSelected = _ref.isSelected,
 	      onClickImage = _ref.onClickImage;
-	  var photoLink = (_imgObj$photoLink = imgObj.photoLink) !== null && _imgObj$photoLink !== void 0 && _imgObj$photoLink.includes("?") ? "".concat(imgObj.photoLink) : "".concat(imgObj.photoLink, "?img_w=720");
+	  var photoLink = (_imgObj$photoLink = imgObj.photoLink) !== null && _imgObj$photoLink !== void 0 && _imgObj$photoLink.includes('?') ? "".concat(imgObj.photoLink) : "".concat(imgObj.photoLink, "?img_w=720");
 	  var listingId = imgObj.listingId;
 	  return /*#__PURE__*/React.createElement("div", {
 	    className: "image-container",
@@ -7802,7 +7802,7 @@
 	    id: "image-container-".concat(listingId)
 	  }, /*#__PURE__*/React.createElement("img", {
 	    src: photoLink,
-	    className: "image ".concat(isSelected ? "image-selected" : "")
+	    className: "image ".concat(isSelected ? 'image-selected' : '')
 	  }));
 	}
 
@@ -7873,7 +7873,7 @@
 	      setIsLoading(true);
 	    }
 
-	    Labelbox.setLabelForAsset(label, "ANY").then(function () {
+	    Labelbox.setLabelForAsset(label, 'ANY').then(function () {
 	      if (jumpToNext) {
 	        Labelbox.fetchNextAssetToLabel();
 	      }
@@ -7883,7 +7883,7 @@
 	    className: "content"
 	  }, /*#__PURE__*/React.createElement("div", {
 	    id: "asset"
-	  }, isLoading ? "loading..." : /*#__PURE__*/React.createElement(PhotoGridWithHeader, {
+	  }, isLoading ? 'loading...' : /*#__PURE__*/React.createElement(PhotoGridWithHeader, {
 	    assetData: assetData,
 	    onClickImage: onClickImage,
 	    selectedListing: selectedListing,
@@ -7896,7 +7896,7 @@
 	    className: "flex-grow"
 	  }), /*#__PURE__*/React.createElement("div", {
 	    style: {
-	      display: "flex"
+	      display: 'flex'
 	    }
 	  }, /*#__PURE__*/React.createElement("a", {
 	    className: "waves-effect waves-light btn-large skip-button",
@@ -7928,7 +7928,7 @@
 	      lat = _ref.lat,
 	      lng = _ref.lng;
 	  react.exports.useEffect(function () {
-	    document.querySelector("div.flex-column.right-side-panel").scrollTo(0, 0);
+	    document.querySelector('div.flex-column.right-side-panel').scrollTo(0, 0);
 	  }, [lat, lng]); // https://www.google.com/maps/search/?api=1&query={lat}%2C{lng}
 	  // src="https://maps.google.com/maps?q=${lat},${lng}&hl=es&z=14&amp;output=embed"
 	  // href="https://maps.google.com/maps?q=${lat},${lng};z=14&amp;output=embed"
@@ -7966,13 +7966,13 @@
 
 	function get(url) {
 	  var Httpreq = new XMLHttpRequest();
-	  Httpreq.open("GET", url, false);
+	  Httpreq.open('GET', url, false);
 	  Httpreq.send(null);
 	  return Httpreq.responseText;
 	}
 
 	function App() {
-	  var projectId = new URL(window.location.href).searchParams.get("project");
+	  var projectId = new URL(window.location.href).searchParams.get('project');
 
 	  var _useState = react.exports.useState(false),
 	      _useState2 = _slicedToArray(_useState, 2),
@@ -8000,10 +8000,11 @@
 	      setSelectedImageIdx = _useState10[1];
 
 	  function handleAssetChange(asset) {
-	    // console.log("Asset", asset);
-	    // console.log("S3 asset link", asset.data);
+	    console.log('Asset', asset);
+	    console.log('S3 asset link', asset.data);
+
 	    if (asset) {
-	      var assetDataStr = get(asset.data).replace(/NaN/g, "null");
+	      var assetDataStr = get(asset.data).replace(/NaN/g, 'null');
 	      var parsedAssetData = JSON.parse(assetDataStr);
 
 	      if ((currentAsset && currentAsset.id) !== asset.id) {
@@ -8028,7 +8029,25 @@
 	  });
 	  return /*#__PURE__*/React.createElement(React.Fragment, null, selectedListing ? /*#__PURE__*/React.createElement("div", {
 	    className: "flex-column left-side-panel"
-	  }, /*#__PURE__*/React.createElement("h5", null, "Selected photo id:", " ", selectedListing.listingImages[selectedImageIdx].photoId)) : null, /*#__PURE__*/React.createElement("div", {
+	  }, "Selected photo id:", ' ', selectedListing.listingImages[selectedImageIdx].photoId, /*#__PURE__*/React.createElement("form", null, /*#__PURE__*/React.createElement("label", null, "New photo id:", /*#__PURE__*/React.createElement("input", {
+	    type: "text",
+	    name: "photo-id"
+	  })), /*#__PURE__*/React.createElement("label", null, "New photo quality:", /*#__PURE__*/React.createElement("select", {
+	    onChange: function onChange() {}
+	  }, /*#__PURE__*/React.createElement("option", {
+	    value: "inspiring"
+	  }, "Most Inspiring"), /*#__PURE__*/React.createElement("option", {
+	    value: "high"
+	  }, "High"), /*#__PURE__*/React.createElement("option", {
+	    value: "acceptable"
+	  }, "Acceptable"), /*#__PURE__*/React.createElement("option", {
+	    value: "low"
+	  }, "Low Quality"), /*#__PURE__*/React.createElement("option", {
+	    value: "unacceptable"
+	  }, "Unacceptable"))), /*#__PURE__*/React.createElement("input", {
+	    type: "submit",
+	    value: "Submit"
+	  }))) : null, /*#__PURE__*/React.createElement("div", {
 	    className: "flex-grow flex-column"
 	  }, /*#__PURE__*/React.createElement(Header, {
 	    currentAsset: currentAsset,
@@ -8066,7 +8085,7 @@
 	  }) : null));
 	}
 
-	ReactDOM.render( /*#__PURE__*/React.createElement(App, null), document.getElementById("root"));
+	ReactDOM.render( /*#__PURE__*/React.createElement(App, null), document.getElementById('root'));
 
 })();
 //# sourceMappingURL=bundle.js.map

@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useCallback } from "react";
-import Header from "./Header";
-import Content from "./Content";
-import GenericImage from "./GenericImage";
-import RightPanelInfo from "./RightPanelInfo";
-import { get } from "./utils";
+import React, { useState, useEffect, useCallback } from 'react';
+import Header from './Header';
+import Content from './Content';
+import GenericImage from './GenericImage';
+import RightPanelInfo from './RightPanelInfo';
+import { get } from './utils';
 
 export default function App() {
-  const projectId = new URL(window.location.href).searchParams.get("project");
+  const projectId = new URL(window.location.href).searchParams.get('project');
   const [isLoading, setIsLoading] = useState(false);
   const [currentAsset, setCurrentAsset] = useState();
   const [assetData, setAssetData] = useState();
@@ -14,10 +14,10 @@ export default function App() {
   const [selectedImageIdx, setSelectedImageIdx] = useState();
 
   function handleAssetChange(asset) {
-    // console.log("Asset", asset);
-    // console.log("S3 asset link", asset.data);
+    console.log('Asset', asset);
+    console.log('S3 asset link', asset.data);
     if (asset) {
-      const assetDataStr = get(asset.data).replace(/NaN/g, "null");
+      const assetDataStr = get(asset.data).replace(/NaN/g, 'null');
       const parsedAssetData = JSON.parse(assetDataStr);
       if ((currentAsset && currentAsset.id) !== asset.id) {
         setCurrentAsset(asset);
@@ -44,10 +44,25 @@ export default function App() {
     <>
       {selectedListing ? (
         <div className="flex-column left-side-panel">
-          <h5>
-            Selected photo id:{" "}
-            {selectedListing.listingImages[selectedImageIdx].photoId}
-          </h5>
+          Selected photo id:{' '}
+          {selectedListing.listingImages[selectedImageIdx].photoId}
+          <form>
+            <label>
+              New photo id:
+              <input type="text" name="photo-id"></input>
+            </label>
+            <label>
+              New photo quality:
+              <select onChange={() => {}}>
+                <option value="inspiring">Most Inspiring</option>
+                <option value="high">High</option>
+                <option value="acceptable">Acceptable</option>
+                <option value="low">Low Quality</option>
+                <option value="unacceptable">Unacceptable</option>
+              </select>
+            </label>
+            <input type="submit" value="Submit" />
+          </form>
         </div>
       ) : null}
       <div className="flex-grow flex-column">

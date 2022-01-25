@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 export default function DefaultImage({
   imgObj,
@@ -6,7 +6,7 @@ export default function DefaultImage({
   isSelected,
   onClickImage,
 }) {
-  const photoLink = imgObj.photoLink?.includes("?")
+  const photoLink = imgObj.photoLink?.includes('?')
     ? `${imgObj.photoLink}`
     : `${imgObj.photoLink}?img_w=720`;
   const listingId = imgObj.listingId;
@@ -20,7 +20,7 @@ export default function DefaultImage({
     >
       <img
         src={photoLink}
-        className={`image ${isSelected ? "image-selected" : ""}`}
+        className={`image ${isSelected ? 'image-selected' : ''}`}
       />
     </div>
   );

@@ -1,5 +1,5 @@
-import React from "react";
-import DefaultImage from "./DefaultImage";
+import React from 'react';
+import DefaultImage from './DefaultImage';
 
 export default function PhotoGridWithHeader({
   assetData,

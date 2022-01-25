@@ -1,5 +1,5 @@
-import React, { useCallback } from "react";
-import PhotoGridWithHeader from "./PhotoGridWithHeader";
+import React, { useCallback } from 'react';
+import PhotoGridWithHeader from './PhotoGridWithHeader';
 
 export default function Content({
   assetData,
@@ -27,7 +27,7 @@ export default function Content({
     if (jumpToNext) {
       setIsLoading(true);
     }
-    Labelbox.setLabelForAsset(label, "ANY").then(() => {
+    Labelbox.setLabelForAsset(label, 'ANY').then(() => {
       if (jumpToNext) {
         Labelbox.fetchNextAssetToLabel();
       }
@@ -38,7 +38,7 @@ export default function Content({
     <div className="content">
       <div id="asset">
         {isLoading ? (
-          "loading..."
+          'loading...'
         ) : (
           <PhotoGridWithHeader
             assetData={assetData}
@@ -51,7 +51,7 @@ export default function Content({
       <div className="flex-column questions">
         <div id="questions" />
         <div className="flex-grow" />
-        <div style={{ display: "flex" }}>
+        <div style={{ display: 'flex' }}>
           <a
             className="waves-effect waves-light btn-large skip-button"
             onClick={handleSkip}

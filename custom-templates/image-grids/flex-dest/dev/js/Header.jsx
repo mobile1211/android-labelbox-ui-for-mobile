@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback } from 'react';
 
 export default function Header({
   currentAsset,
@@ -10,7 +10,7 @@ export default function Header({
   setSelectedImageIdx,
 }) {
   const handleGoHome = useCallback(() => {
-    window.location.href = "https://app.labelbox.com/projects/" + projectId;
+    window.location.href = 'https://app.labelbox.com/projects/' + projectId;
   }, [projectId]);
 
   const handleGoBack = useCallback(() => {
@@ -43,7 +43,7 @@ export default function Header({
       <i
         id="back"
         className={`material-icons back-icon ${
-          hasPrev ? "button-default" : ""
+          hasPrev ? 'button-default' : ''
         }`}
         onClick={handleGoBack}
       >
@@ -55,7 +55,7 @@ export default function Header({
       <i
         id="next"
         className={`material-icons next-icon ${
-          hasNext ? "button-default" : ""
+          hasNext ? 'button-default' : ''
         }`}
         onClick={handleGoNext}
       >
