@@ -15,7 +15,6 @@ export default function App() {
 
   function handleAssetChange(asset) {
     console.log('Asset', asset);
-    console.log('S3 asset link', asset?.data);
     if (asset) {
       const assetDataStr = get(asset.data).replace(/NaN/g, 'null');
       const parsedAssetData = JSON.parse(assetDataStr);
@@ -53,15 +52,17 @@ export default function App() {
             </label>
             <label>
               New photo quality:
-              <select onChange={() => {}}>
-                <option value="inspiring">Most Inspiring</option>
-                <option value="high">High</option>
-                <option value="acceptable">Acceptable</option>
-                <option value="low">Low Quality</option>
-                <option value="unacceptable">Unacceptable</option>
+              <select value={assetData.qualityTier} onChange={() => {}}>
+                <option value="Most Inspiring">Most Inspiring</option>
+                <option value="High">High</option>
+                <option value="Acceptable">Acceptable</option>
+                <option value="Low Quality">Low Quality</option>
+                <option value="Unacceptable">Unacceptable</option>
               </select>
             </label>
-            <input type="submit" value="Submit" />
+            <div>
+              <input type="submit" value="Submit" />
+            </div>
           </form>
         </div>
       ) : null}

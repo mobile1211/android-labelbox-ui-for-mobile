@@ -8001,7 +8001,6 @@
 
 	  function handleAssetChange(asset) {
 	    console.log('Asset', asset);
-	    console.log('S3 asset link', asset === null || asset === void 0 ? void 0 : asset.data);
 
 	    if (asset) {
 	      var assetDataStr = get(asset.data).replace(/NaN/g, 'null');
@@ -8033,21 +8032,22 @@
 	    type: "text",
 	    name: "photo-id"
 	  })), /*#__PURE__*/React.createElement("label", null, "New photo quality:", /*#__PURE__*/React.createElement("select", {
+	    value: assetData.qualityTier,
 	    onChange: function onChange() {}
 	  }, /*#__PURE__*/React.createElement("option", {
-	    value: "inspiring"
+	    value: "Most Inspiring"
 	  }, "Most Inspiring"), /*#__PURE__*/React.createElement("option", {
-	    value: "high"
+	    value: "High"
 	  }, "High"), /*#__PURE__*/React.createElement("option", {
-	    value: "acceptable"
+	    value: "Acceptable"
 	  }, "Acceptable"), /*#__PURE__*/React.createElement("option", {
-	    value: "low"
+	    value: "Low Quality"
 	  }, "Low Quality"), /*#__PURE__*/React.createElement("option", {
-	    value: "unacceptable"
-	  }, "Unacceptable"))), /*#__PURE__*/React.createElement("input", {
+	    value: "Unacceptable"
+	  }, "Unacceptable"))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("input", {
 	    type: "submit",
 	    value: "Submit"
-	  }))) : null, /*#__PURE__*/React.createElement("div", {
+	  })))) : null, /*#__PURE__*/React.createElement("div", {
 	    className: "flex-grow flex-column"
 	  }, /*#__PURE__*/React.createElement(Header, {
 	    currentAsset: currentAsset,
