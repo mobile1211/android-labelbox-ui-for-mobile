@@ -36,16 +36,11 @@ body{
   margin-right: 0px !important;
   padding: 20px;
 }
-.generic-image{
+.additional-image{
+  box-sizing: border-box;
   padding-top: 20px;
   padding-bottom: 20px;
   width: 100%;
-}
-.questions{
-  display: flex;
-  padding-bottom: 50px;
-  max-width: 400px;
-  min-width: 200px;
 }
 
 .photo-grid{
@@ -60,25 +55,22 @@ body{
 }
 
 .image-container{
+  cursor: pointer;
   width: 210px;
   height: 210px;
   padding-top: 5px;
   padding-left: 5px;
   overflow: hidden;
 }
-.image-container.selected{
-  background-color: red;
-}
 
-.image{
+.default-image {
+  box-sizing: border-box;
+  border: 3px solid transparent;
   object-fit: cover;
   width: 200px;
   height: 200px;
 }
 
-.grod-container{
-  grid-gap: 20px 20px;
-}
 
 .text{
 background-color: #ececec;
@@ -148,19 +140,20 @@ font-style: italic;
 }
 
 .image-selected {
-  border: 5px solid red;
+  background-color: none !important;
+  border: 3px solid black;
 }
 
 .skip-button {
   background-color: white; 
   color: black; 
   margin-right: 10px; 
-  width: 100%; 
+  width: 200px; 
 }
 
 .submit-button {
   background-color: #03a9f4;
-  width: 100%; 
+  width: 200px; 
 }
 
 .listing-info-container {
@@ -185,11 +178,25 @@ select {
   display: inherit !important; 
 }
 
-button {
+.flex-column button {
   background: none repeat scroll 0 0 transparent;
-  border: none;
-  border-spacing: 0;
-  margin: 0;
+  border: 3px solid transparent;
+  cursor: pointer;
+  line-height: 0;
   padding: 0;
-  text-decoration: none;
+}
+
+.flex-column button:focus {
+  border: 3px solid black;
+}
+
+
+.save-cta {
+  background: none repeat scroll 0 0 transparent;
+  border: 1px solid black;
+  border-radius: 8px;
+  float: right;
+  margin-top: 32px;
+  cursor: pointer;
+  padding: 16px 24px;
 }

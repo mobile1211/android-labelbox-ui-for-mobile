@@ -1,17 +1,20 @@
-import React, { useState } from 'react';
-import GenericImage from './GenericImage';
+import React from 'react';
+import AdditionalImage from './AdditionalImage';
 
-export default function AdditionalPhotos({ selectedListing, onClickImage }) {
-  const [selectedPhotoId, setSelectedPhotoId] = useState();
-
+export default function AdditionalPhotos({
+  selectedListing,
+  onClickImage,
+  newDefaultPhotoId,
+}) {
   if (!selectedListing) return null;
+
   return (
     <>
       <h5>Other pictures</h5>
       {selectedListing.listingImages.map((image) => (
-        <GenericImage
+        <AdditionalImage
           key={image.photoId}
-          isSelected={selectedPhotoId === image.photoId}
+          isSelected={newDefaultPhotoId === image.photoId}
           listingImage={image}
           onClick={onClickImage}
         />

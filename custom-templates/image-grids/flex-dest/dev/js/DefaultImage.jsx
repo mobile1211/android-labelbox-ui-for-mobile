@@ -15,12 +15,11 @@ export default function DefaultImage({
     <div
       className="image-container"
       onClick={() => onClickImage(idx)}
-      tabIndex={idx}
       id={`image-container-${listingId}`}
     >
       <img
         src={photoLink}
-        className={`image ${isSelected ? 'image-selected' : ''}`}
+        className={`default-image ${isSelected ? 'image-selected' : ''}`}
       />
     </div>
   );

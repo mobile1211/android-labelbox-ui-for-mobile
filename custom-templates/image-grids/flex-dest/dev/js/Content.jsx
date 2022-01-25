@@ -3,6 +3,8 @@ import PhotoGridWithHeader from './PhotoGridWithHeader';
 
 export default function Content({
   assetData,
+  currentAsset,
+  gridImages,
   isLoading,
   onClickImage,
   selectedListing,
@@ -23,6 +25,7 @@ export default function Content({
   const handleSubmit = useCallback(() => {
     setSelectedListing();
     setSelectedImageIdx();
+    const jumpToNext = !currentAsset?.label;
 
     if (jumpToNext) {
       setIsLoading(true);
@@ -42,6 +45,7 @@ export default function Content({
         ) : (
           <PhotoGridWithHeader
             assetData={assetData}
+            gridImages={gridImages}
             onClickImage={onClickImage}
             selectedListing={selectedListing}
             selectedImageIdx={selectedImageIdx}

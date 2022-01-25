@@ -13,10 +13,16 @@ export default function App() {
   const [assetData, setAssetData] = useState();
   const [selectedListing, setSelectedListing] = useState();
   const [selectedImageIdx, setSelectedImageIdx] = useState();
-  const [
-    updatedSelectedListingDefaultPhotoId,
-    setSelectedListingDefaultPhotoId,
-  ] = useState('');
+  const [newDefaultPhotoId, setDefaultPhotoId] = useState('');
+
+  // Edits data structure
+  // [{
+  //   listingId: 123,
+  //   updatedDefaultPhotoId: 345,
+  //   updatedPhotoQuality: 'High',
+  // }]
+
+  const gridImagesCopy = assetData ? [...assetData.gridImages] : [];
 
   function handleAssetChange(asset) {
     if (asset) {
@@ -30,13 +36,13 @@ export default function App() {
     }
   }
 
-  const onClickImage = useCallback((imageIdx) => {
+  const handleClickDefaultImage = useCallback((imageIdx) => {
     setSelectedImageIdx(imageIdx);
     setSelectedListing(assetData.gridImages[imageIdx]);
   });
 
   function handleClickAdditionalImage(photoId) {
-    setSelectedListingDefaultPhotoId(photoId);
+    setDefaultPhotoId(photoId);
   }
 
   // fetch asset on componentDidMount
@@ -54,7 +60,8 @@ export default function App() {
           assetData={assetData}
           selectedImageIdx={selectedImageIdx}
           selectedListing={selectedListing}
-          updatedPhotoId={updatedSelectedListingDefaultPhotoId}
+          setDefaultPhotoId={setDefaultPhotoId}
+          newPhotoId={newDefaultPhotoId}
         />
       ) : null}
       <div className="flex-grow flex-column">
@@ -70,8 +77,9 @@ export default function App() {
         <Content
           assetData={assetData}
           currentAsset={currentAsset}
+          gridImages={gridImagesCopy}
           isLoading={isLoading}
-          onClickImage={onClickImage}
+          onClickImage={handleClickDefaultImage}
           selectedListing={selectedListing}
           selectedImageIdx={selectedImageIdx}
           setSelectedListing={setSelectedListing}
@@ -84,6 +92,7 @@ export default function App() {
         <AdditionalPhotos
           selectedListing={selectedListing}
           onClickImage={handleClickAdditionalImage}
+          newDefaultPhotoId={newDefaultPhotoId}
         />
       </div>
     </>

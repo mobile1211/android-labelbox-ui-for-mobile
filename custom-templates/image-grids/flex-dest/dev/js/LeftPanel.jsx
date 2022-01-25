@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 
 export default function LeftPanel({
   assetData,
+  newPhotoId,
   selectedListing,
   selectedImageIdx,
-  updatedPhotoId,
+  setDefaultPhotoId,
 }) {
   const [photoQualityTier, setPhotoQualityTier] = useState(
     assetData.qualityTier
@@ -14,21 +15,29 @@ export default function LeftPanel({
     setPhotoQualityTier(e.target.value);
   }
 
-  function handleRevertChanges() {}
+  function handleRevertChanges() {
+    setDefaultPhotoId('');
+    setPhotoQualityTier(assetData.qualityTier);
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    console.log('newPhotoId', newPhotoId, 'photoQualityTier', photoQualityTier);
+  }
 
   return (
     <div className="flex-column left-side-panel">
-      <button onClick={handleRevertChanges}>
-        <i className="material-icons margin-bottom">close</i>
+      <button className="margin-bottom" onClick={handleRevertChanges}>
+        <i className="material-icons">close</i>
       </button>
       <div className="margin-bottom">
         Selected photo id:{' '}
         {selectedListing.listingImages[selectedImageIdx].photoId}
       </div>
-      <form>
+      <form onSubmit={handleSubmit}>
         <label>
           New photo id:
-          <input type="text" name="photo-id" value={updatedPhotoId} />
+          <input type="text" name="photo-id" readOnly value={newPhotoId} />
         </label>
         <label>
           New photo quality:
@@ -40,9 +49,7 @@ export default function LeftPanel({
             <option value="Unacceptable">Unacceptable</option>
           </select>
         </label>
-        <button>
-          <input type="submit" value="Save" />
-        </button>
+        <input className="save-cta" type="submit" value="Save" />
       </form>
     </div>
   );

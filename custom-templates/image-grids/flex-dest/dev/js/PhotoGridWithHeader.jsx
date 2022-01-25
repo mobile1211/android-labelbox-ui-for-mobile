@@ -3,6 +3,7 @@ import DefaultImage from './DefaultImage';
 
 export default function PhotoGridWithHeader({
   assetData,
+  gridImages,
   onClickImage,
   selectedListing = {},
   selectedImageIdx,
@@ -44,7 +45,7 @@ export default function PhotoGridWithHeader({
       </div>
 
       <div className="photo-grid">
-        {assetData.gridImages.map((imgObj, idx) => (
+        {gridImages.map((imgObj, idx) => (
           <DefaultImage
             imgObj={imgObj}
             idx={idx}
