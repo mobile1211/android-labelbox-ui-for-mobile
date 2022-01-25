@@ -8001,7 +8001,7 @@
 
 	  function handleAssetChange(asset) {
 	    console.log('Asset', asset);
-	    console.log('S3 asset link', asset.data);
+	    console.log('S3 asset link', asset === null || asset === void 0 ? void 0 : asset.data);
 
 	    if (asset) {
 	      var assetDataStr = get(asset.data).replace(/NaN/g, 'null');

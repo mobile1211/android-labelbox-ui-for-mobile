@@ -15,7 +15,7 @@ export default function App() {
 
   function handleAssetChange(asset) {
     console.log('Asset', asset);
-    console.log('S3 asset link', asset.data);
+    console.log('S3 asset link', asset?.data);
     if (asset) {
       const assetDataStr = get(asset.data).replace(/NaN/g, 'null');
       const parsedAssetData = JSON.parse(assetDataStr);
