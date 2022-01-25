@@ -221,3 +221,7 @@ label {
   font-weight: 800;
   font-size: 18px;
 }
+
+select {
+  display: inherit !important; 
+}
