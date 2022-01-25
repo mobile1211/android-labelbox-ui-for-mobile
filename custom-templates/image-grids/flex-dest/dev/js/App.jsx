@@ -42,14 +42,22 @@ useEffect(() => {
 
   return (
     <>
+    {
+      selectedListing ? 
+      (
+        <div className="flex-column left-side-panel">
+          <h5>
+            Selected photo id: {selectedListing.listingImages[selectedImageIdx].photoId}
+          </h5>
+        </div>
+      )
+    : null
+    }
       <div className="flex-grow flex-column">
         <Header 
           currentAsset={currentAsset}
-          hasNext={
-            Boolean((currentAsset && currentAsset.next) || 
-            (currentAsset && currentAsset.label))
-          }
-          hasPrev={currentAsset?.previous} 
+          hasNext={!!currentAsset?.next || !!currentAsset?.label}
+          hasPrev={!!currentAsset?.previous} 
           projectId={projectId}
           setIsLoading={setIsLoading}
           setSelectedListing={setSelectedListing}
@@ -67,7 +75,7 @@ useEffect(() => {
           setIsLoading={setIsLoading}
         />
       </div>
-      <div className="flex-column side-panel">
+      <div className="flex-column right-side-panel">
         <h5>Listing Info</h5>
         {
           selectedListing ? (
