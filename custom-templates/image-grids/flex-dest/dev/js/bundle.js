@@ -7772,14 +7772,14 @@
 	    onClick: handleGoHome
 	  }, "home"), /*#__PURE__*/React.createElement("i", {
 	    id: "back",
-	    className: "material-icons back-icon ".concat(hasPrev ? 'button-default' : ''),
+	    className: "material-icons back-icon ".concat(hasPrev ? "button-default" : ""),
 	    onClick: handleGoBack
 	  }, "keyboard_arrow_left"), /*#__PURE__*/React.createElement("div", {
 	    className: "header-title",
 	    id: "externalid"
 	  }, "Label this asset"), /*#__PURE__*/React.createElement("i", {
 	    id: "next",
-	    className: "material-icons next-icon ".concat(hasNext ? 'button-default' : ''),
+	    className: "material-icons next-icon ".concat(hasNext ? "button-default" : ""),
 	    onClick: handleGoNext
 	  }, "keyboard_arrow_right"));
 	}
@@ -7802,7 +7802,7 @@
 	    id: "image-container-".concat(listingId)
 	  }, /*#__PURE__*/React.createElement("img", {
 	    src: photoLink,
-	    className: "image ".concat(isSelected ? 'image-selected' : '')
+	    className: "image ".concat(isSelected ? "image-selected" : "")
 	  }));
 	}
 
@@ -7873,7 +7873,7 @@
 	      setIsLoading(true);
 	    }
 
-	    Labelbox.setLabelForAsset(label, 'ANY').then(function () {
+	    Labelbox.setLabelForAsset(label, "ANY").then(function () {
 	      if (jumpToNext) {
 	        Labelbox.fetchNextAssetToLabel();
 	      }
@@ -7883,7 +7883,7 @@
 	    className: "content"
 	  }, /*#__PURE__*/React.createElement("div", {
 	    id: "asset"
-	  }, isLoading ? 'loading...' : /*#__PURE__*/React.createElement(PhotoGridWithHeader, {
+	  }, isLoading ? "loading..." : /*#__PURE__*/React.createElement(PhotoGridWithHeader, {
 	    assetData: assetData,
 	    onClickImage: onClickImage,
 	    selectedListing: selectedListing,
@@ -7896,7 +7896,7 @@
 	    className: "flex-grow"
 	  }), /*#__PURE__*/React.createElement("div", {
 	    style: {
-	      display: 'flex'
+	      display: "flex"
 	    }
 	  }, /*#__PURE__*/React.createElement("a", {
 	    className: "waves-effect waves-light btn-large skip-button",
@@ -8028,7 +8028,7 @@
 	  });
 	  return /*#__PURE__*/React.createElement(React.Fragment, null, selectedListing ? /*#__PURE__*/React.createElement("div", {
 	    className: "flex-column left-side-panel"
-	  }, /*#__PURE__*/React.createElement("h5", null, "Selected photo id: ", selectedListing.listingImages[selectedImageIdx].photoId)) : null, /*#__PURE__*/React.createElement("div", {
+	  }, /*#__PURE__*/React.createElement("h5", null, "Selected photo id:", " ", selectedListing.listingImages[selectedImageIdx].photoId)) : null, /*#__PURE__*/React.createElement("div", {
 	    className: "flex-grow flex-column"
 	  }, /*#__PURE__*/React.createElement(Header, {
 	    currentAsset: currentAsset,
@@ -8066,7 +8066,7 @@
 	  }) : null));
 	}
 
-	ReactDOM.render( /*#__PURE__*/React.createElement(App, null), document.getElementById('root'));
+	ReactDOM.render( /*#__PURE__*/React.createElement(App, null), document.getElementById("root"));
 
 })();
 //# sourceMappingURL=bundle.js.map
