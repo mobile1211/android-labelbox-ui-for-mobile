@@ -15,6 +15,7 @@ export default function LeftPanel({
 
   return (
     <div className="flex-column left-side-panel">
+      <i class="material-icons margin-bottom">close</i>
       <div className="margin-bottom">
         Selected photo id:{' '}
         {selectedListing.listingImages[selectedImageIdx].photoId}

@@ -7923,7 +7923,9 @@
 
 	  return /*#__PURE__*/React.createElement("div", {
 	    className: "flex-column left-side-panel"
-	  }, /*#__PURE__*/React.createElement("div", {
+	  }, /*#__PURE__*/React.createElement("i", {
+	    "class": "material-icons margin-bottom"
+	  }, "close"), /*#__PURE__*/React.createElement("div", {
 	    className: "margin-bottom"
 	  }, "Selected photo id:", ' ', selectedListing.listingImages[selectedImageIdx].photoId), /*#__PURE__*/React.createElement("form", null, /*#__PURE__*/React.createElement("label", null, "New photo id:", /*#__PURE__*/React.createElement("input", {
 	    type: "text",
