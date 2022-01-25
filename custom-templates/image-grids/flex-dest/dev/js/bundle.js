@@ -7955,10 +7955,10 @@
 	    document.querySelector('div.flex-column.right-side-panel').scrollTo(0, 0);
 	  }, [lat, lng]);
 	  if (!selectedListing) return null;
-	  var title = selectedListing.title,
-	      description = selectedListing.description,
-	      location = selectedListing.location,
-	      where = selectedListing.where,
+	  var title = selectedListing.listingTitle,
+	      description = selectedListing.listingDescription,
+	      location = selectedListing.listingLocation,
+	      where = selectedListing.listingNeighborhood,
 	      lat = selectedListing.lat,
 	      lng = selectedListing.lng; // https://www.google.com/maps/search/?api=1&query={lat}%2C{lng}
 	  // src="https://maps.google.com/maps?q=${lat},${lng}&hl=es&z=14&amp;output=embed"
