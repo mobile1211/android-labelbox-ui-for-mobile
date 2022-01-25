@@ -9,6 +9,10 @@ export default function LeftPanel({
     assetData.qualityTier
   );
 
+  function handlePhotoQualityChange(e) {
+    setPhotoQualityTier(e.target.value);
+  }
+
   return (
     <div className="flex-column left-side-panel">
       <div className="margin-bottom">
@@ -20,14 +24,9 @@ export default function LeftPanel({
           New photo id:
           <input type="text" name="photo-id"></input>
         </label>
-        <label>
+        <label className="margin-bottom">
           New photo quality:
-          <select
-            value={photoQualityTier}
-            onChange={(val) => {
-              setPhotoQualityTier(val);
-            }}
-          >
+          <select value={photoQualityTier} onChange={handlePhotoQualityChange}>
             <option value="Most Inspiring">Most Inspiring</option>
             <option value="High">High</option>
             <option value="Acceptable">Acceptable</option>

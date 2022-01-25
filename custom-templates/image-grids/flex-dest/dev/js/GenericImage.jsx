@@ -2,13 +2,11 @@ import React from 'react';
 
 export default function GenericImage({ listingImage }) {
   return (
-    <div className="additional-image">
+    <div className="generic-image">
       <div>Photo ID: {listingImage.photoId}</div>
-      <img
-        onClick={() => onClickImage(idx)}
-        src={listingImage.photoLink}
-        width="100%"
-      />
+      <button onClick={() => onClickImage(idx)}>
+        <img src={listingImage.photoLink} width="100%" />
+      </button>
     </div>
   );
 }

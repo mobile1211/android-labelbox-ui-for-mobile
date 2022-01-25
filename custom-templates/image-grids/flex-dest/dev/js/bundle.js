@@ -7910,14 +7910,15 @@
 	function GenericImage(_ref) {
 	  var listingImage = _ref.listingImage;
 	  return /*#__PURE__*/React.createElement("div", {
-	    className: "additional-image"
-	  }, /*#__PURE__*/React.createElement("div", null, "Photo ID: ", listingImage.photoId), /*#__PURE__*/React.createElement("img", {
+	    className: "generic-image"
+	  }, /*#__PURE__*/React.createElement("div", null, "Photo ID: ", listingImage.photoId), /*#__PURE__*/React.createElement("button", {
 	    onClick: function onClick() {
 	      return onClickImage(idx);
-	    },
+	    }
+	  }, /*#__PURE__*/React.createElement("img", {
 	    src: listingImage.photoLink,
 	    width: "100%"
-	  }));
+	  })));
 	}
 
 	function LeftPanel(_ref) {
@@ -7930,6 +7931,10 @@
 	      photoQualityTier = _useState2[0],
 	      setPhotoQualityTier = _useState2[1];
 
+	  function handlePhotoQualityChange(e) {
+	    setPhotoQualityTier(e.target.value);
+	  }
+
 	  return /*#__PURE__*/React.createElement("div", {
 	    className: "flex-column left-side-panel"
 	  }, /*#__PURE__*/React.createElement("div", {
@@ -7937,11 +7942,11 @@
 	  }, "Selected photo id:", ' ', selectedListing.listingImages[selectedImageIdx].photoId), /*#__PURE__*/React.createElement("form", null, /*#__PURE__*/React.createElement("label", null, "New photo id:", /*#__PURE__*/React.createElement("input", {
 	    type: "text",
 	    name: "photo-id"
-	  })), /*#__PURE__*/React.createElement("label", null, "New photo quality:", /*#__PURE__*/React.createElement("select", {
+	  })), /*#__PURE__*/React.createElement("label", {
+	    className: "margin-bottom"
+	  }, "New photo quality:", /*#__PURE__*/React.createElement("select", {
 	    value: photoQualityTier,
-	    onChange: function onChange(val) {
-	      setPhotoQualityTier(val);
-	    }
+	    onChange: handlePhotoQualityChange
 	  }, /*#__PURE__*/React.createElement("option", {
 	    value: "Most Inspiring"
 	  }, "Most Inspiring"), /*#__PURE__*/React.createElement("option", {
@@ -8056,7 +8061,10 @@
 	  var onClickImage = react.exports.useCallback(function (imageIdx) {
 	    setSelectedImageIdx(imageIdx);
 	    setSelectedListing(assetData.gridImages[imageIdx]);
-	  }); // fetch asset on componentDidMount
+	  });
+
+	  function handleClickAdditionalImage() {} // fetch asset on componentDidMount
+
 
 	  react.exports.useEffect(function () {
 	    setIsLoading(true);
@@ -8101,7 +8109,7 @@
 	    return /*#__PURE__*/React.createElement(GenericImage, {
 	      key: image.photoId,
 	      listingImage: image,
-	      onClickImage: function onClickImage() {}
+	      onClickImage: handleClickAdditionalImage
 	    });
 	  }) : null));
 	}

@@ -32,6 +32,8 @@ export default function App() {
     setSelectedListing(assetData.gridImages[imageIdx]);
   });
 
+  function handleClickAdditionalImage() {}
+
   // fetch asset on componentDidMount
   useEffect(() => {
     setIsLoading(true);
@@ -89,7 +91,7 @@ export default function App() {
               <GenericImage
                 key={image.photoId}
                 listingImage={image}
-                onClickImage={() => {}}
+                onClickImage={handleClickAdditionalImage}
               />
             ))
           : null}
