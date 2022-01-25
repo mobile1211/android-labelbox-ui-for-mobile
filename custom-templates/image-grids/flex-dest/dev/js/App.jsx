@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Header from './Header';
 import Content from './Content';
-import GenericImage from './GenericImage';
 import LeftPanel from './LeftPanel';
 import RightPanel from './RightPanel';
 import { get } from './utils';
+import AdditionalPhotos from './AdditionalPhotos';
 
 export default function App() {
   const projectId = new URL(window.location.href).searchParams.get('project');
@@ -15,7 +15,6 @@ export default function App() {
   const [selectedImageIdx, setSelectedImageIdx] = useState();
 
   function handleAssetChange(asset) {
-    console.log('Asset', asset);
     if (asset) {
       const assetDataStr = get(asset.data).replace(/NaN/g, 'null');
       const parsedAssetData = JSON.parse(assetDataStr);
@@ -74,27 +73,11 @@ export default function App() {
         />
       </div>
       <div className="flex-column right-side-panel">
-        <h5>Listing Info</h5>
-        {selectedListing ? (
-          <RightPanel
-            title={selectedListing.listingTitle}
-            description={selectedListing.listingDescription}
-            location={selectedListing.listingLocation}
-            where={selectedListing.listingNeighborhood}
-            lat={selectedListing.lat}
-            lng={selectedListing.lng}
-          />
-        ) : null}
-        <h5>Other pictures</h5>
-        {selectedListing
-          ? selectedListing.listingImages.map((image) => (
-              <GenericImage
-                key={image.photoId}
-                listingImage={image}
-                onClickImage={handleClickAdditionalImage}
-              />
-            ))
-          : null}
+        <RightPanel selectedListing={selectedListing} />
+        <AdditionalPhotos
+          selectedListing={selectedListing}
+          onClickImage={handleClickAdditionalImage}
+        />
       </div>
     </>
   );

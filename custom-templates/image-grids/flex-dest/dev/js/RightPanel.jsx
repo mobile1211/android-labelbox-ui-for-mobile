@@ -1,22 +1,19 @@
 import React, { useEffect } from 'react';
 
-export default function RightPanel({
-  title,
-  description,
-  location,
-  where,
-  lat,
-  lng,
-}) {
+export default function RightPanel({ selectedListing }) {
   useEffect(() => {
     document.querySelector('div.flex-column.right-side-panel').scrollTo(0, 0);
   }, [lat, lng]);
+
+  if (!selectedListing) return null;
+  const { title, description, location, where, lat, lng } = selectedListing;
 
   // https://www.google.com/maps/search/?api=1&query={lat}%2C{lng}
   // src="https://maps.google.com/maps?q=${lat},${lng}&hl=es&z=14&amp;output=embed"
   // href="https://maps.google.com/maps?q=${lat},${lng};z=14&amp;output=embed"
   return (
     <>
+      <h5>Listing Info</h5>
       <div className="listing-info-container">
         <div className="listing-info">
           <b>Title</b>: {title}

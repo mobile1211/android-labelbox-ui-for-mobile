@@ -24,7 +24,7 @@ export default function LeftPanel({
           New photo id:
           <input type="text" name="photo-id"></input>
         </label>
-        <label className="margin-bottom">
+        <label>
           New photo quality:
           <select value={photoQualityTier} onChange={handlePhotoQualityChange}>
             <option value="Most Inspiring">Most Inspiring</option>
@@ -34,8 +34,8 @@ export default function LeftPanel({
             <option value="Unacceptable">Unacceptable</option>
           </select>
         </label>
-        <div>
-          <input type="submit" value="Submit" />
+        <div className="btn">
+          <input type="submit" value="Save" />
         </div>
       </form>
     </div>

@@ -122,24 +122,6 @@ height: 100%;
 .label{
 color: #717171;
 }
-.question{
-margin-bottom: 15px;
-}
-
-[type="radio"]:checked+span:after,
-[type="radio"].with-gap:checked+span:before,
-[type="radio"].with-gap:checked+span:after {
-border-color: #03a9f4 !important;
-}
-[type="checkbox"].filled-in:checked+span:not(.lever):after {
-border-color: #03a9f4 !important;
-background-color: #03a9f4 !important;
-
-}
-
-input.materialize-textarea:focus:not([readonly]) {
-border-color: #03a9f4 !important;
-}
 
 .header-container {
   display: flex;
