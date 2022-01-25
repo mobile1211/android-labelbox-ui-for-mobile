@@ -7928,7 +7928,7 @@
 	      lat = _ref.lat,
 	      lng = _ref.lng;
 	  react.exports.useEffect(function () {
-	    document.querySelector("div.flex-column.side-panel").scrollTo(0, 0);
+	    document.querySelector("div.flex-column.right-side-panel").scrollTo(0, 0);
 	  }, [lat, lng]); // https://www.google.com/maps/search/?api=1&query={lat}%2C{lng}
 	  // src="https://maps.google.com/maps?q=${lat},${lng}&hl=es&z=14&amp;output=embed"
 	  // href="https://maps.google.com/maps?q=${lat},${lng};z=14&amp;output=embed"
