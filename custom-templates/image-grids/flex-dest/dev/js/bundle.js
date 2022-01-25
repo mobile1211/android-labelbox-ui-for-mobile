@@ -8026,12 +8026,14 @@
 	      handleAssetChange(asset);
 	    });
 	  });
-	  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+	  return /*#__PURE__*/React.createElement(React.Fragment, null, selectedListing ? /*#__PURE__*/React.createElement("div", {
+	    className: "flex-column left-side-panel"
+	  }, /*#__PURE__*/React.createElement("h5", null, "Selected photo id: ", selectedListing.listingImages[selectedImageIdx].photoId)) : null, /*#__PURE__*/React.createElement("div", {
 	    className: "flex-grow flex-column"
 	  }, /*#__PURE__*/React.createElement(Header, {
 	    currentAsset: currentAsset,
-	    hasNext: Boolean(currentAsset && currentAsset.next || currentAsset && currentAsset.label),
-	    hasPrev: currentAsset === null || currentAsset === void 0 ? void 0 : currentAsset.previous,
+	    hasNext: !!(currentAsset !== null && currentAsset !== void 0 && currentAsset.next) || !!(currentAsset !== null && currentAsset !== void 0 && currentAsset.label),
+	    hasPrev: !!(currentAsset !== null && currentAsset !== void 0 && currentAsset.previous),
 	    projectId: projectId,
 	    setIsLoading: setIsLoading,
 	    setSelectedListing: setSelectedListing,
@@ -8047,7 +8049,7 @@
 	    setSelectedImageIdx: setSelectedImageIdx,
 	    setIsLoading: setIsLoading
 	  })), /*#__PURE__*/React.createElement("div", {
-	    className: "flex-column side-panel"
+	    className: "flex-column right-side-panel"
 	  }, /*#__PURE__*/React.createElement("h5", null, "Listing Info"), selectedListing ? /*#__PURE__*/React.createElement(RightPanelInfo, {
 	    title: selectedListing.listingTitle,
 	    description: selectedListing.listingDescription,

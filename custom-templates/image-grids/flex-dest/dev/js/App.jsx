@@ -42,17 +42,17 @@ useEffect(() => {
 
   return (
     <>
-    {
-      selectedListing ? 
-      (
-        <div className="flex-column left-side-panel">
-          <h5>
-            Selected photo id: {selectedListing.listingImages[selectedImageIdx].photoId}
-          </h5>
-        </div>
-      )
-    : null
-    }
+      {
+        selectedListing ? 
+        (
+          <div className="flex-column left-side-panel">
+            <h5>
+              Selected photo id: {selectedListing.listingImages[selectedImageIdx].photoId}
+            </h5>
+          </div>
+        )
+      : null
+      }
       <div className="flex-grow flex-column">
         <Header 
           currentAsset={currentAsset}
