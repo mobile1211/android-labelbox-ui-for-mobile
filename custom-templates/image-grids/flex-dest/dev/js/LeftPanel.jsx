@@ -4,6 +4,7 @@ export default function LeftPanel({
   assetData,
   selectedListing,
   selectedImageIdx,
+  updatedPhotoId,
 }) {
   const [photoQualityTier, setPhotoQualityTier] = useState(
     assetData.qualityTier
@@ -13,9 +14,13 @@ export default function LeftPanel({
     setPhotoQualityTier(e.target.value);
   }
 
+  function handleRevertChanges() {}
+
   return (
     <div className="flex-column left-side-panel">
-      <i class="material-icons margin-bottom">close</i>
+      <button onClick={handleRevertChanges}>
+        <i className="material-icons margin-bottom">close</i>
+      </button>
       <div className="margin-bottom">
         Selected photo id:{' '}
         {selectedListing.listingImages[selectedImageIdx].photoId}
@@ -23,7 +28,7 @@ export default function LeftPanel({
       <form>
         <label>
           New photo id:
-          <input type="text" name="photo-id"></input>
+          <input type="text" name="photo-id" value={updatedPhotoId} />
         </label>
         <label>
           New photo quality:
@@ -35,9 +40,9 @@ export default function LeftPanel({
             <option value="Unacceptable">Unacceptable</option>
           </select>
         </label>
-        <div>
+        <button>
           <input type="submit" value="Save" />
-        </div>
+        </button>
       </form>
     </div>
   );

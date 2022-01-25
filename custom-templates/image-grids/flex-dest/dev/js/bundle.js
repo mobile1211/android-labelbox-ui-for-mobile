@@ -7910,7 +7910,8 @@
 	function LeftPanel(_ref) {
 	  var assetData = _ref.assetData,
 	      selectedListing = _ref.selectedListing,
-	      selectedImageIdx = _ref.selectedImageIdx;
+	      selectedImageIdx = _ref.selectedImageIdx,
+	      updatedPhotoId = _ref.updatedPhotoId;
 
 	  var _useState = react.exports.useState(assetData.qualityTier),
 	      _useState2 = _slicedToArray(_useState, 2),
@@ -7921,15 +7922,20 @@
 	    setPhotoQualityTier(e.target.value);
 	  }
 
+	  function handleRevertChanges() {}
+
 	  return /*#__PURE__*/React.createElement("div", {
 	    className: "flex-column left-side-panel"
+	  }, /*#__PURE__*/React.createElement("button", {
+	    onClick: handleRevertChanges
 	  }, /*#__PURE__*/React.createElement("i", {
-	    "class": "material-icons margin-bottom"
-	  }, "close"), /*#__PURE__*/React.createElement("div", {
+	    className: "material-icons margin-bottom"
+	  }, "close")), /*#__PURE__*/React.createElement("div", {
 	    className: "margin-bottom"
 	  }, "Selected photo id:", ' ', selectedListing.listingImages[selectedImageIdx].photoId), /*#__PURE__*/React.createElement("form", null, /*#__PURE__*/React.createElement("label", null, "New photo id:", /*#__PURE__*/React.createElement("input", {
 	    type: "text",
-	    name: "photo-id"
+	    name: "photo-id",
+	    value: updatedPhotoId
 	  })), /*#__PURE__*/React.createElement("label", null, "New photo quality:", /*#__PURE__*/React.createElement("select", {
 	    value: photoQualityTier,
 	    onChange: handlePhotoQualityChange
@@ -7943,7 +7949,7 @@
 	    value: "Low Quality"
 	  }, "Low Quality"), /*#__PURE__*/React.createElement("option", {
 	    value: "Unacceptable"
-	  }, "Unacceptable"))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("input", {
+	  }, "Unacceptable"))), /*#__PURE__*/React.createElement("button", null, /*#__PURE__*/React.createElement("input", {
 	    type: "submit",
 	    value: "Save"
 	  }))));
@@ -8066,8 +8072,9 @@
 	      selectedImageIdx = _useState10[0],
 	      setSelectedImageIdx = _useState10[1];
 
-	  var _useState11 = react.exports.useState(),
+	  var _useState11 = react.exports.useState(''),
 	      _useState12 = _slicedToArray(_useState11, 2),
+	      updatedSelectedListingDefaultPhotoId = _useState12[0],
 	      setSelectedListingDefaultPhotoId = _useState12[1];
 
 	  function handleAssetChange(asset) {
@@ -8103,7 +8110,8 @@
 	  return /*#__PURE__*/React.createElement(React.Fragment, null, selectedListing ? /*#__PURE__*/React.createElement(LeftPanel, {
 	    assetData: assetData,
 	    selectedImageIdx: selectedImageIdx,
-	    selectedListing: selectedListing
+	    selectedListing: selectedListing,
+	    updatedPhotoId: updatedSelectedListingDefaultPhotoId
 	  }) : null, /*#__PURE__*/React.createElement("div", {
 	    className: "flex-grow flex-column"
 	  }, /*#__PURE__*/React.createElement(Header, {

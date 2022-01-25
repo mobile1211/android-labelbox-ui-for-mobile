@@ -13,7 +13,10 @@ export default function App() {
   const [assetData, setAssetData] = useState();
   const [selectedListing, setSelectedListing] = useState();
   const [selectedImageIdx, setSelectedImageIdx] = useState();
-  const [, setSelectedListingDefaultPhotoId] = useState();
+  const [
+    updatedSelectedListingDefaultPhotoId,
+    setSelectedListingDefaultPhotoId,
+  ] = useState('');
 
   function handleAssetChange(asset) {
     if (asset) {
@@ -51,6 +54,7 @@ export default function App() {
           assetData={assetData}
           selectedImageIdx={selectedImageIdx}
           selectedListing={selectedListing}
+          updatedPhotoId={updatedSelectedListingDefaultPhotoId}
         />
       ) : null}
       <div className="flex-grow flex-column">
