@@ -19,7 +19,7 @@ export default function App() {
     if (asset) {
       const assetDataStr = get(asset.data).replace(/NaN/g, 'null');
       const parsedAssetData = JSON.parse(assetDataStr);
-      if ((currentAsset && currentAsset.id) !== asset.id) {
+      if (currentAsset?.id !== asset.id) {
         setCurrentAsset(asset);
         setAssetData(parsedAssetData);
       }
@@ -42,7 +42,13 @@ export default function App() {
 
   return (
     <>
-      {selectedListing ? <LeftPanel /> : null}
+      {selectedListing ? (
+        <LeftPanel
+          assetData={assetData}
+          selectedImageIdx={selectedImageIdx}
+          selectedListing={selectedListing}
+        />
+      ) : null}
       <div className="flex-grow flex-column">
         <Header
           currentAsset={currentAsset}

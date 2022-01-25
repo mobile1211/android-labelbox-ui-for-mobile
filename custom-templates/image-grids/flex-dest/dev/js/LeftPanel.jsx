@@ -1,6 +1,10 @@
 import React from 'react';
 
-export default function LeftPanel({ assetData, selectedListing }) {
+export default function LeftPanel({
+  assetData,
+  selectedListing,
+  selectedImageIdx,
+}) {
   return (
     <div className="flex-column left-side-panel">
       Selected photo id:{' '}

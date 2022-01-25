@@ -7922,7 +7922,8 @@
 
 	function LeftPanel(_ref) {
 	  var assetData = _ref.assetData,
-	      selectedListing = _ref.selectedListing;
+	      selectedListing = _ref.selectedListing,
+	      selectedImageIdx = _ref.selectedImageIdx;
 	  return /*#__PURE__*/React.createElement("div", {
 	    className: "flex-column left-side-panel"
 	  }, "Selected photo id:", ' ', selectedListing.listingImages[selectedImageIdx].photoId, /*#__PURE__*/React.createElement("form", null, /*#__PURE__*/React.createElement("label", null, "New photo id:", /*#__PURE__*/React.createElement("input", {
@@ -8033,7 +8034,7 @@
 	      var assetDataStr = get(asset.data).replace(/NaN/g, 'null');
 	      var parsedAssetData = JSON.parse(assetDataStr);
 
-	      if ((currentAsset && currentAsset.id) !== asset.id) {
+	      if ((currentAsset === null || currentAsset === void 0 ? void 0 : currentAsset.id) !== asset.id) {
 	        setCurrentAsset(asset);
 	        setAssetData(parsedAssetData);
 	      }
@@ -8053,7 +8054,11 @@
 	      handleAssetChange(asset);
 	    });
 	  });
-	  return /*#__PURE__*/React.createElement(React.Fragment, null, selectedListing ? /*#__PURE__*/React.createElement(LeftPanel, null) : null, /*#__PURE__*/React.createElement("div", {
+	  return /*#__PURE__*/React.createElement(React.Fragment, null, selectedListing ? /*#__PURE__*/React.createElement(LeftPanel, {
+	    assetData: assetData,
+	    selectedImageIdx: selectedImageIdx,
+	    selectedListing: selectedListing
+	  }) : null, /*#__PURE__*/React.createElement("div", {
 	    className: "flex-grow flex-column"
 	  }, /*#__PURE__*/React.createElement(Header, {
 	    currentAsset: currentAsset,
