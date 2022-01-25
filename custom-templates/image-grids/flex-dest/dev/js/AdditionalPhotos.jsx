@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import GenericImage from './GenericImage';
 
 export default function AdditionalPhotos({ selectedListing, onClickImage }) {
+  const [selectedPhotoId, setSelectedPhotoId] = useState();
+
   if (!selectedListing) return null;
   return (
     <>
@@ -9,8 +11,9 @@ export default function AdditionalPhotos({ selectedListing, onClickImage }) {
       {selectedListing.listingImages.map((image) => (
         <GenericImage
           key={image.photoId}
+          isSelected={selectedPhotoId === image.photoId}
           listingImage={image}
-          onClickImage={onClickImage}
+          onClick={onClickImage}
         />
       ))}
     </>

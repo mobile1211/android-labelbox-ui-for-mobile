@@ -34,7 +34,7 @@ export default function LeftPanel({
             <option value="Unacceptable">Unacceptable</option>
           </select>
         </label>
-        <div className="btn">
+        <div>
           <input type="submit" value="Save" />
         </div>
       </form>

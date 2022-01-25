@@ -7941,9 +7941,7 @@
 	    value: "Low Quality"
 	  }, "Low Quality"), /*#__PURE__*/React.createElement("option", {
 	    value: "Unacceptable"
-	  }, "Unacceptable"))), /*#__PURE__*/React.createElement("div", {
-	    className: "btn"
-	  }, /*#__PURE__*/React.createElement("input", {
+	  }, "Unacceptable"))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("input", {
 	    type: "submit",
 	    value: "Save"
 	  }))));
@@ -8003,12 +8001,14 @@
 	}
 
 	function GenericImage(_ref) {
-	  var listingImage = _ref.listingImage;
+	  var isSelected = _ref.isSelected,
+	      listingImage = _ref.listingImage,
+	      _onClick = _ref.onClick;
 	  return /*#__PURE__*/React.createElement("div", {
-	    className: "generic-image"
+	    className: "generic-image ".concat(isSelected ? 'image-selected' : '')
 	  }, /*#__PURE__*/React.createElement("div", null, "Photo ID: ", listingImage.photoId), /*#__PURE__*/React.createElement("button", {
 	    onClick: function onClick() {
-	      return onClickImage(idx);
+	      return _onClick(listingImage.photoId);
 	    }
 	  }, /*#__PURE__*/React.createElement("img", {
 	    src: listingImage.photoLink,
@@ -8019,12 +8019,19 @@
 	function AdditionalPhotos(_ref) {
 	  var selectedListing = _ref.selectedListing,
 	      onClickImage = _ref.onClickImage;
+
+	  var _useState = react.exports.useState(),
+	      _useState2 = _slicedToArray(_useState, 2),
+	      selectedPhotoId = _useState2[0];
+	      _useState2[1];
+
 	  if (!selectedListing) return null;
 	  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h5", null, "Other pictures"), selectedListing.listingImages.map(function (image) {
 	    return /*#__PURE__*/React.createElement(GenericImage, {
 	      key: image.photoId,
+	      isSelected: selectedPhotoId === image.photoId,
 	      listingImage: image,
-	      onClickImage: onClickImage
+	      onClick: onClickImage
 	    });
 	  }));
 	}
@@ -8057,6 +8064,10 @@
 	      selectedImageIdx = _useState10[0],
 	      setSelectedImageIdx = _useState10[1];
 
+	  var _useState11 = react.exports.useState(),
+	      _useState12 = _slicedToArray(_useState11, 2),
+	      setSelectedListingDefaultPhotoId = _useState12[1];
+
 	  function handleAssetChange(asset) {
 	    if (asset) {
 	      var assetDataStr = get(asset.data).replace(/NaN/g, 'null');
@@ -8076,7 +8087,9 @@
 	    setSelectedListing(assetData.gridImages[imageIdx]);
 	  });
 
-	  function handleClickAdditionalImage() {} // fetch asset on componentDidMount
+	  function handleClickAdditionalImage(photoId) {
+	    setSelectedListingDefaultPhotoId(photoId);
+	  } // fetch asset on componentDidMount
 
 
 	  react.exports.useEffect(function () {

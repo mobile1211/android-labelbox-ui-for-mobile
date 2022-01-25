@@ -99,30 +99,6 @@ font-style: italic;
  border-bottom: 1px solid #e8e8e8;
 }
 
-.btn{
-background-color: aqua
-}
-.btn:visited{
-background-color: yellow
-}
-.btn:hover {
-background-color: skyblue
-}
-.btn:active{
-background-color: pink;
-}
-.btn:focus{
-background-color: pink;
-}
-#questions{
-padding: 10px;
-overflow-y: auto;
-height: 100%;
-}
-.label{
-color: #717171;
-}
-
 .header-container {
   display: flex;
   align-items: center; 
@@ -207,4 +183,13 @@ label {
 
 select {
   display: inherit !important; 
+}
+
+button {
+  background: none repeat scroll 0 0 transparent;
+  border: none;
+  border-spacing: 0;
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
 }

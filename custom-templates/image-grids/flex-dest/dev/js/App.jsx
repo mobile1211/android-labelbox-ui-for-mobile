@@ -13,6 +13,7 @@ export default function App() {
   const [assetData, setAssetData] = useState();
   const [selectedListing, setSelectedListing] = useState();
   const [selectedImageIdx, setSelectedImageIdx] = useState();
+  const [, setSelectedListingDefaultPhotoId] = useState();
 
   function handleAssetChange(asset) {
     if (asset) {
@@ -31,7 +32,9 @@ export default function App() {
     setSelectedListing(assetData.gridImages[imageIdx]);
   });
 
-  function handleClickAdditionalImage() {}
+  function handleClickAdditionalImage(photoId) {
+    setSelectedListingDefaultPhotoId(photoId);
+  }
 
   // fetch asset on componentDidMount
   useEffect(() => {
