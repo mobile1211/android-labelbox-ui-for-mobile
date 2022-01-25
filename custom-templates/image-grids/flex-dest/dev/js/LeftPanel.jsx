@@ -1,14 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 export default function LeftPanel({
   assetData,
   selectedListing,
   selectedImageIdx,
 }) {
+  const [photoQualityTier, setPhotoQualityTier] = useState(
+    assetData.qualityTier
+  );
+
   return (
     <div className="flex-column left-side-panel">
-      Selected photo id:{' '}
-      {selectedListing.listingImages[selectedImageIdx].photoId}
+      <div className="margin-bottom">
+        Selected photo id:{' '}
+        {selectedListing.listingImages[selectedImageIdx].photoId}
+      </div>
       <form>
         <label>
           New photo id:
@@ -16,7 +22,12 @@ export default function LeftPanel({
         </label>
         <label>
           New photo quality:
-          <select value={assetData.qualityTier} onChange={() => {}}>
+          <select
+            value={photoQualityTier}
+            onChange={(val) => {
+              setPhotoQualityTier(val);
+            }}
+          >
             <option value="Most Inspiring">Most Inspiring</option>
             <option value="High">High</option>
             <option value="Acceptable">Acceptable</option>

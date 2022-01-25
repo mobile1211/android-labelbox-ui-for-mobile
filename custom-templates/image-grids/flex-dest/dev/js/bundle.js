@@ -7924,14 +7924,24 @@
 	  var assetData = _ref.assetData,
 	      selectedListing = _ref.selectedListing,
 	      selectedImageIdx = _ref.selectedImageIdx;
+
+	  var _useState = react.exports.useState(assetData.qualityTier),
+	      _useState2 = _slicedToArray(_useState, 2),
+	      photoQualityTier = _useState2[0],
+	      setPhotoQualityTier = _useState2[1];
+
 	  return /*#__PURE__*/React.createElement("div", {
 	    className: "flex-column left-side-panel"
-	  }, "Selected photo id:", ' ', selectedListing.listingImages[selectedImageIdx].photoId, /*#__PURE__*/React.createElement("form", null, /*#__PURE__*/React.createElement("label", null, "New photo id:", /*#__PURE__*/React.createElement("input", {
+	  }, /*#__PURE__*/React.createElement("div", {
+	    className: "margin-bottom"
+	  }, "Selected photo id:", ' ', selectedListing.listingImages[selectedImageIdx].photoId), /*#__PURE__*/React.createElement("form", null, /*#__PURE__*/React.createElement("label", null, "New photo id:", /*#__PURE__*/React.createElement("input", {
 	    type: "text",
 	    name: "photo-id"
 	  })), /*#__PURE__*/React.createElement("label", null, "New photo quality:", /*#__PURE__*/React.createElement("select", {
-	    value: assetData.qualityTier,
-	    onChange: function onChange() {}
+	    value: photoQualityTier,
+	    onChange: function onChange(val) {
+	      setPhotoQualityTier(val);
+	    }
 	  }, /*#__PURE__*/React.createElement("option", {
 	    value: "Most Inspiring"
 	  }, "Most Inspiring"), /*#__PURE__*/React.createElement("option", {

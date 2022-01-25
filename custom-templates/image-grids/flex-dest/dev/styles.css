@@ -212,3 +212,12 @@ border-color: #03a9f4 !important;
   align-items:flex-end;
   padding-bottom:10px;
 }
+
+.margin-bottom {
+  margin-bottom: 20px;
+}
+
+label {
+  font-weight: 800;
+  font-size: 18px;
+}
