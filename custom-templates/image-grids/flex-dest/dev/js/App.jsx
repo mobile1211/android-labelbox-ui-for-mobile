@@ -2,7 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Header from './Header';
 import Content from './Content';
 import GenericImage from './GenericImage';
-import RightPanelInfo from './RightPanelInfo';
+import LeftPanel from './LeftPanel';
+import RightPanel from './RightPanel';
 import { get } from './utils';
 
 export default function App() {
@@ -41,31 +42,7 @@ export default function App() {
 
   return (
     <>
-      {selectedListing ? (
-        <div className="flex-column left-side-panel">
-          Selected photo id:{' '}
-          {selectedListing.listingImages[selectedImageIdx].photoId}
-          <form>
-            <label>
-              New photo id:
-              <input type="text" name="photo-id"></input>
-            </label>
-            <label>
-              New photo quality:
-              <select value={assetData.qualityTier} onChange={() => {}}>
-                <option value="Most Inspiring">Most Inspiring</option>
-                <option value="High">High</option>
-                <option value="Acceptable">Acceptable</option>
-                <option value="Low Quality">Low Quality</option>
-                <option value="Unacceptable">Unacceptable</option>
-              </select>
-            </label>
-            <div>
-              <input type="submit" value="Submit" />
-            </div>
-          </form>
-        </div>
-      ) : null}
+      {selectedListing ? <LeftPanel /> : null}
       <div className="flex-grow flex-column">
         <Header
           currentAsset={currentAsset}
@@ -91,7 +68,7 @@ export default function App() {
       <div className="flex-column right-side-panel">
         <h5>Listing Info</h5>
         {selectedListing ? (
-          <RightPanelInfo
+          <RightPanel
             title={selectedListing.listingTitle}
             description={selectedListing.listingDescription}
             location={selectedListing.listingLocation}

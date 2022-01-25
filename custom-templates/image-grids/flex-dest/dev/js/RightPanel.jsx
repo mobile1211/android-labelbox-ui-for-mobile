@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-export default function RightPanelInfo({
+export default function RightPanel({
   title,
   description,
   location,

@@ -7920,7 +7920,34 @@
 	  }));
 	}
 
-	function RightPanelInfo(_ref) {
+	function LeftPanel(_ref) {
+	  var assetData = _ref.assetData,
+	      selectedListing = _ref.selectedListing;
+	  return /*#__PURE__*/React.createElement("div", {
+	    className: "flex-column left-side-panel"
+	  }, "Selected photo id:", ' ', selectedListing.listingImages[selectedImageIdx].photoId, /*#__PURE__*/React.createElement("form", null, /*#__PURE__*/React.createElement("label", null, "New photo id:", /*#__PURE__*/React.createElement("input", {
+	    type: "text",
+	    name: "photo-id"
+	  })), /*#__PURE__*/React.createElement("label", null, "New photo quality:", /*#__PURE__*/React.createElement("select", {
+	    value: assetData.qualityTier,
+	    onChange: function onChange() {}
+	  }, /*#__PURE__*/React.createElement("option", {
+	    value: "Most Inspiring"
+	  }, "Most Inspiring"), /*#__PURE__*/React.createElement("option", {
+	    value: "High"
+	  }, "High"), /*#__PURE__*/React.createElement("option", {
+	    value: "Acceptable"
+	  }, "Acceptable"), /*#__PURE__*/React.createElement("option", {
+	    value: "Low Quality"
+	  }, "Low Quality"), /*#__PURE__*/React.createElement("option", {
+	    value: "Unacceptable"
+	  }, "Unacceptable"))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("input", {
+	    type: "submit",
+	    value: "Submit"
+	  }))));
+	}
+
+	function RightPanel(_ref) {
 	  var title = _ref.title,
 	      description = _ref.description,
 	      location = _ref.location,
@@ -8026,28 +8053,7 @@
 	      handleAssetChange(asset);
 	    });
 	  });
-	  return /*#__PURE__*/React.createElement(React.Fragment, null, selectedListing ? /*#__PURE__*/React.createElement("div", {
-	    className: "flex-column left-side-panel"
-	  }, "Selected photo id:", ' ', selectedListing.listingImages[selectedImageIdx].photoId, /*#__PURE__*/React.createElement("form", null, /*#__PURE__*/React.createElement("label", null, "New photo id:", /*#__PURE__*/React.createElement("input", {
-	    type: "text",
-	    name: "photo-id"
-	  })), /*#__PURE__*/React.createElement("label", null, "New photo quality:", /*#__PURE__*/React.createElement("select", {
-	    value: assetData.qualityTier,
-	    onChange: function onChange() {}
-	  }, /*#__PURE__*/React.createElement("option", {
-	    value: "Most Inspiring"
-	  }, "Most Inspiring"), /*#__PURE__*/React.createElement("option", {
-	    value: "High"
-	  }, "High"), /*#__PURE__*/React.createElement("option", {
-	    value: "Acceptable"
-	  }, "Acceptable"), /*#__PURE__*/React.createElement("option", {
-	    value: "Low Quality"
-	  }, "Low Quality"), /*#__PURE__*/React.createElement("option", {
-	    value: "Unacceptable"
-	  }, "Unacceptable"))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("input", {
-	    type: "submit",
-	    value: "Submit"
-	  })))) : null, /*#__PURE__*/React.createElement("div", {
+	  return /*#__PURE__*/React.createElement(React.Fragment, null, selectedListing ? /*#__PURE__*/React.createElement(LeftPanel, null) : null, /*#__PURE__*/React.createElement("div", {
 	    className: "flex-grow flex-column"
 	  }, /*#__PURE__*/React.createElement(Header, {
 	    currentAsset: currentAsset,
@@ -8069,7 +8075,7 @@
 	    setIsLoading: setIsLoading
 	  })), /*#__PURE__*/React.createElement("div", {
 	    className: "flex-column right-side-panel"
-	  }, /*#__PURE__*/React.createElement("h5", null, "Listing Info"), selectedListing ? /*#__PURE__*/React.createElement(RightPanelInfo, {
+	  }, /*#__PURE__*/React.createElement("h5", null, "Listing Info"), selectedListing ? /*#__PURE__*/React.createElement(RightPanel, {
 	    title: selectedListing.listingTitle,
 	    description: selectedListing.listingDescription,
 	    location: selectedListing.listingLocation,
