@@ -7800,40 +7800,16 @@
 	  }, "keyboard_arrow_right"));
 	}
 
-	function usePhotoEdits() {
-	  // photoEdits data structure
-	  // [{
-	  //   listingId: 123,
-	  //   updatedDefaultPhotoId: 345,
-	  //   updatedPhotoQuality: 'High',
-	  // }]
-	  var _useState = react.exports.useState([]),
-	      _useState2 = _slicedToArray(_useState, 2),
-	      photoEdits = _useState2[0],
-	      setPhotoEdits = _useState2[1];
-
-	  return {
-	    photoEdits: photoEdits,
-	    setPhotoEdits: setPhotoEdits
-	  };
-	}
-
 	function DefaultImage(_ref) {
 	  var _imgObj$photoLink;
 
 	  var imgObj = _ref.imgObj,
 	      idx = _ref.idx,
+	      isEdited = _ref.isEdited,
 	      isSelected = _ref.isSelected,
 	      onClickImage = _ref.onClickImage;
 	  var photoLink = (_imgObj$photoLink = imgObj.photoLink) !== null && _imgObj$photoLink !== void 0 && _imgObj$photoLink.includes('?') ? "".concat(imgObj.photoLink) : "".concat(imgObj.photoLink, "?img_w=720");
 	  var listingId = imgObj.listingId;
-
-	  var _usePhotoEdits = usePhotoEdits(),
-	      photoEdits = _usePhotoEdits.photoEdits;
-
-	  var isChanged = photoEdits.find(function (edit) {
-	    return edit.listingId === imgObj.listingId;
-	  });
 	  return /*#__PURE__*/React.createElement("div", {
 	    className: "image-container",
 	    onClick: function onClick() {
@@ -7842,7 +7818,7 @@
 	    id: "image-container-".concat(listingId)
 	  }, /*#__PURE__*/React.createElement("img", {
 	    src: photoLink,
-	    className: "default-image ".concat(isChanged ? 'image-changed' : '', " ").concat(isSelected ? 'image-selected' : '')
+	    className: "default-image ".concat(isEdited ? 'image-edited' : '', " ").concat(isSelected ? 'image-selected' : '')
 	  }));
 	}
 
@@ -7850,6 +7826,7 @@
 	  var assetData = _ref.assetData,
 	      gridImages = _ref.gridImages,
 	      _onClickImage = _ref.onClickImage,
+	      photoEdits = _ref.photoEdits,
 	      _ref$selectedListing = _ref.selectedListing,
 	      selectedListing = _ref$selectedListing === void 0 ? {} : _ref$selectedListing,
 	      selectedImageIdx = _ref.selectedImageIdx;
@@ -7877,11 +7854,15 @@
 	  }, "Link to PDP"))))), /*#__PURE__*/React.createElement("div", {
 	    className: "photo-grid"
 	  }, gridImages.map(function (imgObj, idx) {
+	    var isEdited = photoEdits.find(function (edit) {
+	      return edit.listingId === imgObj.listingId;
+	    });
 	    return /*#__PURE__*/React.createElement(DefaultImage, {
 	      imgObj: imgObj,
 	      idx: idx,
-	      key: imgObj.photoId,
+	      isEdited: isEdited,
 	      isSelected: selectedImageIdx === idx,
+	      key: imgObj.photoId,
 	      onClickImage: function onClickImage(photoIdx) {
 	        return _onClickImage(photoIdx);
 	      }
@@ -7895,6 +7876,7 @@
 	      gridImages = _ref.gridImages,
 	      isLoading = _ref.isLoading,
 	      onClickImage = _ref.onClickImage,
+	      photoEdits = _ref.photoEdits,
 	      selectedListing = _ref.selectedListing,
 	      selectedImageIdx = _ref.selectedImageIdx,
 	      setIsLoading = _ref.setIsLoading,
@@ -7931,6 +7913,7 @@
 	    assetData: assetData,
 	    gridImages: gridImages,
 	    onClickImage: onClickImage,
+	    photoEdits: photoEdits,
 	    selectedListing: selectedListing,
 	    selectedImageIdx: selectedImageIdx
 	  })), /*#__PURE__*/React.createElement("div", {
@@ -7953,10 +7936,14 @@
 	}
 
 	function LeftPanel(_ref) {
+	  var _photoEdits$find;
+
 	  var assetData = _ref.assetData,
 	      newPhotoId = _ref.newPhotoId,
+	      photoEdits = _ref.photoEdits,
 	      selectedListing = _ref.selectedListing,
-	      setDefaultPhotoId = _ref.setDefaultPhotoId;
+	      setNewDefaultPhotoId = _ref.setNewDefaultPhotoId,
+	      setPhotoEdits = _ref.setPhotoEdits;
 
 	  var _useState = react.exports.useState(assetData.qualityTier),
 	      _useState2 = _slicedToArray(_useState, 2),
@@ -7964,16 +7951,16 @@
 	      setPhotoQualityTier = _useState2[1];
 
 	  var originalDefaultPhotoId = selectedListing.photoId;
-
-	  var _usePhotoEdits = usePhotoEdits(),
-	      setPhotoEdits = _usePhotoEdits.setPhotoEdits;
+	  var updatedDefaultPhotoId = (_photoEdits$find = photoEdits.find(function (edit) {
+	    return edit.listingId === selectedListing.listingId;
+	  })) === null || _photoEdits$find === void 0 ? void 0 : _photoEdits$find.updatedDefaultPhotoId;
 
 	  function handlePhotoQualityChange(e) {
 	    setPhotoQualityTier(e.target.value);
 	  }
 
 	  function handleRevertChanges() {
-	    setDefaultPhotoId('');
+	    setNewDefaultPhotoId('');
 	    setPhotoQualityTier(assetData.qualityTier);
 	  }
 
@@ -7985,7 +7972,6 @@
 	        var prevChangeIndex = prevEdits.findIndex(function (edit) {
 	          return edit.listingId === selectedListing.listingId;
 	        });
-	        console.log('prevEdits default photo', prevEdits, prevChangeIndex);
 
 	        if (prevChangeIndex !== -1) {
 	          return [].concat(_toConsumableArray(prevEdits.slice(0, prevChangeIndex)), [Object.assign({}, prevEdits[prevChangeIndex], {
@@ -8007,7 +7993,6 @@
 	        var prevChangeIndex = prevEdits.findIndex(function (edit) {
 	          return edit.listingId === selectedListing.listingId;
 	        });
-	        console.log('prevEdits quality', prevEdits, prevChangeIndex);
 
 	        if (prevChangeIndex !== -1) {
 	          return [].concat(_toConsumableArray(prevEdits.slice(0, prevChangeIndex)), [Object.assign({}, prevEdits[prevChangeIndex], {
@@ -8021,25 +8006,24 @@
 	        }
 	      });
 	    }
+
+	    handleRevertChanges();
 	  }
 
-	  return /*#__PURE__*/React.createElement("div", {
-	    className: "flex-column left-side-panel"
-	  }, /*#__PURE__*/React.createElement("button", {
-	    className: "margin-bottom",
-	    onClick: handleRevertChanges
-	  }, /*#__PURE__*/React.createElement("i", {
-	    className: "material-icons"
-	  }, "close")), /*#__PURE__*/React.createElement("div", {
+	  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
 	    className: "margin-bottom"
-	  }, "Selected photo id: ", originalDefaultPhotoId), /*#__PURE__*/React.createElement("form", {
+	  }, "Original photo id: ", originalDefaultPhotoId), /*#__PURE__*/React.createElement("div", {
+	    className: "margin-bottom"
+	  }, "Selected photo id: ", updatedDefaultPhotoId || originalDefaultPhotoId), /*#__PURE__*/React.createElement("form", {
 	    onSubmit: handleSubmit
 	  }, /*#__PURE__*/React.createElement("label", null, "New photo id:", /*#__PURE__*/React.createElement("input", {
 	    type: "text",
 	    name: "photo-id",
 	    readOnly: true,
 	    value: newPhotoId
-	  })), /*#__PURE__*/React.createElement("label", null, "New photo quality:", /*#__PURE__*/React.createElement("select", {
+	  })), /*#__PURE__*/React.createElement("label", null, /*#__PURE__*/React.createElement("div", {
+	    className: "label"
+	  }, "New photo quality:"), /*#__PURE__*/React.createElement("select", {
 	    value: photoQualityTier,
 	    onChange: handlePhotoQualityChange
 	  }, /*#__PURE__*/React.createElement("option", {
@@ -8052,11 +8036,16 @@
 	    value: "Low Quality"
 	  }, "Low Quality"), /*#__PURE__*/React.createElement("option", {
 	    value: "Unacceptable"
-	  }, "Unacceptable"))), /*#__PURE__*/React.createElement("input", {
-	    className: "save-cta",
+	  }, "Unacceptable"))), /*#__PURE__*/React.createElement("div", {
+	    className: "left-panel-ctas-wrapper"
+	  }, /*#__PURE__*/React.createElement("button", {
+	    onClick: handleRevertChanges,
+	    className: "cta clear-cta"
+	  }, "Clear"), /*#__PURE__*/React.createElement("input", {
+	    className: "cta save-cta",
 	    type: "submit",
 	    value: "Save"
-	  })));
+	  }))));
 	}
 
 	function RightPanel(_ref) {
@@ -8117,9 +8106,9 @@
 	      listingImage = _ref.listingImage,
 	      _onClick = _ref.onClick;
 	  return /*#__PURE__*/React.createElement("div", {
-	    className: "additional-image"
+	    className: "additional-image-wrapper"
 	  }, /*#__PURE__*/React.createElement("div", null, "Photo ID: ", listingImage.photoId), /*#__PURE__*/React.createElement("button", {
-	    className: isSelected ? 'image-selected' : '',
+	    className: "additional-image ".concat(isSelected ? 'image-selected' : ''),
 	    onClick: function onClick() {
 	      return _onClick(listingImage.photoId);
 	    }
@@ -8144,20 +8133,43 @@
 	  }));
 	}
 
-	function getEffectiveGridImages(assetData, selectedImageIdx, newDefaultPhotoId) {
+	function getEffectiveGridImages(assetData, photoEdits, selectedImageIdx, newDefaultPhotoId) {
 	  if (!assetData) return [];
+
+	  var gridImagesCopy = _toConsumableArray(assetData.gridImages);
+
+	  if (photoEdits.length) {
+	    var listingIdsWithUpdatedDefaultPhoto = photoEdits.map(function (e) {
+	      return !!e.updatedDefaultPhotoId && e.listingId;
+	    });
+	    gridImagesCopy = gridImagesCopy.map(function (imgObj) {
+	      if (listingIdsWithUpdatedDefaultPhoto.includes(imgObj.listingId)) {
+	        var updatedPhotoId = photoEdits.find(function (edit) {
+	          return edit.listingId === imgObj.listingId;
+	        }).updatedDefaultPhotoId;
+	        var updatedPhotoLink = imgObj.listingImages.find(function (photo) {
+	          return photo.photoId === updatedPhotoId;
+	        }).photoLink;
+	        return Object.assign({}, imgObj, {
+	          photoLink: updatedPhotoLink
+	        });
+	      }
+
+	      return imgObj;
+	    });
+	  }
 
 	  if (typeof selectedImageIdx === 'number' && !!newDefaultPhotoId) {
 	    var _assetData$gridImages;
 
-	    return [].concat(_toConsumableArray(assetData.gridImages.slice(0, selectedImageIdx)), [Object.assign({}, assetData.gridImages[selectedImageIdx], {
+	    return [].concat(_toConsumableArray(gridImagesCopy.slice(0, selectedImageIdx)), [Object.assign({}, gridImagesCopy[selectedImageIdx], {
 	      photoLink: (_assetData$gridImages = assetData.gridImages[selectedImageIdx].listingImages.find(function (photo) {
 	        return photo.photoId === newDefaultPhotoId;
 	      })) === null || _assetData$gridImages === void 0 ? void 0 : _assetData$gridImages.photoLink
-	    })], _toConsumableArray(assetData.gridImages.slice(selectedImageIdx + 1)));
+	    })], _toConsumableArray(gridImagesCopy.slice(selectedImageIdx + 1)));
 	  }
 
-	  return _toConsumableArray(assetData.gridImages);
+	  return gridImagesCopy;
 	}
 
 	function App() {
@@ -8191,11 +8203,20 @@
 	  var _useState11 = react.exports.useState(''),
 	      _useState12 = _slicedToArray(_useState11, 2),
 	      newDefaultPhotoId = _useState12[0],
-	      setDefaultPhotoId = _useState12[1];
+	      setNewDefaultPhotoId = _useState12[1]; // photoEdits data structure
+	  // [{
+	  //   listingId: 123,
+	  //   updatedDefaultPhotoId: 345,
+	  //   updatedPhotoQuality: 'High',
+	  // }]
 
-	  usePhotoEdits();
 
-	  var effectiveGridImages = getEffectiveGridImages(assetData, selectedImageIdx, newDefaultPhotoId);
+	  var _useState13 = react.exports.useState([]),
+	      _useState14 = _slicedToArray(_useState13, 2),
+	      photoEdits = _useState14[0],
+	      setPhotoEdits = _useState14[1];
+
+	  var effectiveGridImages = getEffectiveGridImages(assetData, photoEdits, selectedImageIdx, newDefaultPhotoId);
 
 	  function handleAssetChange(asset) {
 	    if (asset) {
@@ -8214,11 +8235,11 @@
 	  var handleClickDefaultImage = react.exports.useCallback(function (imageIdx) {
 	    setSelectedImageIdx(imageIdx);
 	    setSelectedListing(assetData.gridImages[imageIdx]);
-	    setDefaultPhotoId('');
+	    setNewDefaultPhotoId('');
 	  });
 
 	  function handleClickAdditionalImage(photoId) {
-	    setDefaultPhotoId(photoId);
+	    setNewDefaultPhotoId(photoId);
 	  } // fetch asset on componentDidMount
 
 
@@ -8228,12 +8249,16 @@
 	      handleAssetChange(asset);
 	    });
 	  });
-	  return /*#__PURE__*/React.createElement(React.Fragment, null, selectedListing ? /*#__PURE__*/React.createElement(LeftPanel, {
+	  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+	    className: "flex-column left-side-panel"
+	  }, selectedListing ? /*#__PURE__*/React.createElement(LeftPanel, {
 	    assetData: assetData,
 	    newPhotoId: newDefaultPhotoId,
+	    photoEdits: photoEdits,
 	    selectedListing: selectedListing,
-	    setDefaultPhotoId: setDefaultPhotoId
-	  }) : null, /*#__PURE__*/React.createElement("div", {
+	    setNewDefaultPhotoId: setNewDefaultPhotoId,
+	    setPhotoEdits: setPhotoEdits
+	  }) : null), /*#__PURE__*/React.createElement("div", {
 	    className: "flex-grow flex-column"
 	  }, /*#__PURE__*/React.createElement(Header, {
 	    currentAsset: currentAsset,
@@ -8249,6 +8274,7 @@
 	    gridImages: effectiveGridImages,
 	    isLoading: isLoading,
 	    onClickImage: handleClickDefaultImage,
+	    photoEdits: photoEdits,
 	    selectedListing: selectedListing,
 	    selectedImageIdx: selectedImageIdx,
 	    setSelectedListing: setSelectedListing,

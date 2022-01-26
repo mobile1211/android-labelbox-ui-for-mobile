@@ -5,7 +5,6 @@ import LeftPanel from './LeftPanel';
 import RightPanel from './RightPanel';
 import { get } from './utils';
 import AdditionalPhotos from './AdditionalPhotos';
-import usePhotoEdits from './usePhotoEdits';
 import getEffectiveGridImages from './getEffectiveGridImages';
 
 export default function App() {
@@ -15,11 +14,19 @@ export default function App() {
   const [assetData, setAssetData] = useState();
   const [selectedListing, setSelectedListing] = useState();
   const [selectedImageIdx, setSelectedImageIdx] = useState();
-  const [newDefaultPhotoId, setDefaultPhotoId] = useState('');
-  const { photoEdits } = usePhotoEdits();
+  const [newDefaultPhotoId, setNewDefaultPhotoId] = useState('');
+
+  // photoEdits data structure
+  // [{
+  //   listingId: 123,
+  //   updatedDefaultPhotoId: 345,
+  //   updatedPhotoQuality: 'High',
+  // }]
+  const [photoEdits, setPhotoEdits] = useState([]);
 
   const effectiveGridImages = getEffectiveGridImages(
     assetData,
+    photoEdits,
     selectedImageIdx,
     newDefaultPhotoId
   );
@@ -39,11 +46,11 @@ export default function App() {
   const handleClickDefaultImage = useCallback((imageIdx) => {
     setSelectedImageIdx(imageIdx);
     setSelectedListing(assetData.gridImages[imageIdx]);
-    setDefaultPhotoId('');
+    setNewDefaultPhotoId('');
   });
 
   function handleClickAdditionalImage(photoId) {
-    setDefaultPhotoId(photoId);
+    setNewDefaultPhotoId(photoId);
   }
 
   // fetch asset on componentDidMount
@@ -56,14 +63,18 @@ export default function App() {
 
   return (
     <>
-      {selectedListing ? (
-        <LeftPanel
-          assetData={assetData}
-          newPhotoId={newDefaultPhotoId}
-          selectedListing={selectedListing}
-          setDefaultPhotoId={setDefaultPhotoId}
-        />
-      ) : null}
+      <div className="flex-column left-side-panel">
+        {selectedListing ? (
+          <LeftPanel
+            assetData={assetData}
+            newPhotoId={newDefaultPhotoId}
+            photoEdits={photoEdits}
+            selectedListing={selectedListing}
+            setNewDefaultPhotoId={setNewDefaultPhotoId}
+            setPhotoEdits={setPhotoEdits}
+          />
+        ) : null}
+      </div>
       <div className="flex-grow flex-column">
         <Header
           currentAsset={currentAsset}
@@ -80,6 +91,7 @@ export default function App() {
           gridImages={effectiveGridImages}
           isLoading={isLoading}
           onClickImage={handleClickDefaultImage}
+          photoEdits={photoEdits}
           selectedListing={selectedListing}
           selectedImageIdx={selectedImageIdx}
           setSelectedListing={setSelectedListing}

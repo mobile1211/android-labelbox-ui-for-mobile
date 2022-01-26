@@ -1,24 +1,27 @@
 import React, { useState } from 'react';
-import usePhotoEdits from './usePhotoEdits';
 
 export default function LeftPanel({
   assetData,
   newPhotoId,
+  photoEdits,
   selectedListing,
-  setDefaultPhotoId,
+  setNewDefaultPhotoId,
+  setPhotoEdits,
 }) {
   const [photoQualityTier, setPhotoQualityTier] = useState(
     assetData.qualityTier
   );
   const originalDefaultPhotoId = selectedListing.photoId;
-  const { setPhotoEdits } = usePhotoEdits();
+  const updatedDefaultPhotoId = photoEdits.find(
+    (edit) => edit.listingId === selectedListing.listingId
+  )?.updatedDefaultPhotoId;
 
   function handlePhotoQualityChange(e) {
     setPhotoQualityTier(e.target.value);
   }
 
   function handleRevertChanges() {
-    setDefaultPhotoId('');
+    setNewDefaultPhotoId('');
     setPhotoQualityTier(assetData.qualityTier);
   }
 
@@ -30,8 +33,6 @@ export default function LeftPanel({
         const prevChangeIndex = prevEdits.findIndex(
           (edit) => edit.listingId === selectedListing.listingId
         );
-
-        console.log('prevEdits default photo', prevEdits, prevChangeIndex);
 
         if (prevChangeIndex !== -1) {
           return [
@@ -60,7 +61,6 @@ export default function LeftPanel({
         const prevChangeIndex = prevEdits.findIndex(
           (edit) => edit.listingId === selectedListing.listingId
         );
-        console.log('prevEdits quality', prevEdits, prevChangeIndex);
 
         if (prevChangeIndex !== -1) {
           return [
@@ -81,15 +81,17 @@ export default function LeftPanel({
         }
       });
     }
+
+    handleRevertChanges();
   }
 
   return (
-    <div className="flex-column left-side-panel">
-      <button className="margin-bottom" onClick={handleRevertChanges}>
-        <i className="material-icons">close</i>
-      </button>
+    <>
       <div className="margin-bottom">
-        Selected photo id: {originalDefaultPhotoId}
+        Original photo id: {originalDefaultPhotoId}
+      </div>
+      <div className="margin-bottom">
+        Selected photo id: {updatedDefaultPhotoId || originalDefaultPhotoId}
       </div>
       <form onSubmit={handleSubmit}>
         <label>
@@ -97,7 +99,7 @@ export default function LeftPanel({
           <input type="text" name="photo-id" readOnly value={newPhotoId} />
         </label>
         <label>
-          New photo quality:
+          <div className="label">New photo quality:</div>
           <select value={photoQualityTier} onChange={handlePhotoQualityChange}>
             <option value="Most Inspiring">Most Inspiring</option>
             <option value="High">High</option>
@@ -106,8 +108,13 @@ export default function LeftPanel({
             <option value="Unacceptable">Unacceptable</option>
           </select>
         </label>
-        <input className="save-cta" type="submit" value="Save" />
+        <div className="left-panel-ctas-wrapper">
+          <button onClick={handleRevertChanges} className="cta clear-cta">
+            Clear
+          </button>
+          <input className="cta save-cta" type="submit" value="Save" />
+        </div>
       </form>
-    </div>
+    </>
   );
 }

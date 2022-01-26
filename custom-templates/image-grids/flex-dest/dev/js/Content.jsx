@@ -7,6 +7,7 @@ export default function Content({
   gridImages,
   isLoading,
   onClickImage,
+  photoEdits,
   selectedListing,
   selectedImageIdx,
   setIsLoading,
@@ -47,6 +48,7 @@ export default function Content({
             assetData={assetData}
             gridImages={gridImages}
             onClickImage={onClickImage}
+            photoEdits={photoEdits}
             selectedListing={selectedListing}
             selectedImageIdx={selectedImageIdx}
           />

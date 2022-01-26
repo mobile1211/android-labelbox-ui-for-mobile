@@ -5,6 +5,7 @@ export default function PhotoGridWithHeader({
   assetData,
   gridImages,
   onClickImage,
+  photoEdits,
   selectedListing = {},
   selectedImageIdx,
 }) {
@@ -45,15 +46,21 @@ export default function PhotoGridWithHeader({
       </div>
 
       <div className="photo-grid">
-        {gridImages.map((imgObj, idx) => (
-          <DefaultImage
-            imgObj={imgObj}
-            idx={idx}
-            key={imgObj.photoId}
-            isSelected={selectedImageIdx === idx}
-            onClickImage={(photoIdx) => onClickImage(photoIdx)}
-          />
-        ))}
+        {gridImages.map((imgObj, idx) => {
+          const isEdited = photoEdits.find(
+            (edit) => edit.listingId === imgObj.listingId
+          );
+          return (
+            <DefaultImage
+              imgObj={imgObj}
+              idx={idx}
+              isEdited={isEdited}
+              isSelected={selectedImageIdx === idx}
+              key={imgObj.photoId}
+              onClickImage={(photoIdx) => onClickImage(photoIdx)}
+            />
+          );
+        })}
       </div>
     </>
   );

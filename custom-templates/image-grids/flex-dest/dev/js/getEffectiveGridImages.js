@@ -1,20 +1,44 @@
 export default function getEffectiveGridImages(
   assetData,
+  photoEdits,
   selectedImageIdx,
   newDefaultPhotoId
 ) {
   if (!assetData) return [];
+  let gridImagesCopy = [...assetData.gridImages];
+
+  if (photoEdits.length) {
+    const listingIdsWithUpdatedDefaultPhoto = photoEdits.map(
+      (e) => !!e.updatedDefaultPhotoId && e.listingId
+    );
+    gridImagesCopy = gridImagesCopy.map((imgObj) => {
+      if (listingIdsWithUpdatedDefaultPhoto.includes(imgObj.listingId)) {
+        const updatedPhotoId = photoEdits.find(
+          (edit) => edit.listingId === imgObj.listingId
+        ).updatedDefaultPhotoId;
+        const updatedPhotoLink = imgObj.listingImages.find(
+          (photo) => photo.photoId === updatedPhotoId
+        ).photoLink;
+
+        return Object.assign({}, imgObj, {
+          photoLink: updatedPhotoLink,
+        });
+      }
+      return imgObj;
+    });
+  }
 
   if (typeof selectedImageIdx === 'number' && !!newDefaultPhotoId) {
     return [
-      ...assetData.gridImages.slice(0, selectedImageIdx),
-      Object.assign({}, assetData.gridImages[selectedImageIdx], {
+      ...gridImagesCopy.slice(0, selectedImageIdx),
+      Object.assign({}, gridImagesCopy[selectedImageIdx], {
         photoLink: assetData.gridImages[selectedImageIdx].listingImages.find(
           (photo) => photo.photoId === newDefaultPhotoId
         )?.photoLink,
       }),
-      ...assetData.gridImages.slice(selectedImageIdx + 1),
+      ...gridImagesCopy.slice(selectedImageIdx + 1),
     ];
   }
-  return [...assetData.gridImages];
+
+  return gridImagesCopy;
 }
