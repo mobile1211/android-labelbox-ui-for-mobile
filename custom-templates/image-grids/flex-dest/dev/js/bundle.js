@@ -7800,6 +7800,24 @@
 	  }, "keyboard_arrow_right"));
 	}
 
+	function usePhotoEdits() {
+	  // photoEdits data structure
+	  // [{
+	  //   listingId: 123,
+	  //   updatedDefaultPhotoId: 345,
+	  //   updatedPhotoQuality: 'High',
+	  // }]
+	  var _useState = react.exports.useState([]),
+	      _useState2 = _slicedToArray(_useState, 2),
+	      photoEdits = _useState2[0],
+	      setPhotoEdits = _useState2[1];
+
+	  return {
+	    photoEdits: photoEdits,
+	    setPhotoEdits: setPhotoEdits
+	  };
+	}
+
 	function DefaultImage(_ref) {
 	  var _imgObj$photoLink;
 
@@ -7809,6 +7827,13 @@
 	      onClickImage = _ref.onClickImage;
 	  var photoLink = (_imgObj$photoLink = imgObj.photoLink) !== null && _imgObj$photoLink !== void 0 && _imgObj$photoLink.includes('?') ? "".concat(imgObj.photoLink) : "".concat(imgObj.photoLink, "?img_w=720");
 	  var listingId = imgObj.listingId;
+
+	  var _usePhotoEdits = usePhotoEdits(),
+	      photoEdits = _usePhotoEdits.photoEdits;
+
+	  var isChanged = photoEdits.find(function (edit) {
+	    return edit.listingId === imgObj.listingId;
+	  });
 	  return /*#__PURE__*/React.createElement("div", {
 	    className: "image-container",
 	    onClick: function onClick() {
@@ -7817,7 +7842,7 @@
 	    id: "image-container-".concat(listingId)
 	  }, /*#__PURE__*/React.createElement("img", {
 	    src: photoLink,
-	    className: "default-image ".concat(isSelected ? 'image-selected' : '')
+	    className: "default-image ".concat(isChanged ? 'image-changed' : '', " ").concat(isSelected ? 'image-selected' : '')
 	  }));
 	}
 
@@ -7931,13 +7956,17 @@
 	  var assetData = _ref.assetData,
 	      newPhotoId = _ref.newPhotoId,
 	      selectedListing = _ref.selectedListing,
-	      selectedImageIdx = _ref.selectedImageIdx,
 	      setDefaultPhotoId = _ref.setDefaultPhotoId;
 
 	  var _useState = react.exports.useState(assetData.qualityTier),
 	      _useState2 = _slicedToArray(_useState, 2),
 	      photoQualityTier = _useState2[0],
 	      setPhotoQualityTier = _useState2[1];
+
+	  var originalDefaultPhotoId = selectedListing.photoId;
+
+	  var _usePhotoEdits = usePhotoEdits(),
+	      setPhotoEdits = _usePhotoEdits.setPhotoEdits;
 
 	  function handlePhotoQualityChange(e) {
 	    setPhotoQualityTier(e.target.value);
@@ -7949,8 +7978,49 @@
 	  }
 
 	  function handleSubmit(e) {
-	    e.preventDefault();
-	    console.log('newPhotoId', newPhotoId, 'photoQualityTier', photoQualityTier);
+	    e.preventDefault(); // change default photo id in edits
+
+	    if (!!newPhotoId && newPhotoId !== originalDefaultPhotoId) {
+	      setPhotoEdits(function (prevEdits) {
+	        var prevChangeIndex = prevEdits.findIndex(function (edit) {
+	          return edit.listingId === selectedListing.listingId;
+	        });
+	        console.log('prevEdits default photo', prevEdits, prevChangeIndex);
+
+	        if (prevChangeIndex !== -1) {
+	          return [].concat(_toConsumableArray(prevEdits.slice(0, prevChangeIndex)), [Object.assign({}, prevEdits[prevChangeIndex], {
+	            updatedDefaultPhotoId: newPhotoId
+	          })], _toConsumableArray(prevEdits.slice(prevChangeIndex + 1)));
+	        } else {
+	          return [].concat(_toConsumableArray(prevEdits), [{
+	            listingId: selectedListing.listingId,
+	            updatedDefaultPhotoId: newPhotoId,
+	            updatedPhotoQuality: photoQualityTier
+	          }]);
+	        }
+	      });
+	    } // change photo quality tier in edits
+
+
+	    if (photoQualityTier !== assetData.qualityTier) {
+	      setPhotoEdits(function (prevEdits) {
+	        var prevChangeIndex = prevEdits.findIndex(function (edit) {
+	          return edit.listingId === selectedListing.listingId;
+	        });
+	        console.log('prevEdits quality', prevEdits, prevChangeIndex);
+
+	        if (prevChangeIndex !== -1) {
+	          return [].concat(_toConsumableArray(prevEdits.slice(0, prevChangeIndex)), [Object.assign({}, prevEdits[prevChangeIndex], {
+	            updatedPhotoQuality: photoQualityTier
+	          })], _toConsumableArray(prevEdits.slice(prevChangeIndex + 1)));
+	        } else {
+	          return [].concat(_toConsumableArray(prevEdits), [{
+	            listingId: selectedListing.listingId,
+	            updatedPhotoQuality: photoQualityTier
+	          }]);
+	        }
+	      });
+	    }
 	  }
 
 	  return /*#__PURE__*/React.createElement("div", {
@@ -7962,7 +8032,7 @@
 	    className: "material-icons"
 	  }, "close")), /*#__PURE__*/React.createElement("div", {
 	    className: "margin-bottom"
-	  }, "Selected photo id:", ' ', selectedListing.listingImages[selectedImageIdx].photoId), /*#__PURE__*/React.createElement("form", {
+	  }, "Selected photo id: ", originalDefaultPhotoId), /*#__PURE__*/React.createElement("form", {
 	    onSubmit: handleSubmit
 	  }, /*#__PURE__*/React.createElement("label", null, "New photo id:", /*#__PURE__*/React.createElement("input", {
 	    type: "text",
@@ -8074,6 +8144,22 @@
 	  }));
 	}
 
+	function getEffectiveGridImages(assetData, selectedImageIdx, newDefaultPhotoId) {
+	  if (!assetData) return [];
+
+	  if (typeof selectedImageIdx === 'number' && !!newDefaultPhotoId) {
+	    var _assetData$gridImages;
+
+	    return [].concat(_toConsumableArray(assetData.gridImages.slice(0, selectedImageIdx)), [Object.assign({}, assetData.gridImages[selectedImageIdx], {
+	      photoLink: (_assetData$gridImages = assetData.gridImages[selectedImageIdx].listingImages.find(function (photo) {
+	        return photo.photoId === newDefaultPhotoId;
+	      })) === null || _assetData$gridImages === void 0 ? void 0 : _assetData$gridImages.photoLink
+	    })], _toConsumableArray(assetData.gridImages.slice(selectedImageIdx + 1)));
+	  }
+
+	  return _toConsumableArray(assetData.gridImages);
+	}
+
 	function App() {
 	  var projectId = new URL(window.location.href).searchParams.get('project');
 
@@ -8105,15 +8191,11 @@
 	  var _useState11 = react.exports.useState(''),
 	      _useState12 = _slicedToArray(_useState11, 2),
 	      newDefaultPhotoId = _useState12[0],
-	      setDefaultPhotoId = _useState12[1]; // Edits data structure
-	  // [{
-	  //   listingId: 123,
-	  //   updatedDefaultPhotoId: 345,
-	  //   updatedPhotoQuality: 'High',
-	  // }]
+	      setDefaultPhotoId = _useState12[1];
 
+	  usePhotoEdits();
 
-	  var gridImagesCopy = assetData ? _toConsumableArray(assetData.gridImages) : [];
+	  var effectiveGridImages = getEffectiveGridImages(assetData, selectedImageIdx, newDefaultPhotoId);
 
 	  function handleAssetChange(asset) {
 	    if (asset) {
@@ -8132,6 +8214,7 @@
 	  var handleClickDefaultImage = react.exports.useCallback(function (imageIdx) {
 	    setSelectedImageIdx(imageIdx);
 	    setSelectedListing(assetData.gridImages[imageIdx]);
+	    setDefaultPhotoId('');
 	  });
 
 	  function handleClickAdditionalImage(photoId) {
@@ -8147,10 +8230,9 @@
 	  });
 	  return /*#__PURE__*/React.createElement(React.Fragment, null, selectedListing ? /*#__PURE__*/React.createElement(LeftPanel, {
 	    assetData: assetData,
-	    selectedImageIdx: selectedImageIdx,
+	    newPhotoId: newDefaultPhotoId,
 	    selectedListing: selectedListing,
-	    setDefaultPhotoId: setDefaultPhotoId,
-	    newPhotoId: newDefaultPhotoId
+	    setDefaultPhotoId: setDefaultPhotoId
 	  }) : null, /*#__PURE__*/React.createElement("div", {
 	    className: "flex-grow flex-column"
 	  }, /*#__PURE__*/React.createElement(Header, {
@@ -8164,7 +8246,7 @@
 	  }), /*#__PURE__*/React.createElement(Content, {
 	    assetData: assetData,
 	    currentAsset: currentAsset,
-	    gridImages: gridImagesCopy,
+	    gridImages: effectiveGridImages,
 	    isLoading: isLoading,
 	    onClickImage: handleClickDefaultImage,
 	    selectedListing: selectedListing,

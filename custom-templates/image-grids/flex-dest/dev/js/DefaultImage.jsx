@@ -1,4 +1,5 @@
 import React from 'react';
+import usePhotoEdits from './usePhotoEdits';
 
 export default function DefaultImage({
   imgObj,
@@ -10,6 +11,10 @@ export default function DefaultImage({
     ? `${imgObj.photoLink}`
     : `${imgObj.photoLink}?img_w=720`;
   const listingId = imgObj.listingId;
+  const { photoEdits } = usePhotoEdits();
+  const isChanged = photoEdits.find(
+    (edit) => edit.listingId === imgObj.listingId
+  );
 
   return (
     <div
@@ -19,7 +24,9 @@ export default function DefaultImage({
     >
       <img
         src={photoLink}
-        className={`default-image ${isSelected ? 'image-selected' : ''}`}
+        className={`default-image ${isChanged ? 'image-changed' : ''} ${
+          isSelected ? 'image-selected' : ''
+        }`}
       />
     </div>
   );

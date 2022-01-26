@@ -198,5 +198,9 @@ select {
   float: right;
   margin-top: 32px;
   cursor: pointer;
-  padding: 16px 24px;
+  padding: 12px 24px;
+}
+
+.image-changed {
+  border: 3px solid green;
 }

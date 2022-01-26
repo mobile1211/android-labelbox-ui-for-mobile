@@ -5,6 +5,8 @@ import LeftPanel from './LeftPanel';
 import RightPanel from './RightPanel';
 import { get } from './utils';
 import AdditionalPhotos from './AdditionalPhotos';
+import usePhotoEdits from './usePhotoEdits';
+import getEffectiveGridImages from './getEffectiveGridImages';
 
 export default function App() {
   const projectId = new URL(window.location.href).searchParams.get('project');
@@ -14,15 +16,13 @@ export default function App() {
   const [selectedListing, setSelectedListing] = useState();
   const [selectedImageIdx, setSelectedImageIdx] = useState();
   const [newDefaultPhotoId, setDefaultPhotoId] = useState('');
+  const { photoEdits } = usePhotoEdits();
 
-  // Edits data structure
-  // [{
-  //   listingId: 123,
-  //   updatedDefaultPhotoId: 345,
-  //   updatedPhotoQuality: 'High',
-  // }]
-
-  const gridImagesCopy = assetData ? [...assetData.gridImages] : [];
+  const effectiveGridImages = getEffectiveGridImages(
+    assetData,
+    selectedImageIdx,
+    newDefaultPhotoId
+  );
 
   function handleAssetChange(asset) {
     if (asset) {
@@ -39,6 +39,7 @@ export default function App() {
   const handleClickDefaultImage = useCallback((imageIdx) => {
     setSelectedImageIdx(imageIdx);
     setSelectedListing(assetData.gridImages[imageIdx]);
+    setDefaultPhotoId('');
   });
 
   function handleClickAdditionalImage(photoId) {
@@ -58,10 +59,9 @@ export default function App() {
       {selectedListing ? (
         <LeftPanel
           assetData={assetData}
-          selectedImageIdx={selectedImageIdx}
+          newPhotoId={newDefaultPhotoId}
           selectedListing={selectedListing}
           setDefaultPhotoId={setDefaultPhotoId}
-          newPhotoId={newDefaultPhotoId}
         />
       ) : null}
       <div className="flex-grow flex-column">
@@ -77,7 +77,7 @@ export default function App() {
         <Content
           assetData={assetData}
           currentAsset={currentAsset}
-          gridImages={gridImagesCopy}
+          gridImages={effectiveGridImages}
           isLoading={isLoading}
           onClickImage={handleClickDefaultImage}
           selectedListing={selectedListing}
