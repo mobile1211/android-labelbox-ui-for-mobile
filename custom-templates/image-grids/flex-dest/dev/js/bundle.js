@@ -7675,6 +7675,47 @@
 
 	var ReactDOM = reactDom.exports;
 
+	function ownKeys(object, enumerableOnly) {
+	  var keys = Object.keys(object);
+
+	  if (Object.getOwnPropertySymbols) {
+	    var symbols = Object.getOwnPropertySymbols(object);
+	    enumerableOnly && (symbols = symbols.filter(function (sym) {
+	      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+	    })), keys.push.apply(keys, symbols);
+	  }
+
+	  return keys;
+	}
+
+	function _objectSpread2(target) {
+	  for (var i = 1; i < arguments.length; i++) {
+	    var source = null != arguments[i] ? arguments[i] : {};
+	    i % 2 ? ownKeys(Object(source), !0).forEach(function (key) {
+	      _defineProperty(target, key, source[key]);
+	    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) {
+	      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+	    });
+	  }
+
+	  return target;
+	}
+
+	function _defineProperty(obj, key, value) {
+	  if (key in obj) {
+	    Object.defineProperty(obj, key, {
+	      value: value,
+	      enumerable: true,
+	      configurable: true,
+	      writable: true
+	    });
+	  } else {
+	    obj[key] = value;
+	  }
+
+	  return obj;
+	}
+
 	function _slicedToArray(arr, i) {
 	  return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
 	}
@@ -7889,9 +7930,51 @@
 	  }));
 	}
 
+	function getUpdateReason(edit) {
+	  var updatedDefaultPhotoId = edit.updatedDefaultPhotoId,
+	      updatedPhotoQuality = edit.updatedPhotoQuality;
+
+	  if (!!updatedDefaultPhotoId && !!updatedPhotoQuality) {
+	    return 'update photo + quality';
+	  }
+
+	  if (!!updatedPhotoQuality) {
+	    return 'update quality';
+	  }
+
+	  if (!!updatedDefaultPhotoId) {
+	    return 'update photo';
+	  }
+
+	  return '';
+	}
+
+	function formatEditDataForSubmission(photoEdits, attribute) {
+	  console.log('photoEdits', photoEdits);
+	  var formatted = photoEdits.map(function (edit) {
+	    var listingId = edit.listingId,
+	        updatedDefaultPhotoId = edit.updatedDefaultPhotoId,
+	        updatedPhotoQuality = edit.updatedPhotoQuality;
+
+	    var data = _objectSpread2(_objectSpread2(_objectSpread2({
+	      id_listing: listingId,
+	      listing_category: attribute
+	    }, updatedDefaultPhotoId ? {
+	      photo_id: updatedDefaultPhotoId
+	    } : undefined), updatedPhotoQuality ? {
+	      photo_quality: updatedPhotoQuality
+	    } : undefined), {}, {
+	      update_reason: getUpdateReason(edit)
+	    });
+
+	    return data;
+	  });
+	  console.log('formatted', formatted);
+	  return JSON.stringify(formatted);
+	}
+
 	function Content(_ref) {
 	  var assetData = _ref.assetData,
-	      currentAsset = _ref.currentAsset,
 	      gridImages = _ref.gridImages,
 	      isLoading = _ref.isLoading,
 	      onClickImage = _ref.onClickImage,
@@ -7912,18 +7995,12 @@
 	  var handleSubmit = react.exports.useCallback(function () {
 	    setSelectedListing();
 	    setSelectedImageIdx();
-	    var jumpToNext = !(currentAsset !== null && currentAsset !== void 0 && currentAsset.label);
-
-	    if (jumpToNext) {
+	    var formattedData = formatEditDataForSubmission(photoEdits, assetData === null || assetData === void 0 ? void 0 : assetData.attribute);
+	    Labelbox.setLabelForAsset(formattedData, 'ANY').then(function () {
+	      Labelbox.fetchNextAssetToLabel();
 	      setIsLoading(true);
-	    }
-
-	    Labelbox.setLabelForAsset(label, 'ANY').then(function () {
-	      if (jumpToNext) {
-	        Labelbox.fetchNextAssetToLabel();
-	      }
 	    });
-	  }, []);
+	  }, [photoEdits, assetData]);
 	  return /*#__PURE__*/React.createElement("div", {
 	    className: "content"
 	  }, /*#__PURE__*/React.createElement("div", {
@@ -8281,7 +8358,6 @@
 	    setSelectedImageIdx: setSelectedImageIdx
 	  }), /*#__PURE__*/React.createElement(Content, {
 	    assetData: assetData,
-	    currentAsset: currentAsset,
 	    gridImages: effectiveGridImages,
 	    isLoading: isLoading,
 	    onClickImage: handleClickDefaultImage,

@@ -87,7 +87,6 @@ export default function App() {
         />
         <Content
           assetData={assetData}
-          currentAsset={currentAsset}
           gridImages={effectiveGridImages}
           isLoading={isLoading}
           onClickImage={handleClickDefaultImage}

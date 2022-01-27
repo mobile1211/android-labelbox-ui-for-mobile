@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react';
 import ListingDetailsHeader from './ListingDetailsHeader';
 import ImageGrid from './ImageGrid';
+import formatEditDataForSubmission from './formatEditDataForSubmission';
 
 export default function Content({
   assetData,
-  currentAsset,
   gridImages,
   isLoading,
   onClickImage,
@@ -27,17 +27,17 @@ export default function Content({
   const handleSubmit = useCallback(() => {
     setSelectedListing();
     setSelectedImageIdx();
-    const jumpToNext = !currentAsset?.label;
 
-    if (jumpToNext) {
+    const formattedData = formatEditDataForSubmission(
+      photoEdits,
+      assetData?.attribute
+    );
+
+    Labelbox.setLabelForAsset(formattedData, 'ANY').then(() => {
+      Labelbox.fetchNextAssetToLabel();
       setIsLoading(true);
-    }
-    Labelbox.setLabelForAsset(label, 'ANY').then(() => {
-      if (jumpToNext) {
-        Labelbox.fetchNextAssetToLabel();
-      }
     });
-  }, []);
+  }, [photoEdits, assetData]);
 
   return (
     <div className="content">
