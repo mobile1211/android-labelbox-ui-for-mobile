@@ -39,7 +39,7 @@ export default function ListingDetailsHeader({
               id="selected-pdp-link"
               target="_blank"
             >
-              Link to PDP
+              PDP Link
             </a>
           </div>
         </div>

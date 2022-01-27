@@ -7836,13 +7836,14 @@
 	    href: "https://www.airbnb.com/rooms/".concat(selectedListing.listingId),
 	    id: "selected-pdp-link",
 	    target: "_blank"
-	  }, "Link to PDP")))));
+	  }, "PDP Link")))));
 	}
 
 	function DefaultImage(_ref) {
 	  var _imgObj$photoLink;
 
-	  var imgObj = _ref.imgObj,
+	  var hasQualityTierChanged = _ref.hasQualityTierChanged,
+	      imgObj = _ref.imgObj,
 	      idx = _ref.idx,
 	      isEdited = _ref.isEdited,
 	      isSelected = _ref.isSelected,
@@ -7857,7 +7858,7 @@
 	    id: "image-container-".concat(listingId)
 	  }, /*#__PURE__*/React.createElement("img", {
 	    src: photoLink,
-	    className: "default-image ".concat(isEdited ? 'image-edited' : '', " ").concat(isSelected ? 'image-selected' : '')
+	    className: "default-image ".concat(hasQualityTierChanged ? 'image-quality-changed' : '', " ").concat(isEdited ? 'image-edited' : '', " ").concat(isSelected ? 'image-selected' : '')
 	  }));
 	}
 
@@ -7865,17 +7866,20 @@
 	  var images = _ref.images,
 	      _onClickImage = _ref.onClickImage,
 	      photoEdits = _ref.photoEdits,
+	      qualityTier = _ref.qualityTier,
 	      selectedImageIdx = _ref.selectedImageIdx;
 	  return /*#__PURE__*/React.createElement("div", {
 	    className: "photo-grid"
 	  }, images.map(function (imgObj, idx) {
-	    var isEdited = photoEdits.find(function (edit) {
+	    var listingEdit = photoEdits.find(function (edit) {
 	      return edit.listingId === imgObj.listingId;
 	    });
+	    var hasQualiterTierChanged = !!(listingEdit !== null && listingEdit !== void 0 && listingEdit.updatedPhotoQuality) && (listingEdit === null || listingEdit === void 0 ? void 0 : listingEdit.updatedPhotoQuality) !== qualityTier;
 	    return /*#__PURE__*/React.createElement(DefaultImage, {
+	      hasQualityTierChanged: hasQualiterTierChanged,
 	      imgObj: imgObj,
 	      idx: idx,
-	      isEdited: isEdited,
+	      isEdited: !!listingEdit,
 	      isSelected: selectedImageIdx === idx,
 	      key: imgObj.photoId,
 	      onClickImage: function onClickImage(photoIdx) {
@@ -7933,6 +7937,7 @@
 	    images: gridImages,
 	    onClickImage: onClickImage,
 	    photoEdits: photoEdits,
+	    qualityTier: assetData === null || assetData === void 0 ? void 0 : assetData.qualityTier,
 	    selectedImageIdx: selectedImageIdx
 	  }))), /*#__PURE__*/React.createElement("div", {
 	    className: "cta-container"

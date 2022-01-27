@@ -56,6 +56,7 @@ export default function Content({
               images={gridImages}
               onClickImage={onClickImage}
               photoEdits={photoEdits}
+              qualityTier={assetData?.qualityTier}
               selectedImageIdx={selectedImageIdx}
             />
           </>

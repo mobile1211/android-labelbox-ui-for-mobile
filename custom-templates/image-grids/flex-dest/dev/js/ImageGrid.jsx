@@ -5,20 +5,25 @@ export default function ImageGrid({
   images,
   onClickImage,
   photoEdits,
+  qualityTier,
   selectedImageIdx,
 }) {
   return (
     <div className="photo-grid">
       {images.map((imgObj, idx) => {
-        const isEdited = photoEdits.find(
+        const listingEdit = photoEdits.find(
           (edit) => edit.listingId === imgObj.listingId
         );
+        const hasQualiterTierChanged =
+          !!listingEdit?.updatedPhotoQuality &&
+          listingEdit?.updatedPhotoQuality !== qualityTier;
 
         return (
           <DefaultImage
+            hasQualityTierChanged={hasQualiterTierChanged}
             imgObj={imgObj}
             idx={idx}
-            isEdited={isEdited}
+            isEdited={!!listingEdit}
             isSelected={selectedImageIdx === idx}
             key={imgObj.photoId}
             onClickImage={(photoIdx) => onClickImage(photoIdx)}

@@ -1,6 +1,7 @@
 import React from 'react';
 
 export default function DefaultImage({
+  hasQualityTierChanged,
   imgObj,
   idx,
   isEdited,
@@ -20,7 +21,9 @@ export default function DefaultImage({
     >
       <img
         src={photoLink}
-        className={`default-image ${isEdited ? 'image-edited' : ''} ${
+        className={`default-image ${
+          hasQualityTierChanged ? 'image-quality-changed' : ''
+        } ${isEdited ? 'image-edited' : ''} ${
           isSelected ? 'image-selected' : ''
         }`}
       />

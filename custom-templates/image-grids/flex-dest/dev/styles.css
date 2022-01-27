@@ -47,6 +47,7 @@ body{
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
+  z-index: -1;
 }
 
 .listing-info{
@@ -81,6 +82,7 @@ font-style: italic;
   position: sticky;
   top: 0;
   background-color: white;
+  z-index: 1;
 }
 
 .navbar{
@@ -226,4 +228,9 @@ select {
 .left-panel-ctas-wrapper {
   float: right;
   margin-top: 32px;
+}
+
+.image-quality-changed {
+  filter: grayscale(1);
+  opacity: 0.4;
 }
