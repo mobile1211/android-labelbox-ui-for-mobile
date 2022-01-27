@@ -145,15 +145,21 @@ font-style: italic;
   border: 3px solid black;
 }
 
+.cta-container {
+  display: flex;
+  margin-top: 24px;
+}
+
 .skip-cta {
+  border: 1px solid #222222;
+  color: #222222;
   margin-right: 10px; 
-  width: 200px; 
 }
 
 .submit-cta {
+  border: 1px solid #222222;
   background-color: #222222;
   color: white;
-  width: 200px; 
 }
 
 .listing-info-container {

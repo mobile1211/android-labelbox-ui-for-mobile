@@ -61,7 +61,7 @@ export default function Content({
           </>
         )}
       </div>
-      <div style={{ display: 'flex' }}>
+      <div className="cta-container">
         <a className="cta skip-cta" onClick={handleSkip}>
           Skip
         </a>

@@ -13,6 +13,7 @@ export default function ImageGrid({
         const isEdited = photoEdits.find(
           (edit) => edit.listingId === imgObj.listingId
         );
+
         return (
           <DefaultImage
             imgObj={imgObj}

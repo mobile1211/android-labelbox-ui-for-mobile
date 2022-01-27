@@ -7800,10 +7800,22 @@
 	  }, "keyboard_arrow_right"));
 	}
 
+	function getUpdatedDefaultPhotoId(photoEdits, listing) {
+	  var _photoEdits$find;
+
+	  return (_photoEdits$find = photoEdits.find(function (edit) {
+	    return edit.listingId === listing.listingId;
+	  })) === null || _photoEdits$find === void 0 ? void 0 : _photoEdits$find.updatedDefaultPhotoId;
+	}
+
 	function ListingDetailsHeader(_ref) {
 	  var attribute = _ref.attribute,
+	      photoEdits = _ref.photoEdits,
 	      qualityTier = _ref.qualityTier,
-	      selectedListing = _ref.selectedListing;
+	      _ref$selectedListing = _ref.selectedListing,
+	      selectedListing = _ref$selectedListing === void 0 ? {} : _ref$selectedListing;
+	  var originalDefaultPhotoId = selectedListing.photoId;
+	  var updatedDefaultPhotoId = getUpdatedDefaultPhotoId(photoEdits, selectedListing);
 	  return /*#__PURE__*/React.createElement("div", {
 	    className: "header sticky"
 	  }, /*#__PURE__*/React.createElement("div", {
@@ -7814,7 +7826,7 @@
 	    className: "listing-info"
 	  }, "Listing ID: ", selectedListing.listingId), /*#__PURE__*/React.createElement("div", {
 	    className: "listing-info"
-	  }, "Photo ID: ", selectedListing.photoId), /*#__PURE__*/React.createElement("div", {
+	  }, "Photo ID: ", updatedDefaultPhotoId || originalDefaultPhotoId), /*#__PURE__*/React.createElement("div", {
 	    className: "listing-info"
 	  }, "Property type: ", selectedListing.propertyType), /*#__PURE__*/React.createElement("div", {
 	    className: "listing-info"
@@ -7923,9 +7935,7 @@
 	    photoEdits: photoEdits,
 	    selectedImageIdx: selectedImageIdx
 	  }))), /*#__PURE__*/React.createElement("div", {
-	    style: {
-	      display: 'flex'
-	    }
+	    className: "cta-container"
 	  }, /*#__PURE__*/React.createElement("a", {
 	    className: "cta skip-cta",
 	    onClick: handleSkip
@@ -7936,8 +7946,6 @@
 	}
 
 	function LeftPanel(_ref) {
-	  var _photoEdits$find;
-
 	  var assetData = _ref.assetData,
 	      newPhotoId = _ref.newPhotoId,
 	      photoEdits = _ref.photoEdits,
@@ -7951,9 +7959,7 @@
 	      setPhotoQualityTier = _useState2[1];
 
 	  var originalDefaultPhotoId = selectedListing.photoId;
-	  var updatedDefaultPhotoId = (_photoEdits$find = photoEdits.find(function (edit) {
-	    return edit.listingId === selectedListing.listingId;
-	  })) === null || _photoEdits$find === void 0 ? void 0 : _photoEdits$find.updatedDefaultPhotoId;
+	  var updatedDefaultPhotoId = getUpdatedDefaultPhotoId(photoEdits, selectedListing);
 
 	  function handlePhotoQualityChange(e) {
 	    setPhotoQualityTier(e.target.value);

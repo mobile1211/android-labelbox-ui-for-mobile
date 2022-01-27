@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import getUpdatedDefaultPhotoId from './getUpdatedDefaultPhotoId';
 
 export default function LeftPanel({
   assetData,
@@ -12,9 +13,10 @@ export default function LeftPanel({
     assetData.qualityTier
   );
   const originalDefaultPhotoId = selectedListing.photoId;
-  const updatedDefaultPhotoId = photoEdits.find(
-    (edit) => edit.listingId === selectedListing.listingId
-  )?.updatedDefaultPhotoId;
+  const updatedDefaultPhotoId = getUpdatedDefaultPhotoId(
+    photoEdits,
+    selectedListing
+  );
 
   function handlePhotoQualityChange(e) {
     setPhotoQualityTier(e.target.value);
