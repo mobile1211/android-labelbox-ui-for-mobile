@@ -7800,6 +7800,33 @@
 	  }, "keyboard_arrow_right"));
 	}
 
+	function ListingDetailsHeader(_ref) {
+	  var attribute = _ref.attribute,
+	      qualityTier = _ref.qualityTier,
+	      selectedListing = _ref.selectedListing;
+	  return /*#__PURE__*/React.createElement("div", {
+	    className: "header sticky"
+	  }, /*#__PURE__*/React.createElement("div", {
+	    className: "listing-title"
+	  }, /*#__PURE__*/React.createElement("h3", null, attribute, " - ", qualityTier), /*#__PURE__*/React.createElement("div", {
+	    className: "listing-header"
+	  }, /*#__PURE__*/React.createElement("div", {
+	    className: "listing-info"
+	  }, "Listing ID: ", selectedListing.listingId), /*#__PURE__*/React.createElement("div", {
+	    className: "listing-info"
+	  }, "Photo ID: ", selectedListing.photoId), /*#__PURE__*/React.createElement("div", {
+	    className: "listing-info"
+	  }, "Property type: ", selectedListing.propertyType), /*#__PURE__*/React.createElement("div", {
+	    className: "listing-info"
+	  }, "Room type: ", selectedListing.roomType), /*#__PURE__*/React.createElement("div", {
+	    className: "listing-info"
+	  }, /*#__PURE__*/React.createElement("a", {
+	    href: "https://www.airbnb.com/rooms/".concat(selectedListing.listingId),
+	    id: "selected-pdp-link",
+	    target: "_blank"
+	  }, "Link to PDP")))));
+	}
+
 	function DefaultImage(_ref) {
 	  var _imgObj$photoLink;
 
@@ -7822,38 +7849,14 @@
 	  }));
 	}
 
-	function PhotoGridWithHeader(_ref) {
-	  var assetData = _ref.assetData,
-	      gridImages = _ref.gridImages,
+	function ImageGrid(_ref) {
+	  var images = _ref.images,
 	      _onClickImage = _ref.onClickImage,
 	      photoEdits = _ref.photoEdits,
-	      _ref$selectedListing = _ref.selectedListing,
-	      selectedListing = _ref$selectedListing === void 0 ? {} : _ref$selectedListing,
 	      selectedImageIdx = _ref.selectedImageIdx;
-	  if (!assetData) return null;
-	  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-	    className: "header sticky"
-	  }, /*#__PURE__*/React.createElement("div", {
-	    className: "listing-title"
-	  }, /*#__PURE__*/React.createElement("h3", null, assetData.attribute, " - ", assetData.qualityTier), /*#__PURE__*/React.createElement("div", {
-	    className: "listing-header"
-	  }, /*#__PURE__*/React.createElement("div", {
-	    className: "listing-info"
-	  }, "Listing ID: ", selectedListing.listingId), /*#__PURE__*/React.createElement("div", {
-	    className: "listing-info"
-	  }, "Photo ID: ", selectedListing.photoId), /*#__PURE__*/React.createElement("div", {
-	    className: "listing-info"
-	  }, "Property type: ", selectedListing.propertyType), /*#__PURE__*/React.createElement("div", {
-	    className: "listing-info"
-	  }, "Room type: ", selectedListing.roomType), /*#__PURE__*/React.createElement("div", {
-	    className: "listing-info"
-	  }, /*#__PURE__*/React.createElement("a", {
-	    href: "https://www.airbnb.com/rooms/".concat(selectedListing.listingId),
-	    id: "selected-pdp-link",
-	    target: "_blank"
-	  }, "Link to PDP"))))), /*#__PURE__*/React.createElement("div", {
+	  return /*#__PURE__*/React.createElement("div", {
 	    className: "photo-grid"
-	  }, gridImages.map(function (imgObj, idx) {
+	  }, images.map(function (imgObj, idx) {
 	    var isEdited = photoEdits.find(function (edit) {
 	      return edit.listingId === imgObj.listingId;
 	    });
@@ -7867,7 +7870,7 @@
 	        return _onClickImage(photoIdx);
 	      }
 	    });
-	  })));
+	  }));
 	}
 
 	function Content(_ref) {
@@ -7909,30 +7912,27 @@
 	    className: "content"
 	  }, /*#__PURE__*/React.createElement("div", {
 	    id: "asset"
-	  }, isLoading ? 'loading...' : /*#__PURE__*/React.createElement(PhotoGridWithHeader, {
-	    assetData: assetData,
-	    gridImages: gridImages,
+	  }, isLoading ? 'loading...' : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(ListingDetailsHeader, {
+	    attribute: assetData === null || assetData === void 0 ? void 0 : assetData.attribute,
+	    photoEdits: photoEdits,
+	    qualityTier: assetData === null || assetData === void 0 ? void 0 : assetData.qualityTier,
+	    selectedListing: selectedListing
+	  }), /*#__PURE__*/React.createElement(ImageGrid, {
+	    images: gridImages,
 	    onClickImage: onClickImage,
 	    photoEdits: photoEdits,
-	    selectedListing: selectedListing,
 	    selectedImageIdx: selectedImageIdx
-	  })), /*#__PURE__*/React.createElement("div", {
-	    className: "flex-column questions"
-	  }, /*#__PURE__*/React.createElement("div", {
-	    id: "questions"
-	  }), /*#__PURE__*/React.createElement("div", {
-	    className: "flex-grow"
-	  }), /*#__PURE__*/React.createElement("div", {
+	  }))), /*#__PURE__*/React.createElement("div", {
 	    style: {
 	      display: 'flex'
 	    }
 	  }, /*#__PURE__*/React.createElement("a", {
-	    className: "waves-effect waves-light btn-large skip-button",
+	    className: "cta skip-cta",
 	    onClick: handleSkip
 	  }, "Skip"), /*#__PURE__*/React.createElement("a", {
-	    className: "waves-effect waves-light btn-large submit-button",
+	    className: "cta submit-cta",
 	    onClick: handleSubmit
-	  }, "Submit"))));
+	  }, "Submit")));
 	}
 
 	function LeftPanel(_ref) {

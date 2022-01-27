@@ -145,15 +145,14 @@ font-style: italic;
   border: 3px solid black;
 }
 
-.skip-button {
-  background-color: white; 
-  color: black; 
+.skip-cta {
   margin-right: 10px; 
   width: 200px; 
 }
 
-.submit-button {
-  background-color: #03a9f4;
+.submit-cta {
+  background-color: #222222;
+  color: white;
   width: 200px; 
 }
 

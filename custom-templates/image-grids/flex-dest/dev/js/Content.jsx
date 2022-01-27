@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
-import PhotoGridWithHeader from './PhotoGridWithHeader';
+import ListingDetailsHeader from './ListingDetailsHeader';
+import ImageGrid from './ImageGrid';
 
 export default function Content({
   assetData,
@@ -44,33 +45,29 @@ export default function Content({
         {isLoading ? (
           'loading...'
         ) : (
-          <PhotoGridWithHeader
-            assetData={assetData}
-            gridImages={gridImages}
-            onClickImage={onClickImage}
-            photoEdits={photoEdits}
-            selectedListing={selectedListing}
-            selectedImageIdx={selectedImageIdx}
-          />
+          <>
+            <ListingDetailsHeader
+              attribute={assetData?.attribute}
+              photoEdits={photoEdits}
+              qualityTier={assetData?.qualityTier}
+              selectedListing={selectedListing}
+            />
+            <ImageGrid
+              images={gridImages}
+              onClickImage={onClickImage}
+              photoEdits={photoEdits}
+              selectedImageIdx={selectedImageIdx}
+            />
+          </>
         )}
       </div>
-      <div className="flex-column questions">
-        <div id="questions" />
-        <div className="flex-grow" />
-        <div style={{ display: 'flex' }}>
-          <a
-            className="waves-effect waves-light btn-large skip-button"
-            onClick={handleSkip}
-          >
-            Skip
-          </a>
-          <a
-            className="waves-effect waves-light btn-large submit-button"
-            onClick={handleSubmit}
-          >
-            Submit
-          </a>
-        </div>
+      <div style={{ display: 'flex' }}>
+        <a className="cta skip-cta" onClick={handleSkip}>
+          Skip
+        </a>
+        <a className="cta submit-cta" onClick={handleSubmit}>
+          Submit
+        </a>
       </div>
     </div>
   );
