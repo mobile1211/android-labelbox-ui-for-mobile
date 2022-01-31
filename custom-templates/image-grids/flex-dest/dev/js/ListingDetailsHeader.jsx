@@ -1,5 +1,5 @@
 import React from 'react';
-import getUpdatedDefaultPhotoId from './getUpdatedDefaultPhotoId';
+import getUpdatedDefaultPhotoInfo from './getUpdatedDefaultPhotoInfo';
 
 export default function ListingDetailsHeader({
   attribute,
@@ -8,10 +8,10 @@ export default function ListingDetailsHeader({
   selectedListing = {},
 }) {
   const originalDefaultPhotoId = selectedListing.photoId;
-  const updatedDefaultPhotoId = getUpdatedDefaultPhotoId(
+  const updatedDefaultPhotoId = getUpdatedDefaultPhotoInfo(
     photoEdits,
     selectedListing
-  );
+  )?.updatedDefaultPhotoId;
 
   return (
     <div className="header sticky">

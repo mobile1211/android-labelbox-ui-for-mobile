@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 export default function RightPanel({ selectedListing }) {
   useEffect(() => {
     document.querySelector('div.flex-column.right-side-panel').scrollTo(0, 0);
-  }, [lat, lng]);
+  }, [selectedListing]);
 
   if (!selectedListing) return null;
   const {

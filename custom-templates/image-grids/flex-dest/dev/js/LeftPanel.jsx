@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import getUpdatedDefaultPhotoId from './getUpdatedDefaultPhotoId';
+import React, { useEffect, useState } from 'react';
+import getUpdatedDefaultPhotoInfo from './getUpdatedDefaultPhotoInfo';
 
 export default function LeftPanel({
   assetData,
@@ -9,22 +9,54 @@ export default function LeftPanel({
   setNewDefaultPhotoId,
   setPhotoEdits,
 }) {
-  const [photoQualityTier, setPhotoQualityTier] = useState(
-    assetData.qualityTier
-  );
+  const originalPhotoQualityTier = assetData.qualityTier;
   const originalDefaultPhotoId = selectedListing.photoId;
-  const updatedDefaultPhotoId = getUpdatedDefaultPhotoId(
+
+  const updatedDefaultPhotoInfo = getUpdatedDefaultPhotoInfo(
     photoEdits,
     selectedListing
   );
+  const updatedDefaultPhotoId = updatedDefaultPhotoInfo?.updatedDefaultPhotoId;
+  const updatedDefaultPhotoQualityTier =
+    updatedDefaultPhotoInfo?.updatedPhotoQuality;
+
+  const [photoQualityTier, setPhotoQualityTier] = useState(
+    updatedDefaultPhotoQualityTier || originalPhotoQualityTier
+  );
+
+  useEffect(() => {
+    setPhotoQualityTier(
+      updatedDefaultPhotoQualityTier || originalPhotoQualityTier
+    );
+  }, [selectedListing]);
 
   function handlePhotoQualityChange(e) {
     setPhotoQualityTier(e.target.value);
   }
 
-  function handleRevertChanges() {
+  function clearUnsavedChanges() {
     setNewDefaultPhotoId('');
     setPhotoQualityTier(assetData.qualityTier);
+  }
+
+  function handleResetChanges() {
+    clearUnsavedChanges();
+
+    // delete saved change entry from photoEdits
+    setPhotoEdits((prevEdits) => {
+      const prevChangeIndex = prevEdits.findIndex(
+        (edit) => edit.listingId === selectedListing.listingId
+      );
+
+      if (prevChangeIndex !== -1) {
+        return [
+          ...prevEdits.slice(0, prevChangeIndex),
+          ...prevEdits.slice(prevChangeIndex + 1),
+        ];
+      } else {
+        return prevEdits;
+      }
+    });
   }
 
   function handleSubmit(e) {
@@ -83,15 +115,10 @@ export default function LeftPanel({
         }
       });
     }
-
-    handleRevertChanges();
   }
 
   return (
     <>
-      <div className="margin-bottom">
-        Original photo id: {originalDefaultPhotoId}
-      </div>
       <div className="margin-bottom">
         Selected photo id: {updatedDefaultPhotoId || originalDefaultPhotoId}
       </div>
@@ -111,8 +138,8 @@ export default function LeftPanel({
           </select>
         </label>
         <div className="left-panel-ctas-wrapper">
-          <button onClick={handleRevertChanges} className="cta clear-cta">
-            Clear
+          <button onClick={handleResetChanges} className="cta clear-cta">
+            Reset
           </button>
           <input className="cta save-cta" type="submit" value="Save" />
         </div>

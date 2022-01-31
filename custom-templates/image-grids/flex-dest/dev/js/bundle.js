@@ -7841,22 +7841,22 @@
 	  }, "keyboard_arrow_right"));
 	}
 
-	function getUpdatedDefaultPhotoId(photoEdits, listing) {
-	  var _photoEdits$find;
-
-	  return (_photoEdits$find = photoEdits.find(function (edit) {
+	function getUpdatedDefaultPhotoInfo(photoEdits, listing) {
+	  return photoEdits.find(function (edit) {
 	    return edit.listingId === listing.listingId;
-	  })) === null || _photoEdits$find === void 0 ? void 0 : _photoEdits$find.updatedDefaultPhotoId;
+	  });
 	}
 
 	function ListingDetailsHeader(_ref) {
+	  var _getUpdatedDefaultPho;
+
 	  var attribute = _ref.attribute,
 	      photoEdits = _ref.photoEdits,
 	      qualityTier = _ref.qualityTier,
 	      _ref$selectedListing = _ref.selectedListing,
 	      selectedListing = _ref$selectedListing === void 0 ? {} : _ref$selectedListing;
 	  var originalDefaultPhotoId = selectedListing.photoId;
-	  var updatedDefaultPhotoId = getUpdatedDefaultPhotoId(photoEdits, selectedListing);
+	  var updatedDefaultPhotoId = (_getUpdatedDefaultPho = getUpdatedDefaultPhotoInfo(photoEdits, selectedListing)) === null || _getUpdatedDefaultPho === void 0 ? void 0 : _getUpdatedDefaultPho.updatedDefaultPhotoId;
 	  return /*#__PURE__*/React.createElement("div", {
 	    className: "header sticky"
 	  }, /*#__PURE__*/React.createElement("div", {
@@ -7969,7 +7969,6 @@
 
 	    return data;
 	  });
-	  console.log('formatted', formatted);
 	  return JSON.stringify(formatted);
 	}
 
@@ -8034,22 +8033,44 @@
 	      selectedListing = _ref.selectedListing,
 	      setNewDefaultPhotoId = _ref.setNewDefaultPhotoId,
 	      setPhotoEdits = _ref.setPhotoEdits;
+	  var originalPhotoQualityTier = assetData.qualityTier;
+	  var originalDefaultPhotoId = selectedListing.photoId;
+	  var updatedDefaultPhotoInfo = getUpdatedDefaultPhotoInfo(photoEdits, selectedListing);
+	  var updatedDefaultPhotoId = updatedDefaultPhotoInfo === null || updatedDefaultPhotoInfo === void 0 ? void 0 : updatedDefaultPhotoInfo.updatedDefaultPhotoId;
+	  var updatedDefaultPhotoQualityTier = updatedDefaultPhotoInfo === null || updatedDefaultPhotoInfo === void 0 ? void 0 : updatedDefaultPhotoInfo.updatedPhotoQuality;
 
-	  var _useState = react.exports.useState(assetData.qualityTier),
+	  var _useState = react.exports.useState(updatedDefaultPhotoQualityTier || originalPhotoQualityTier),
 	      _useState2 = _slicedToArray(_useState, 2),
 	      photoQualityTier = _useState2[0],
 	      setPhotoQualityTier = _useState2[1];
 
-	  var originalDefaultPhotoId = selectedListing.photoId;
-	  var updatedDefaultPhotoId = getUpdatedDefaultPhotoId(photoEdits, selectedListing);
+	  react.exports.useEffect(function () {
+	    setPhotoQualityTier(updatedDefaultPhotoQualityTier || originalPhotoQualityTier);
+	  }, [selectedListing]);
 
 	  function handlePhotoQualityChange(e) {
 	    setPhotoQualityTier(e.target.value);
 	  }
 
-	  function handleRevertChanges() {
+	  function clearUnsavedChanges() {
 	    setNewDefaultPhotoId('');
 	    setPhotoQualityTier(assetData.qualityTier);
+	  }
+
+	  function handleResetChanges() {
+	    clearUnsavedChanges(); // delete saved change entry from photoEdits
+
+	    setPhotoEdits(function (prevEdits) {
+	      var prevChangeIndex = prevEdits.findIndex(function (edit) {
+	        return edit.listingId === selectedListing.listingId;
+	      });
+
+	      if (prevChangeIndex !== -1) {
+	        return [].concat(_toConsumableArray(prevEdits.slice(0, prevChangeIndex)), _toConsumableArray(prevEdits.slice(prevChangeIndex + 1)));
+	      } else {
+	        return prevEdits;
+	      }
+	    });
 	  }
 
 	  function handleSubmit(e) {
@@ -8094,13 +8115,9 @@
 	        }
 	      });
 	    }
-
-	    handleRevertChanges();
 	  }
 
 	  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-	    className: "margin-bottom"
-	  }, "Original photo id: ", originalDefaultPhotoId), /*#__PURE__*/React.createElement("div", {
 	    className: "margin-bottom"
 	  }, "Selected photo id: ", updatedDefaultPhotoId || originalDefaultPhotoId), /*#__PURE__*/React.createElement("form", {
 	    onSubmit: handleSubmit
@@ -8127,9 +8144,9 @@
 	  }, "Unacceptable"))), /*#__PURE__*/React.createElement("div", {
 	    className: "left-panel-ctas-wrapper"
 	  }, /*#__PURE__*/React.createElement("button", {
-	    onClick: handleRevertChanges,
+	    onClick: handleResetChanges,
 	    className: "cta clear-cta"
-	  }, "Clear"), /*#__PURE__*/React.createElement("input", {
+	  }, "Reset"), /*#__PURE__*/React.createElement("input", {
 	    className: "cta save-cta",
 	    type: "submit",
 	    value: "Save"
@@ -8140,7 +8157,7 @@
 	  var selectedListing = _ref.selectedListing;
 	  react.exports.useEffect(function () {
 	    document.querySelector('div.flex-column.right-side-panel').scrollTo(0, 0);
-	  }, [lat, lng]);
+	  }, [selectedListing]);
 	  if (!selectedListing) return null;
 	  var title = selectedListing.listingTitle,
 	      description = selectedListing.listingDescription,

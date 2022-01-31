@@ -34,6 +34,5 @@ export default function formatEditDataForSubmission(photoEdits, attribute) {
     return data;
   });
 
-  console.log('formatted', formatted);
   return JSON.stringify(formatted);
 }
