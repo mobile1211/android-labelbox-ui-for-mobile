@@ -7880,17 +7880,19 @@
 	  }, "PDP Link")))));
 	}
 
-	function DefaultImage(_ref) {
-	  var _imgObj$photoLink;
+	function getResizedImageUrl(photoLink) {
+	  return photoLink !== null && photoLink !== void 0 && photoLink.includes('?') ? "".concat(photoLink) : "".concat(photoLink, "?img_w=480");
+	}
 
+	function DefaultImage(_ref) {
 	  var hasQualityTierChanged = _ref.hasQualityTierChanged,
 	      imgObj = _ref.imgObj,
 	      idx = _ref.idx,
 	      isEdited = _ref.isEdited,
 	      isSelected = _ref.isSelected,
 	      onClickImage = _ref.onClickImage;
-	  var photoLink = (_imgObj$photoLink = imgObj.photoLink) !== null && _imgObj$photoLink !== void 0 && _imgObj$photoLink.includes('?') ? "".concat(imgObj.photoLink) : "".concat(imgObj.photoLink, "?img_w=720");
 	  var listingId = imgObj.listingId;
+	  var imageUrl = getResizedImageUrl(imgObj.photoLink);
 	  return /*#__PURE__*/React.createElement("div", {
 	    className: "image-container",
 	    onClick: function onClick() {
@@ -7898,7 +7900,7 @@
 	    },
 	    id: "image-container-".concat(listingId)
 	  }, /*#__PURE__*/React.createElement("img", {
-	    src: photoLink,
+	    src: imageUrl,
 	    className: "default-image ".concat(hasQualityTierChanged ? 'image-quality-changed' : '', " ").concat(isEdited ? 'image-edited' : '', " ").concat(isSelected ? 'image-selected' : '')
 	  }));
 	}
@@ -8210,6 +8212,7 @@
 	  var isSelected = _ref.isSelected,
 	      listingImage = _ref.listingImage,
 	      _onClick = _ref.onClick;
+	  var imageUrl = getResizedImageUrl(listingImage.photoLink);
 	  return /*#__PURE__*/React.createElement("div", {
 	    className: "additional-image-wrapper"
 	  }, /*#__PURE__*/React.createElement("div", null, "Photo ID: ", listingImage.photoId), /*#__PURE__*/React.createElement("button", {
@@ -8218,7 +8221,7 @@
 	      return _onClick(listingImage.photoId);
 	    }
 	  }, /*#__PURE__*/React.createElement("img", {
-	    src: listingImage.photoLink,
+	    src: imageUrl,
 	    width: "100%"
 	  })));
 	}

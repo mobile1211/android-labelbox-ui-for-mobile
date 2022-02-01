@@ -1,6 +1,9 @@
 import React from 'react';
+import getResizedImageUrl from './getResizedImageUrl';
 
 export default function AdditionalImage({ isSelected, listingImage, onClick }) {
+  const imageUrl = getResizedImageUrl(listingImage.photoLink);
+
   return (
     <div className="additional-image-wrapper">
       <div>Photo ID: {listingImage.photoId}</div>
@@ -8,7 +11,7 @@ export default function AdditionalImage({ isSelected, listingImage, onClick }) {
         className={`additional-image ${isSelected ? 'image-selected' : ''}`}
         onClick={() => onClick(listingImage.photoId)}
       >
-        <img src={listingImage.photoLink} width="100%" />
+        <img src={imageUrl} width="100%" />
       </button>
     </div>
   );

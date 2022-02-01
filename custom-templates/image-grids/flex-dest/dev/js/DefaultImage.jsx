@@ -1,4 +1,5 @@
 import React from 'react';
+import getResizedImageUrl from './getResizedImageUrl';
 
 export default function DefaultImage({
   hasQualityTierChanged,
@@ -8,10 +9,8 @@ export default function DefaultImage({
   isSelected,
   onClickImage,
 }) {
-  const photoLink = imgObj.photoLink?.includes('?')
-    ? `${imgObj.photoLink}`
-    : `${imgObj.photoLink}?img_w=720`;
   const listingId = imgObj.listingId;
+  const imageUrl = getResizedImageUrl(imgObj.photoLink);
 
   return (
     <div
@@ -20,7 +19,7 @@ export default function DefaultImage({
       id={`image-container-${listingId}`}
     >
       <img
-        src={photoLink}
+        src={imageUrl}
         className={`default-image ${
           hasQualityTierChanged ? 'image-quality-changed' : ''
         } ${isEdited ? 'image-edited' : ''} ${
