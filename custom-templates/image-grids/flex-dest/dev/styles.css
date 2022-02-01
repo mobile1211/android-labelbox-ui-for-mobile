@@ -71,11 +71,11 @@ body{
 }
 
 .text{
-background-color: #ececec;
-padding: 30px;
-font-size: 20px;
-overflow: auto;
-font-style: italic;
+  background-color: #ececec;
+  padding: 30px;
+  font-size: 20px;
+  overflow: auto;
+  font-style: italic;
 }
 
 .sticky{
@@ -86,8 +86,8 @@ font-style: italic;
 }
 
 .navbar{
- padding: 10px;
- border-bottom: 1px solid #e8e8e8;
+  padding: 10px;
+  border-bottom: 1px solid #e8e8e8;
 }
 
 .header-container {
@@ -144,7 +144,7 @@ font-style: italic;
 
 .image-selected {
   background-color: none !important;
-  border: 3px solid black;
+  border: 3px solid blue;
 }
 
 .cta-container {
@@ -195,7 +195,7 @@ select {
 }
 
 .flex-column .additional-image:focus {
-  border: 3px solid black;
+  border: 3px solid blue;
 }
 
 .cta {
