@@ -7807,7 +7807,7 @@
 	    setSelectedImageIdx();
 	    setIsLoading(true);
 
-	    if (currentAsset.previous) {
+	    if (currentAsset !== null && currentAsset !== void 0 && currentAsset.previous) {
 	      Labelbox.setLabelAsCurrentAsset(currentAsset.previous);
 	    }
 	  }, [currentAsset]);
@@ -7816,7 +7816,7 @@
 	    setSelectedImageIdx();
 	    setIsLoading(true);
 
-	    if (currentAsset.next) {
+	    if (currentAsset !== null && currentAsset !== void 0 && currentAsset.next) {
 	      Labelbox.setLabelAsCurrentAsset(currentAsset.next);
 	    } else {
 	      Labelbox.fetchNextAssetToLabel();
@@ -8272,6 +8272,27 @@
 	  return gridImagesCopy;
 	}
 
+	// photoEdits data structure
+	// [{
+	//   listingId: 123,
+	//   updatedDefaultPhotoId: 345,
+	//   updatedPhotoQuality: 'High',
+	// }]
+	function convertLabelToPhotoEdit(labels) {
+	  return labels.map(function (label) {
+	    var id_listing = label.id_listing,
+	        photo_id = label.photo_id,
+	        photo_quality = label.photo_quality;
+	    return _objectSpread2(_objectSpread2({
+	      listingId: id_listing
+	    }, photo_id ? {
+	      updatedDefaultPhotoId: photo_id
+	    } : undefined), photo_quality ? {
+	      updatedPhotoQuality: photo_quality
+	    } : undefined);
+	  });
+	}
+
 	function App() {
 	  var projectId = new URL(window.location.href).searchParams.get('project');
 
@@ -8321,6 +8342,14 @@
 	    if (asset) {
 	      var assetDataStr = get(asset.data).replace(/NaN/g, 'null');
 	      var parsedAssetData = JSON.parse(assetDataStr);
+
+	      if (asset.label) {
+	        if (asset.label === 'Skip') return;
+	        var labels = JSON.parse(asset.label);
+	        var formattedLabels = convertLabelToPhotoEdit(labels);
+	        console.log(formattedLabels);
+	        setPhotoEdits(formattedLabels);
+	      }
 
 	      if ((currentAsset === null || currentAsset === void 0 ? void 0 : currentAsset.id) !== asset.id) {
 	        setCurrentAsset(asset);

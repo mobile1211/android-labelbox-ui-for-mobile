@@ -18,7 +18,7 @@ export default function Header({
     setSelectedImageIdx();
     setIsLoading(true);
 
-    if (currentAsset.previous) {
+    if (currentAsset?.previous) {
       Labelbox.setLabelAsCurrentAsset(currentAsset.previous);
     }
   }, [currentAsset]);
@@ -28,7 +28,7 @@ export default function Header({
     setSelectedImageIdx();
     setIsLoading(true);
 
-    if (currentAsset.next) {
+    if (currentAsset?.next) {
       Labelbox.setLabelAsCurrentAsset(currentAsset.next);
     } else {
       Labelbox.fetchNextAssetToLabel();

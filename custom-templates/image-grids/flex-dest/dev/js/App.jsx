@@ -38,6 +38,14 @@ export default function App() {
         const assetDataStr = get(asset.data).replace(/NaN/g, 'null');
         const parsedAssetData = JSON.parse(assetDataStr);
 
+        if (asset.label) {
+          if (asset.label === 'Skip') return;
+          const labels = JSON.parse(asset.label);
+          const formattedLabels = convertLabelToPhotoEdit(labels);
+          console.log(formattedLabels);
+          setPhotoEdits(formattedLabels);
+        }
+
         if (currentAsset?.id !== asset.id) {
           setCurrentAsset(asset);
           setAssetData(parsedAssetData);
