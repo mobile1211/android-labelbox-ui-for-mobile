@@ -41,14 +41,13 @@ export default function Content({
 
   return (
     <div className="content">
-      <div id="asset">
+      <div>
         {isLoading ? (
           'loading...'
         ) : (
           <>
             <ListingDetailsHeader
               attribute={assetData?.attribute}
-              photoEdits={photoEdits}
               qualityTier={assetData?.qualityTier}
               selectedListing={selectedListing}
             />

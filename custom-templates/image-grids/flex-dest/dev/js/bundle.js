@@ -7841,22 +7841,11 @@
 	  }, "keyboard_arrow_right"));
 	}
 
-	function getUpdatedDefaultPhotoInfo(photoEdits, listing) {
-	  return photoEdits.find(function (edit) {
-	    return edit.listingId === listing.listingId;
-	  });
-	}
-
 	function ListingDetailsHeader(_ref) {
-	  var _getUpdatedDefaultPho;
-
 	  var attribute = _ref.attribute,
-	      photoEdits = _ref.photoEdits,
 	      qualityTier = _ref.qualityTier,
 	      _ref$selectedListing = _ref.selectedListing,
 	      selectedListing = _ref$selectedListing === void 0 ? {} : _ref$selectedListing;
-	  var originalDefaultPhotoId = selectedListing.photoId;
-	  var updatedDefaultPhotoId = (_getUpdatedDefaultPho = getUpdatedDefaultPhotoInfo(photoEdits, selectedListing)) === null || _getUpdatedDefaultPho === void 0 ? void 0 : _getUpdatedDefaultPho.updatedDefaultPhotoId;
 	  return /*#__PURE__*/React.createElement("div", {
 	    className: "header sticky"
 	  }, /*#__PURE__*/React.createElement("div", {
@@ -7866,8 +7855,6 @@
 	  }, /*#__PURE__*/React.createElement("div", {
 	    className: "listing-info"
 	  }, "Listing ID: ", selectedListing.listingId), /*#__PURE__*/React.createElement("div", {
-	    className: "listing-info"
-	  }, "Photo ID: ", updatedDefaultPhotoId || originalDefaultPhotoId), /*#__PURE__*/React.createElement("div", {
 	    className: "listing-info"
 	  }, "Property type: ", selectedListing.propertyType), /*#__PURE__*/React.createElement("div", {
 	    className: "listing-info"
@@ -8004,11 +7991,8 @@
 	  }, [photoEdits, assetData]);
 	  return /*#__PURE__*/React.createElement("div", {
 	    className: "content"
-	  }, /*#__PURE__*/React.createElement("div", {
-	    id: "asset"
-	  }, isLoading ? 'loading...' : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(ListingDetailsHeader, {
+	  }, /*#__PURE__*/React.createElement("div", null, isLoading ? 'loading...' : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(ListingDetailsHeader, {
 	    attribute: assetData === null || assetData === void 0 ? void 0 : assetData.attribute,
-	    photoEdits: photoEdits,
 	    qualityTier: assetData === null || assetData === void 0 ? void 0 : assetData.qualityTier,
 	    selectedListing: selectedListing
 	  }), /*#__PURE__*/React.createElement(ImageGrid, {
@@ -8026,6 +8010,12 @@
 	    className: "cta submit-cta",
 	    onClick: handleSubmit
 	  }, "Submit")));
+	}
+
+	function getUpdatedDefaultPhotoInfo(photoEdits, listing) {
+	  return photoEdits.find(function (edit) {
+	    return edit.listingId === listing.listingId;
+	  });
 	}
 
 	function LeftPanel(_ref) {
@@ -8119,18 +8109,16 @@
 	    }
 	  }
 
-	  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-	    className: "margin-bottom"
-	  }, "Selected photo id: ", updatedDefaultPhotoId || originalDefaultPhotoId), /*#__PURE__*/React.createElement("form", {
+	  return /*#__PURE__*/React.createElement("form", {
 	    onSubmit: handleSubmit
-	  }, /*#__PURE__*/React.createElement("label", null, "New photo id:", /*#__PURE__*/React.createElement("input", {
+	  }, /*#__PURE__*/React.createElement("label", null, "Photo id:", /*#__PURE__*/React.createElement("input", {
 	    type: "text",
 	    name: "photo-id",
 	    readOnly: true,
-	    value: newPhotoId
+	    value: newPhotoId || updatedDefaultPhotoId || originalDefaultPhotoId
 	  })), /*#__PURE__*/React.createElement("label", null, /*#__PURE__*/React.createElement("div", {
 	    className: "label"
-	  }, "New photo quality:"), /*#__PURE__*/React.createElement("select", {
+	  }, "Photo quality:"), /*#__PURE__*/React.createElement("select", {
 	    value: photoQualityTier,
 	    onChange: handlePhotoQualityChange
 	  }, /*#__PURE__*/React.createElement("option", {
@@ -8152,7 +8140,7 @@
 	    className: "cta save-cta",
 	    type: "submit",
 	    value: "Save"
-	  }))));
+	  })));
 	}
 
 	function RightPanel(_ref) {

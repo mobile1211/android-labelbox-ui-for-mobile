@@ -118,32 +118,32 @@ export default function LeftPanel({
   }
 
   return (
-    <>
-      <div className="margin-bottom">
-        Selected photo id: {updatedDefaultPhotoId || originalDefaultPhotoId}
+    <form onSubmit={handleSubmit}>
+      <label>
+        Photo id:
+        <input
+          type="text"
+          name="photo-id"
+          readOnly
+          value={newPhotoId || updatedDefaultPhotoId || originalDefaultPhotoId}
+        />
+      </label>
+      <label>
+        <div className="label">Photo quality:</div>
+        <select value={photoQualityTier} onChange={handlePhotoQualityChange}>
+          <option value="Most Inspiring">Most Inspiring</option>
+          <option value="High">High</option>
+          <option value="Acceptable">Acceptable</option>
+          <option value="Low Quality">Low Quality</option>
+          <option value="Unacceptable">Unacceptable</option>
+        </select>
+      </label>
+      <div className="left-panel-ctas-wrapper">
+        <button onClick={handleResetChanges} className="cta clear-cta">
+          Reset
+        </button>
+        <input className="cta save-cta" type="submit" value="Save" />
       </div>
-      <form onSubmit={handleSubmit}>
-        <label>
-          New photo id:
-          <input type="text" name="photo-id" readOnly value={newPhotoId} />
-        </label>
-        <label>
-          <div className="label">New photo quality:</div>
-          <select value={photoQualityTier} onChange={handlePhotoQualityChange}>
-            <option value="Most Inspiring">Most Inspiring</option>
-            <option value="High">High</option>
-            <option value="Acceptable">Acceptable</option>
-            <option value="Low Quality">Low Quality</option>
-            <option value="Unacceptable">Unacceptable</option>
-          </select>
-        </label>
-        <div className="left-panel-ctas-wrapper">
-          <button onClick={handleResetChanges} className="cta clear-cta">
-            Reset
-          </button>
-          <input className="cta save-cta" type="submit" value="Save" />
-        </div>
-      </form>
-    </>
+    </form>
   );
 }

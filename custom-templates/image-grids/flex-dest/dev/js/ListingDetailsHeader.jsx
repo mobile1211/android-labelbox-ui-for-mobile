@@ -1,18 +1,10 @@
 import React from 'react';
-import getUpdatedDefaultPhotoInfo from './getUpdatedDefaultPhotoInfo';
 
 export default function ListingDetailsHeader({
   attribute,
-  photoEdits,
   qualityTier,
   selectedListing = {},
 }) {
-  const originalDefaultPhotoId = selectedListing.photoId;
-  const updatedDefaultPhotoId = getUpdatedDefaultPhotoInfo(
-    photoEdits,
-    selectedListing
-  )?.updatedDefaultPhotoId;
-
   return (
     <div className="header sticky">
       <div className="listing-title">
@@ -23,9 +15,6 @@ export default function ListingDetailsHeader({
         <div className="listing-header">
           <div className="listing-info">
             Listing ID: {selectedListing.listingId}
-          </div>
-          <div className="listing-info">
-            Photo ID: {updatedDefaultPhotoId || originalDefaultPhotoId}
           </div>
           <div className="listing-info">
             Property type: {selectedListing.propertyType}
