@@ -8318,6 +8318,8 @@
 	    if (asset) {
 	      var assetDataStr = get(asset.data).replace(/NaN/g, 'null');
 	      var parsedAssetData = JSON.parse(assetDataStr);
+	      var label = JSON.parse(asset.label);
+	      console.log('label', label);
 
 	      if ((currentAsset === null || currentAsset === void 0 ? void 0 : currentAsset.id) !== asset.id) {
 	        setCurrentAsset(asset);
