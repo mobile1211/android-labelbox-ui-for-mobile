@@ -7807,7 +7807,7 @@
 	    setSelectedImageIdx();
 	    setIsLoading(true);
 
-	    if (currentAsset !== null && currentAsset !== void 0 && currentAsset.previous) {
+	    if (hasPrev) {
 	      Labelbox.setLabelAsCurrentAsset(currentAsset.previous);
 	    }
 	  }, [currentAsset]);
@@ -7816,7 +7816,7 @@
 	    setSelectedImageIdx();
 	    setIsLoading(true);
 
-	    if (currentAsset !== null && currentAsset !== void 0 && currentAsset.next) {
+	    if (hasNext) {
 	      Labelbox.setLabelAsCurrentAsset(currentAsset.next);
 	    } else {
 	      Labelbox.fetchNextAssetToLabel();
@@ -7895,16 +7895,18 @@
 	function ImageGrid(_ref) {
 	  var images = _ref.images,
 	      _onClickImage = _ref.onClickImage,
+	      labels = _ref.labels,
 	      photoEdits = _ref.photoEdits,
 	      qualityTier = _ref.qualityTier,
 	      selectedImageIdx = _ref.selectedImageIdx;
 	  return /*#__PURE__*/React.createElement("div", {
 	    className: "photo-grid"
 	  }, images.map(function (imgObj, idx) {
-	    var listingEdit = photoEdits.find(function (edit) {
+	    // considered edited if in labels or unsubmitted photo edits
+	    var listingEdit = [].concat(_toConsumableArray(labels), _toConsumableArray(photoEdits)).find(function (edit) {
 	      return edit.listingId === imgObj.listingId;
 	    });
-	    var hasQualiterTierChanged = !!(listingEdit !== null && listingEdit !== void 0 && listingEdit.updatedPhotoQuality) && (listingEdit === null || listingEdit === void 0 ? void 0 : listingEdit.updatedPhotoQuality) !== qualityTier;
+	    var hasQualiterTierChanged = !!(listingEdit !== null && listingEdit !== void 0 && listingEdit.photoQualityTier) && (listingEdit === null || listingEdit === void 0 ? void 0 : listingEdit.photoQualityTier) !== qualityTier;
 	    return /*#__PURE__*/React.createElement(DefaultImage, {
 	      hasQualityTierChanged: hasQualiterTierChanged,
 	      imgObj: imgObj,
@@ -7920,15 +7922,15 @@
 	}
 
 	function getUpdateReason(edit, originalPhotoQualityTier) {
-	  var updatedDefaultPhotoId = edit.updatedDefaultPhotoId,
-	      updatedPhotoQuality = edit.updatedPhotoQuality;
-	  var photoQualityTierChanged = !!updatedPhotoQuality && updatedPhotoQuality !== originalPhotoQualityTier;
+	  var defaultPhotoId = edit.defaultPhotoId,
+	      photoQualityTier = edit.photoQualityTier;
+	  var photoQualityTierChanged = !!photoQualityTier && photoQualityTier !== originalPhotoQualityTier;
 
-	  if (photoQualityTierChanged && updatedPhotoQuality === 'Unacceptable') {
+	  if (photoQualityTierChanged && photoQualityTier === 'Unacceptable') {
 	    return 'remove category';
 	  }
 
-	  if (!!updatedDefaultPhotoId && photoQualityTierChanged) {
+	  if (!!defaultPhotoId && photoQualityTierChanged) {
 	    return 'update photo + quality';
 	  }
 
@@ -7936,7 +7938,7 @@
 	    return 'update quality';
 	  }
 
-	  if (!!updatedDefaultPhotoId) {
+	  if (!!defaultPhotoId) {
 	    return 'update photo';
 	  }
 
@@ -7946,16 +7948,16 @@
 	function formatEditDataForSubmission(photoEdits, attribute, originalPhotoQualityTier) {
 	  var formatted = photoEdits.map(function (edit) {
 	    var listingId = edit.listingId,
-	        updatedDefaultPhotoId = edit.updatedDefaultPhotoId,
-	        updatedPhotoQuality = edit.updatedPhotoQuality;
+	        defaultPhotoId = edit.defaultPhotoId,
+	        photoQualityTier = edit.photoQualityTier;
 
 	    var data = _objectSpread2(_objectSpread2(_objectSpread2({
 	      id_listing: listingId,
 	      listing_category: attribute
-	    }, updatedDefaultPhotoId ? {
-	      photo_id: updatedDefaultPhotoId
-	    } : undefined), updatedPhotoQuality ? {
-	      photo_quality: updatedPhotoQuality
+	    }, defaultPhotoId ? {
+	      photo_id: defaultPhotoId
+	    } : undefined), photoQualityTier ? {
+	      photo_quality: photoQualityTier
 	    } : undefined), {}, {
 	      update_reason: getUpdateReason(edit, originalPhotoQualityTier)
 	    });
@@ -7970,12 +7972,14 @@
 	      gridImages = _ref.gridImages,
 	      isLoading = _ref.isLoading,
 	      onClickImage = _ref.onClickImage,
+	      labels = _ref.labels,
 	      photoEdits = _ref.photoEdits,
 	      selectedListing = _ref.selectedListing,
 	      selectedImageIdx = _ref.selectedImageIdx,
 	      setIsLoading = _ref.setIsLoading,
 	      setSelectedListing = _ref.setSelectedListing,
-	      setSelectedImageIdx = _ref.setSelectedImageIdx;
+	      setSelectedImageIdx = _ref.setSelectedImageIdx,
+	      setPhotoEdits = _ref.setPhotoEdits;
 	  var handleSkip = react.exports.useCallback(function () {
 	    setSelectedListing();
 	    setSelectedImageIdx();
@@ -7991,21 +7995,23 @@
 	    Labelbox.setLabelForAsset(formattedData, 'ANY').then(function () {
 	      Labelbox.fetchNextAssetToLabel();
 	      setIsLoading(true);
+	      setPhotoEdits([]);
 	    });
 	  }, [photoEdits, assetData]);
 	  return /*#__PURE__*/React.createElement("div", {
 	    className: "content"
-	  }, /*#__PURE__*/React.createElement("div", null, isLoading ? 'loading...' : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(ListingDetailsHeader, {
+	  }, isLoading ? 'loading...' : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(ListingDetailsHeader, {
 	    attribute: assetData === null || assetData === void 0 ? void 0 : assetData.attribute,
 	    qualityTier: assetData === null || assetData === void 0 ? void 0 : assetData.qualityTier,
 	    selectedListing: selectedListing
 	  }), /*#__PURE__*/React.createElement(ImageGrid, {
 	    images: gridImages,
 	    onClickImage: onClickImage,
+	    labels: labels,
 	    photoEdits: photoEdits,
 	    qualityTier: assetData === null || assetData === void 0 ? void 0 : assetData.qualityTier,
 	    selectedImageIdx: selectedImageIdx
-	  }))), /*#__PURE__*/React.createElement("div", {
+	  })), /*#__PURE__*/React.createElement("div", {
 	    className: "cta-container"
 	  }, /*#__PURE__*/React.createElement("a", {
 	    className: "cta skip-cta",
@@ -8024,7 +8030,7 @@
 
 	function LeftPanel(_ref) {
 	  var assetData = _ref.assetData,
-	      newPhotoId = _ref.newPhotoId,
+	      newDefaultPhotoId = _ref.newDefaultPhotoId,
 	      photoEdits = _ref.photoEdits,
 	      selectedListing = _ref.selectedListing,
 	      setNewDefaultPhotoId = _ref.setNewDefaultPhotoId,
@@ -8032,8 +8038,8 @@
 	  var originalPhotoQualityTier = assetData.qualityTier;
 	  var originalDefaultPhotoId = selectedListing.photoId;
 	  var updatedDefaultPhotoInfo = getUpdatedDefaultPhotoInfo(photoEdits, selectedListing);
-	  var updatedDefaultPhotoId = updatedDefaultPhotoInfo === null || updatedDefaultPhotoInfo === void 0 ? void 0 : updatedDefaultPhotoInfo.updatedDefaultPhotoId;
-	  var updatedDefaultPhotoQualityTier = updatedDefaultPhotoInfo === null || updatedDefaultPhotoInfo === void 0 ? void 0 : updatedDefaultPhotoInfo.updatedPhotoQuality;
+	  var updatedDefaultPhotoId = updatedDefaultPhotoInfo === null || updatedDefaultPhotoInfo === void 0 ? void 0 : updatedDefaultPhotoInfo.defaultPhotoId;
+	  var updatedDefaultPhotoQualityTier = updatedDefaultPhotoInfo === null || updatedDefaultPhotoInfo === void 0 ? void 0 : updatedDefaultPhotoInfo.photoQualityTier;
 
 	  var _useState = react.exports.useState(updatedDefaultPhotoQualityTier || originalPhotoQualityTier),
 	      _useState2 = _slicedToArray(_useState, 2),
@@ -8072,7 +8078,7 @@
 	  function handleSubmit(e) {
 	    e.preventDefault(); // change default photo id in edits
 
-	    if (!!newPhotoId && newPhotoId !== originalDefaultPhotoId) {
+	    if (!!newDefaultPhotoId && newDefaultPhotoId !== originalDefaultPhotoId) {
 	      setPhotoEdits(function (prevEdits) {
 	        var prevChangeIndex = prevEdits.findIndex(function (edit) {
 	          return edit.listingId === selectedListing.listingId;
@@ -8080,13 +8086,13 @@
 
 	        if (prevChangeIndex !== -1) {
 	          return [].concat(_toConsumableArray(prevEdits.slice(0, prevChangeIndex)), [Object.assign({}, prevEdits[prevChangeIndex], {
-	            updatedDefaultPhotoId: newPhotoId
+	            defaultPhotoId: newDefaultPhotoId
 	          })], _toConsumableArray(prevEdits.slice(prevChangeIndex + 1)));
 	        } else {
 	          return [].concat(_toConsumableArray(prevEdits), [{
 	            listingId: selectedListing.listingId,
-	            updatedDefaultPhotoId: newPhotoId,
-	            updatedPhotoQuality: photoQualityTier
+	            defaultPhotoId: newDefaultPhotoId,
+	            photoQualityTier: photoQualityTier
 	          }]);
 	        }
 	      });
@@ -8101,12 +8107,12 @@
 
 	        if (prevChangeIndex !== -1) {
 	          return [].concat(_toConsumableArray(prevEdits.slice(0, prevChangeIndex)), [Object.assign({}, prevEdits[prevChangeIndex], {
-	            updatedPhotoQuality: photoQualityTier
+	            photoQualityTier: photoQualityTier
 	          })], _toConsumableArray(prevEdits.slice(prevChangeIndex + 1)));
 	        } else {
 	          return [].concat(_toConsumableArray(prevEdits), [{
 	            listingId: selectedListing.listingId,
-	            updatedPhotoQuality: photoQualityTier
+	            photoQualityTier: photoQualityTier
 	          }]);
 	        }
 	      });
@@ -8119,7 +8125,7 @@
 	    type: "text",
 	    name: "photo-id",
 	    readOnly: true,
-	    value: newPhotoId || updatedDefaultPhotoId || originalDefaultPhotoId
+	    value: newDefaultPhotoId || updatedDefaultPhotoId || originalDefaultPhotoId
 	  })), /*#__PURE__*/React.createElement("label", null, /*#__PURE__*/React.createElement("div", {
 	    className: "label"
 	  }, "Photo quality:"), /*#__PURE__*/React.createElement("select", {
@@ -8233,30 +8239,39 @@
 	  }));
 	}
 
-	function getEffectiveGridImages(assetData, photoEdits, selectedImageIdx, newDefaultPhotoId) {
+	function overrideGridImages(changes, gridImages) {
+	  var listingIdsWithUpdatedDefaultPhoto = changes.map(function (e) {
+	    return !!e.defaultPhotoId && e.listingId;
+	  });
+	  var updatedGridImages = gridImages.map(function (imgObj) {
+	    if (listingIdsWithUpdatedDefaultPhoto.includes(imgObj.listingId)) {
+	      var updatedPhotoId = changes.find(function (edit) {
+	        return edit.listingId === imgObj.listingId;
+	      }).defaultPhotoId;
+	      var updatedPhotoLink = imgObj.listingImages.find(function (photo) {
+	        return photo.photoId === updatedPhotoId;
+	      }).photoLink;
+	      return Object.assign({}, imgObj, {
+	        photoLink: updatedPhotoLink
+	      });
+	    }
+
+	    return imgObj;
+	  });
+	  return updatedGridImages;
+	}
+
+	function getEffectiveGridImages(assetData, labels, photoEdits, selectedImageIdx, newDefaultPhotoId) {
 	  if (!assetData) return [];
 
 	  var gridImagesCopy = _toConsumableArray(assetData.gridImages);
 
-	  if (photoEdits.length) {
-	    var listingIdsWithUpdatedDefaultPhoto = photoEdits.map(function (e) {
-	      return !!e.updatedDefaultPhotoId && e.listingId;
-	    });
-	    gridImagesCopy = gridImagesCopy.map(function (imgObj) {
-	      if (listingIdsWithUpdatedDefaultPhoto.includes(imgObj.listingId)) {
-	        var updatedPhotoId = photoEdits.find(function (edit) {
-	          return edit.listingId === imgObj.listingId;
-	        }).updatedDefaultPhotoId;
-	        var updatedPhotoLink = imgObj.listingImages.find(function (photo) {
-	          return photo.photoId === updatedPhotoId;
-	        }).photoLink;
-	        return Object.assign({}, imgObj, {
-	          photoLink: updatedPhotoLink
-	        });
-	      }
+	  if (labels.length) {
+	    gridImagesCopy = overrideGridImages(labels, gridImagesCopy);
+	  }
 
-	      return imgObj;
-	    });
+	  if (photoEdits.length) {
+	    gridImagesCopy = overrideGridImages(photoEdits, gridImagesCopy);
 	  }
 
 	  if (typeof selectedImageIdx === 'number' && !!newDefaultPhotoId) {
@@ -8275,10 +8290,10 @@
 	// photoEdits data structure
 	// [{
 	//   listingId: 123,
-	//   updatedDefaultPhotoId: 345,
-	//   updatedPhotoQuality: 'High',
+	//   defaultPhotoId: 345,
+	//   photoQualityTier: 'High',
 	// }]
-	function convertLabelToPhotoEdit(labels) {
+	function convertLabelToPhotoEditFormat(labels) {
 	  return labels.map(function (label) {
 	    var id_listing = label.id_listing,
 	        photo_id = label.photo_id,
@@ -8286,9 +8301,9 @@
 	    return _objectSpread2(_objectSpread2({
 	      listingId: id_listing
 	    }, photo_id ? {
-	      updatedDefaultPhotoId: photo_id
+	      defaultPhotoId: photo_id
 	    } : undefined), photo_quality ? {
-	      updatedPhotoQuality: photo_quality
+	      photoQualityTier: photo_quality
 	    } : undefined);
 	  });
 	}
@@ -8327,17 +8342,22 @@
 	      setNewDefaultPhotoId = _useState12[1]; // photoEdits data structure
 	  // [{
 	  //   listingId: 123,
-	  //   updatedDefaultPhotoId: 345,
-	  //   updatedPhotoQuality: 'High',
+	  //   defaultPhotoId: 345,
+	  //   photoQualityTier: 'High',
 	  // }]
 
 
 	  var _useState13 = react.exports.useState([]),
 	      _useState14 = _slicedToArray(_useState13, 2),
-	      photoEdits = _useState14[0],
-	      setPhotoEdits = _useState14[1];
+	      labels = _useState14[0],
+	      setLabels = _useState14[1];
 
-	  var effectiveGridImages = getEffectiveGridImages(assetData, photoEdits, selectedImageIdx, newDefaultPhotoId);
+	  var _useState15 = react.exports.useState([]),
+	      _useState16 = _slicedToArray(_useState15, 2),
+	      photoEdits = _useState16[0],
+	      setPhotoEdits = _useState16[1];
+
+	  var effectiveGridImages = getEffectiveGridImages(assetData, labels, photoEdits, selectedImageIdx, newDefaultPhotoId);
 	  var handleAssetChange = react.exports.useCallback(function (asset) {
 	    if (asset) {
 	      var assetDataStr = get(asset.data).replace(/NaN/g, 'null');
@@ -8345,10 +8365,11 @@
 
 	      if (asset.label) {
 	        if (asset.label === 'Skip') return;
-	        var labels = JSON.parse(asset.label);
-	        var formattedLabels = convertLabelToPhotoEdit(labels);
-	        console.log(formattedLabels);
-	        setPhotoEdits(formattedLabels);
+
+	        var _labels = JSON.parse(asset.label);
+
+	        var formattedLabels = convertLabelToPhotoEditFormat(_labels);
+	        setLabels(formattedLabels);
 	      }
 
 	      if ((currentAsset === null || currentAsset === void 0 ? void 0 : currentAsset.id) !== asset.id) {
@@ -8380,7 +8401,7 @@
 	    className: "flex-column left-side-panel"
 	  }, selectedListing ? /*#__PURE__*/React.createElement(LeftPanel, {
 	    assetData: assetData,
-	    newPhotoId: newDefaultPhotoId,
+	    newDefaultPhotoId: newDefaultPhotoId,
 	    photoEdits: photoEdits,
 	    selectedListing: selectedListing,
 	    setNewDefaultPhotoId: setNewDefaultPhotoId,
@@ -8400,12 +8421,14 @@
 	    gridImages: effectiveGridImages,
 	    isLoading: isLoading,
 	    onClickImage: handleClickDefaultImage,
+	    labels: labels,
 	    photoEdits: photoEdits,
 	    selectedListing: selectedListing,
 	    selectedImageIdx: selectedImageIdx,
 	    setSelectedListing: setSelectedListing,
 	    setSelectedImageIdx: setSelectedImageIdx,
-	    setIsLoading: setIsLoading
+	    setIsLoading: setIsLoading,
+	    setPhotoEdits: setPhotoEdits
 	  })), /*#__PURE__*/React.createElement("div", {
 	    className: "flex-column right-side-panel"
 	  }, /*#__PURE__*/React.createElement(RightPanel, {

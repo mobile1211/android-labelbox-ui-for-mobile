@@ -6,7 +6,7 @@ import RightPanel from './RightPanel';
 import { get } from './utils';
 import AdditionalPhotos from './AdditionalPhotos';
 import getEffectiveGridImages from './getEffectiveGridImages';
-import convertLabelToPhotoEdit from './convertLabelToPhotoEdit';
+import convertLabelToPhotoEditFormat from './convertLabelToPhotoEditFormat';
 
 export default function App() {
   const projectId = new URL(window.location.href).searchParams.get('project');
@@ -20,13 +20,15 @@ export default function App() {
   // photoEdits data structure
   // [{
   //   listingId: 123,
-  //   updatedDefaultPhotoId: 345,
-  //   updatedPhotoQuality: 'High',
+  //   defaultPhotoId: 345,
+  //   photoQualityTier: 'High',
   // }]
+  const [labels, setLabels] = useState([]);
   const [photoEdits, setPhotoEdits] = useState([]);
 
   const effectiveGridImages = getEffectiveGridImages(
     assetData,
+    labels,
     photoEdits,
     selectedImageIdx,
     newDefaultPhotoId
@@ -41,9 +43,9 @@ export default function App() {
         if (asset.label) {
           if (asset.label === 'Skip') return;
           const labels = JSON.parse(asset.label);
-          const formattedLabels = convertLabelToPhotoEdit(labels);
-          console.log(formattedLabels);
-          setPhotoEdits(formattedLabels);
+          const formattedLabels = convertLabelToPhotoEditFormat(labels);
+
+          setLabels(formattedLabels);
         }
 
         if (currentAsset?.id !== asset.id) {
@@ -83,7 +85,7 @@ export default function App() {
         {selectedListing ? (
           <LeftPanel
             assetData={assetData}
-            newPhotoId={newDefaultPhotoId}
+            newDefaultPhotoId={newDefaultPhotoId}
             photoEdits={photoEdits}
             selectedListing={selectedListing}
             setNewDefaultPhotoId={setNewDefaultPhotoId}
@@ -106,12 +108,14 @@ export default function App() {
           gridImages={effectiveGridImages}
           isLoading={isLoading}
           onClickImage={handleClickDefaultImage}
+          labels={labels}
           photoEdits={photoEdits}
           selectedListing={selectedListing}
           selectedImageIdx={selectedImageIdx}
           setSelectedListing={setSelectedListing}
           setSelectedImageIdx={setSelectedImageIdx}
           setIsLoading={setIsLoading}
+          setPhotoEdits={setPhotoEdits}
         />
       </div>
       <div className="flex-column right-side-panel">

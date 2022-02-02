@@ -8,12 +8,14 @@ export default function Content({
   gridImages,
   isLoading,
   onClickImage,
+  labels,
   photoEdits,
   selectedListing,
   selectedImageIdx,
   setIsLoading,
   setSelectedListing,
   setSelectedImageIdx,
+  setPhotoEdits,
 }) {
   const handleSkip = useCallback(() => {
     setSelectedListing();
@@ -37,31 +39,31 @@ export default function Content({
     Labelbox.setLabelForAsset(formattedData, 'ANY').then(() => {
       Labelbox.fetchNextAssetToLabel();
       setIsLoading(true);
+      setPhotoEdits([]);
     });
   }, [photoEdits, assetData]);
 
   return (
     <div className="content">
-      <div>
-        {isLoading ? (
-          'loading...'
-        ) : (
-          <>
-            <ListingDetailsHeader
-              attribute={assetData?.attribute}
-              qualityTier={assetData?.qualityTier}
-              selectedListing={selectedListing}
-            />
-            <ImageGrid
-              images={gridImages}
-              onClickImage={onClickImage}
-              photoEdits={photoEdits}
-              qualityTier={assetData?.qualityTier}
-              selectedImageIdx={selectedImageIdx}
-            />
-          </>
-        )}
-      </div>
+      {isLoading ? (
+        'loading...'
+      ) : (
+        <>
+          <ListingDetailsHeader
+            attribute={assetData?.attribute}
+            qualityTier={assetData?.qualityTier}
+            selectedListing={selectedListing}
+          />
+          <ImageGrid
+            images={gridImages}
+            onClickImage={onClickImage}
+            labels={labels}
+            photoEdits={photoEdits}
+            qualityTier={assetData?.qualityTier}
+            selectedImageIdx={selectedImageIdx}
+          />
+        </>
+      )}
       <div className="cta-container">
         <a className="cta skip-cta" onClick={handleSkip}>
           Skip

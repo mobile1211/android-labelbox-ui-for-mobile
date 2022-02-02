@@ -4,6 +4,7 @@ import DefaultImage from './DefaultImage';
 export default function ImageGrid({
   images,
   onClickImage,
+  labels,
   photoEdits,
   qualityTier,
   selectedImageIdx,
@@ -11,12 +12,13 @@ export default function ImageGrid({
   return (
     <div className="photo-grid">
       {images.map((imgObj, idx) => {
-        const listingEdit = photoEdits.find(
+        // considered edited if in labels or unsubmitted photo edits
+        const listingEdit = [...labels, ...photoEdits].find(
           (edit) => edit.listingId === imgObj.listingId
         );
         const hasQualiterTierChanged =
-          !!listingEdit?.updatedPhotoQuality &&
-          listingEdit?.updatedPhotoQuality !== qualityTier;
+          !!listingEdit?.photoQualityTier &&
+          listingEdit?.photoQualityTier !== qualityTier;
 
         return (
           <DefaultImage

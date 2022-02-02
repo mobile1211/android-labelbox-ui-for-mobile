@@ -1,5 +1,28 @@
+function overrideGridImages(changes, gridImages) {
+  const listingIdsWithUpdatedDefaultPhoto = changes.map(
+    (e) => !!e.defaultPhotoId && e.listingId
+  );
+  const updatedGridImages = gridImages.map((imgObj) => {
+    if (listingIdsWithUpdatedDefaultPhoto.includes(imgObj.listingId)) {
+      const updatedPhotoId = changes.find(
+        (edit) => edit.listingId === imgObj.listingId
+      ).defaultPhotoId;
+      const updatedPhotoLink = imgObj.listingImages.find(
+        (photo) => photo.photoId === updatedPhotoId
+      ).photoLink;
+
+      return Object.assign({}, imgObj, {
+        photoLink: updatedPhotoLink,
+      });
+    }
+    return imgObj;
+  });
+  return updatedGridImages;
+}
+
 export default function getEffectiveGridImages(
   assetData,
+  labels,
   photoEdits,
   selectedImageIdx,
   newDefaultPhotoId
@@ -7,25 +30,12 @@ export default function getEffectiveGridImages(
   if (!assetData) return [];
   let gridImagesCopy = [...assetData.gridImages];
 
-  if (photoEdits.length) {
-    const listingIdsWithUpdatedDefaultPhoto = photoEdits.map(
-      (e) => !!e.updatedDefaultPhotoId && e.listingId
-    );
-    gridImagesCopy = gridImagesCopy.map((imgObj) => {
-      if (listingIdsWithUpdatedDefaultPhoto.includes(imgObj.listingId)) {
-        const updatedPhotoId = photoEdits.find(
-          (edit) => edit.listingId === imgObj.listingId
-        ).updatedDefaultPhotoId;
-        const updatedPhotoLink = imgObj.listingImages.find(
-          (photo) => photo.photoId === updatedPhotoId
-        ).photoLink;
+  if (labels.length) {
+    gridImagesCopy = overrideGridImages(labels, gridImagesCopy);
+  }
 
-        return Object.assign({}, imgObj, {
-          photoLink: updatedPhotoLink,
-        });
-      }
-      return imgObj;
-    });
+  if (photoEdits.length) {
+    gridImagesCopy = overrideGridImages(photoEdits, gridImagesCopy);
   }
 
   if (typeof selectedImageIdx === 'number' && !!newDefaultPhotoId) {

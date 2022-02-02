@@ -3,7 +3,7 @@ import getUpdatedDefaultPhotoInfo from './getUpdatedDefaultPhotoInfo';
 
 export default function LeftPanel({
   assetData,
-  newPhotoId,
+  newDefaultPhotoId,
   photoEdits,
   selectedListing,
   setNewDefaultPhotoId,
@@ -16,9 +16,9 @@ export default function LeftPanel({
     photoEdits,
     selectedListing
   );
-  const updatedDefaultPhotoId = updatedDefaultPhotoInfo?.updatedDefaultPhotoId;
+  const updatedDefaultPhotoId = updatedDefaultPhotoInfo?.defaultPhotoId;
   const updatedDefaultPhotoQualityTier =
-    updatedDefaultPhotoInfo?.updatedPhotoQuality;
+    updatedDefaultPhotoInfo?.photoQualityTier;
 
   const [photoQualityTier, setPhotoQualityTier] = useState(
     updatedDefaultPhotoQualityTier || originalPhotoQualityTier
@@ -62,7 +62,7 @@ export default function LeftPanel({
   function handleSubmit(e) {
     e.preventDefault();
     // change default photo id in edits
-    if (!!newPhotoId && newPhotoId !== originalDefaultPhotoId) {
+    if (!!newDefaultPhotoId && newDefaultPhotoId !== originalDefaultPhotoId) {
       setPhotoEdits((prevEdits) => {
         const prevChangeIndex = prevEdits.findIndex(
           (edit) => edit.listingId === selectedListing.listingId
@@ -72,7 +72,7 @@ export default function LeftPanel({
           return [
             ...prevEdits.slice(0, prevChangeIndex),
             Object.assign({}, prevEdits[prevChangeIndex], {
-              updatedDefaultPhotoId: newPhotoId,
+              defaultPhotoId: newDefaultPhotoId,
             }),
             ...prevEdits.slice(prevChangeIndex + 1),
           ];
@@ -81,8 +81,8 @@ export default function LeftPanel({
             ...prevEdits,
             {
               listingId: selectedListing.listingId,
-              updatedDefaultPhotoId: newPhotoId,
-              updatedPhotoQuality: photoQualityTier,
+              defaultPhotoId: newDefaultPhotoId,
+              photoQualityTier,
             },
           ];
         }
@@ -100,7 +100,7 @@ export default function LeftPanel({
           return [
             ...prevEdits.slice(0, prevChangeIndex),
             Object.assign({}, prevEdits[prevChangeIndex], {
-              updatedPhotoQuality: photoQualityTier,
+              photoQualityTier,
             }),
             ...prevEdits.slice(prevChangeIndex + 1),
           ];
@@ -109,7 +109,7 @@ export default function LeftPanel({
             ...prevEdits,
             {
               listingId: selectedListing.listingId,
-              updatedPhotoQuality: photoQualityTier,
+              photoQualityTier,
             },
           ];
         }
@@ -125,7 +125,9 @@ export default function LeftPanel({
           type="text"
           name="photo-id"
           readOnly
-          value={newPhotoId || updatedDefaultPhotoId || originalDefaultPhotoId}
+          value={
+            newDefaultPhotoId || updatedDefaultPhotoId || originalDefaultPhotoId
+          }
         />
       </label>
       <label>
