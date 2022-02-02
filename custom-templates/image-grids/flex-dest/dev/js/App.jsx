@@ -6,6 +6,7 @@ import RightPanel from './RightPanel';
 import { get } from './utils';
 import AdditionalPhotos from './AdditionalPhotos';
 import getEffectiveGridImages from './getEffectiveGridImages';
+import convertLabelToPhotoEdit from './convertLabelToPhotoEdit';
 
 export default function App() {
   const projectId = new URL(window.location.href).searchParams.get('project');
@@ -31,29 +32,30 @@ export default function App() {
     newDefaultPhotoId
   );
 
-  function handleAssetChange(asset) {
-    if (asset) {
-      const assetDataStr = get(asset.data).replace(/NaN/g, 'null');
-      const parsedAssetData = JSON.parse(assetDataStr);
+  const handleAssetChange = useCallback(
+    (asset) => {
+      if (asset) {
+        const assetDataStr = get(asset.data).replace(/NaN/g, 'null');
+        const parsedAssetData = JSON.parse(assetDataStr);
 
-      if (asset.label) {
-        const label = JSON.parse(asset.label);
-        console.log('label', label);
+        if (currentAsset?.id !== asset.id) {
+          setCurrentAsset(asset);
+          setAssetData(parsedAssetData);
+        }
+        setIsLoading(false);
       }
+    },
+    [currentAsset, setCurrentAsset, setAssetData, setIsLoading]
+  );
 
-      if (currentAsset?.id !== asset.id) {
-        setCurrentAsset(asset);
-        setAssetData(parsedAssetData);
-      }
-      setIsLoading(false);
-    }
-  }
-
-  const handleClickDefaultImage = useCallback((imageIdx) => {
-    setSelectedImageIdx(imageIdx);
-    setSelectedListing(assetData.gridImages[imageIdx]);
-    setNewDefaultPhotoId('');
-  });
+  const handleClickDefaultImage = useCallback(
+    (imageIdx) => {
+      setSelectedImageIdx(imageIdx);
+      setSelectedListing(assetData.gridImages[imageIdx]);
+      setNewDefaultPhotoId('');
+    },
+    [assetData, setSelectedImageIdx, setSelectedListing, setNewDefaultPhotoId]
+  );
 
   function handleClickAdditionalImage(photoId) {
     setNewDefaultPhotoId(photoId);
@@ -65,7 +67,7 @@ export default function App() {
     Labelbox.currentAsset().subscribe((asset) => {
       handleAssetChange(asset);
     });
-  });
+  }, [handleAssetChange]);
 
   return (
     <>

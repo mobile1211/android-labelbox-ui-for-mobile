@@ -7944,7 +7944,6 @@
 	}
 
 	function formatEditDataForSubmission(photoEdits, attribute, originalPhotoQualityTier) {
-	  console.log('photoEdits', photoEdits);
 	  var formatted = photoEdits.map(function (edit) {
 	    var listingId = edit.listingId,
 	        updatedDefaultPhotoId = edit.updatedDefaultPhotoId,
@@ -8318,16 +8317,10 @@
 	      setPhotoEdits = _useState14[1];
 
 	  var effectiveGridImages = getEffectiveGridImages(assetData, photoEdits, selectedImageIdx, newDefaultPhotoId);
-
-	  function handleAssetChange(asset) {
+	  var handleAssetChange = react.exports.useCallback(function (asset) {
 	    if (asset) {
 	      var assetDataStr = get(asset.data).replace(/NaN/g, 'null');
 	      var parsedAssetData = JSON.parse(assetDataStr);
-
-	      if (asset.label) {
-	        var label = JSON.parse(asset.label);
-	        console.log('label', label);
-	      }
 
 	      if ((currentAsset === null || currentAsset === void 0 ? void 0 : currentAsset.id) !== asset.id) {
 	        setCurrentAsset(asset);
@@ -8336,13 +8329,12 @@
 
 	      setIsLoading(false);
 	    }
-	  }
-
+	  }, [currentAsset, setCurrentAsset, setAssetData, setIsLoading]);
 	  var handleClickDefaultImage = react.exports.useCallback(function (imageIdx) {
 	    setSelectedImageIdx(imageIdx);
 	    setSelectedListing(assetData.gridImages[imageIdx]);
 	    setNewDefaultPhotoId('');
-	  });
+	  }, [assetData, setSelectedImageIdx, setSelectedListing, setNewDefaultPhotoId]);
 
 	  function handleClickAdditionalImage(photoId) {
 	    setNewDefaultPhotoId(photoId);
@@ -8354,7 +8346,7 @@
 	    Labelbox.currentAsset().subscribe(function (asset) {
 	      handleAssetChange(asset);
 	    });
-	  });
+	  }, [handleAssetChange]);
 	  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
 	    className: "flex-column left-side-panel"
 	  }, selectedListing ? /*#__PURE__*/React.createElement(LeftPanel, {

@@ -28,7 +28,6 @@ export default function formatEditDataForSubmission(
   attribute,
   originalPhotoQualityTier
 ) {
-  console.log('photoEdits', photoEdits);
   const formatted = photoEdits.map((edit) => {
     const { listingId, updatedDefaultPhotoId, updatedPhotoQuality } = edit;
     const data = {
