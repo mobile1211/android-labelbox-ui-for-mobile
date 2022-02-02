@@ -7919,15 +7919,20 @@
 	  }));
 	}
 
-	function getUpdateReason(edit) {
+	function getUpdateReason(edit, originalPhotoQualityTier) {
 	  var updatedDefaultPhotoId = edit.updatedDefaultPhotoId,
 	      updatedPhotoQuality = edit.updatedPhotoQuality;
+	  var photoQualityTierChanged = !!updatedPhotoQuality && updatedPhotoQuality !== originalPhotoQualityTier;
 
-	  if (!!updatedDefaultPhotoId && !!updatedPhotoQuality) {
+	  if (photoQualityTierChanged && updatedPhotoQuality === 'Unacceptable') {
+	    return 'remove category';
+	  }
+
+	  if (!!updatedDefaultPhotoId && photoQualityTierChanged) {
 	    return 'update photo + quality';
 	  }
 
-	  if (!!updatedPhotoQuality) {
+	  if (photoQualityTierChanged) {
 	    return 'update quality';
 	  }
 
@@ -7938,7 +7943,7 @@
 	  return '';
 	}
 
-	function formatEditDataForSubmission(photoEdits, attribute) {
+	function formatEditDataForSubmission(photoEdits, attribute, originalPhotoQualityTier) {
 	  console.log('photoEdits', photoEdits);
 	  var formatted = photoEdits.map(function (edit) {
 	    var listingId = edit.listingId,
@@ -7953,7 +7958,7 @@
 	    } : undefined), updatedPhotoQuality ? {
 	      photo_quality: updatedPhotoQuality
 	    } : undefined), {}, {
-	      update_reason: getUpdateReason(edit)
+	      update_reason: getUpdateReason(edit, originalPhotoQualityTier)
 	    });
 
 	    return data;
@@ -7983,7 +7988,7 @@
 	  var handleSubmit = react.exports.useCallback(function () {
 	    setSelectedListing();
 	    setSelectedImageIdx();
-	    var formattedData = formatEditDataForSubmission(photoEdits, assetData === null || assetData === void 0 ? void 0 : assetData.attribute);
+	    var formattedData = formatEditDataForSubmission(photoEdits, assetData === null || assetData === void 0 ? void 0 : assetData.attribute, assetData === null || assetData === void 0 ? void 0 : assetData.qualityTier);
 	    Labelbox.setLabelForAsset(formattedData, 'ANY').then(function () {
 	      Labelbox.fetchNextAssetToLabel();
 	      setIsLoading(true);
@@ -8318,8 +8323,11 @@
 	    if (asset) {
 	      var assetDataStr = get(asset.data).replace(/NaN/g, 'null');
 	      var parsedAssetData = JSON.parse(assetDataStr);
-	      var label = JSON.parse(asset.label);
-	      console.log('label', label);
+
+	      if (asset.label) {
+	        var label = JSON.parse(asset.label);
+	        console.log('label', label);
+	      }
 
 	      if ((currentAsset === null || currentAsset === void 0 ? void 0 : currentAsset.id) !== asset.id) {
 	        setCurrentAsset(asset);

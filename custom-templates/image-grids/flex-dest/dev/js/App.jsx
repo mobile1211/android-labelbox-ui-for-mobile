@@ -36,8 +36,11 @@ export default function App() {
       const assetDataStr = get(asset.data).replace(/NaN/g, 'null');
       const parsedAssetData = JSON.parse(assetDataStr);
 
-      const label = JSON.parse(asset.label);
-      console.log('label', label);
+      if (asset.label) {
+        const label = JSON.parse(asset.label);
+        console.log('label', label);
+      }
+
       if (currentAsset?.id !== asset.id) {
         setCurrentAsset(asset);
         setAssetData(parsedAssetData);

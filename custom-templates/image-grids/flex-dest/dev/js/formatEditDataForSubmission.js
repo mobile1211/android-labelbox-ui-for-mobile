@@ -1,11 +1,18 @@
-function getUpdateReason(edit) {
+function getUpdateReason(edit, originalPhotoQualityTier) {
   const { updatedDefaultPhotoId, updatedPhotoQuality } = edit;
 
-  if (!!updatedDefaultPhotoId && !!updatedPhotoQuality) {
+  const photoQualityTierChanged =
+    !!updatedPhotoQuality && updatedPhotoQuality !== originalPhotoQualityTier;
+
+  if (photoQualityTierChanged && updatedPhotoQuality === 'Unacceptable') {
+    return 'remove category';
+  }
+
+  if (!!updatedDefaultPhotoId && photoQualityTierChanged) {
     return 'update photo + quality';
   }
 
-  if (!!updatedPhotoQuality) {
+  if (photoQualityTierChanged) {
     return 'update quality';
   }
 
@@ -16,7 +23,11 @@ function getUpdateReason(edit) {
   return '';
 }
 
-export default function formatEditDataForSubmission(photoEdits, attribute) {
+export default function formatEditDataForSubmission(
+  photoEdits,
+  attribute,
+  originalPhotoQualityTier
+) {
   console.log('photoEdits', photoEdits);
   const formatted = photoEdits.map((edit) => {
     const { listingId, updatedDefaultPhotoId, updatedPhotoQuality } = edit;
@@ -29,7 +40,7 @@ export default function formatEditDataForSubmission(photoEdits, attribute) {
       ...(updatedPhotoQuality
         ? { photo_quality: updatedPhotoQuality }
         : undefined),
-      update_reason: getUpdateReason(edit),
+      update_reason: getUpdateReason(edit, originalPhotoQualityTier),
     };
     return data;
   });
