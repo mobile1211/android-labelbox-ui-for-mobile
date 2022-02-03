@@ -35,7 +35,6 @@ export default function App() {
 
   const handleAssetChange = useCallback(
     (asset) => {
-      console.log('asset changed', asset);
       if (asset) {
         const assetDataStr = get(asset.data).replace(/NaN/g, 'null');
         const parsedAssetData = JSON.parse(assetDataStr);
@@ -43,7 +42,6 @@ export default function App() {
         if (asset.label) {
           if (asset.label === 'Skip') return;
           const labels = JSON.parse(asset.label);
-          console.log('labels', labels);
           const formattedLabels = convertLabelToPhotoEditFormat(labels);
 
           // store labels in photoEdits mutable data structure
