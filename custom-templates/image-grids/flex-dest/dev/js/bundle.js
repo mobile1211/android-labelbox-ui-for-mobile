@@ -7716,10 +7716,6 @@
 	  return obj;
 	}
 
-	function _readOnlyError(name) {
-	  throw new TypeError("\"" + name + "\" is read-only");
-	}
-
 	function _slicedToArray(arr, i) {
 	  return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
 	}
@@ -8268,23 +8264,24 @@
 
 	function getEffectiveGridImages(assetData, photoEdits, selectedImageIdx, newDefaultPhotoId) {
 	  if (!assetData) return [];
-	  var gridImages = assetData.gridImages;
+
+	  var gridImagesCopy = _toConsumableArray(assetData.gridImages);
 
 	  if (photoEdits.length) {
-	    overrideGridImages(photoEdits, gridImages), _readOnlyError("gridImages");
+	    gridImagesCopy = overrideGridImages(photoEdits, gridImagesCopy);
 	  }
 
 	  if (typeof selectedImageIdx === 'number' && !!newDefaultPhotoId) {
-	    var _gridImages$selectedI;
+	    var _gridImagesCopy$selec;
 
-	    return [].concat(_toConsumableArray(gridImages.slice(0, selectedImageIdx)), [Object.assign({}, gridImages[selectedImageIdx], {
-	      photoLink: (_gridImages$selectedI = gridImages[selectedImageIdx].listingImages.find(function (photo) {
+	    return [].concat(_toConsumableArray(gridImagesCopy.slice(0, selectedImageIdx)), [Object.assign({}, gridImagesCopy[selectedImageIdx], {
+	      photoLink: (_gridImagesCopy$selec = gridImagesCopy[selectedImageIdx].listingImages.find(function (photo) {
 	        return photo.photoId === newDefaultPhotoId;
-	      })) === null || _gridImages$selectedI === void 0 ? void 0 : _gridImages$selectedI.photoLink
-	    })], _toConsumableArray(gridImages.slice(selectedImageIdx + 1)));
+	      })) === null || _gridImagesCopy$selec === void 0 ? void 0 : _gridImagesCopy$selec.photoLink
+	    })], _toConsumableArray(gridImagesCopy.slice(selectedImageIdx + 1)));
 	  }
 
-	  return gridImages;
+	  return gridImagesCopy;
 	}
 
 	// photoEdits data structure

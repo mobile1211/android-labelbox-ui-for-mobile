@@ -27,23 +27,23 @@ export default function getEffectiveGridImages(
   newDefaultPhotoId
 ) {
   if (!assetData) return [];
-  const { gridImages } = assetData;
+  let gridImagesCopy = [...assetData.gridImages];
 
   if (photoEdits.length) {
-    gridImages = overrideGridImages(photoEdits, gridImages);
+    gridImagesCopy = overrideGridImages(photoEdits, gridImagesCopy);
   }
 
   if (typeof selectedImageIdx === 'number' && !!newDefaultPhotoId) {
     return [
-      ...gridImages.slice(0, selectedImageIdx),
-      Object.assign({}, gridImages[selectedImageIdx], {
-        photoLink: gridImages[selectedImageIdx].listingImages.find(
+      ...gridImagesCopy.slice(0, selectedImageIdx),
+      Object.assign({}, gridImagesCopy[selectedImageIdx], {
+        photoLink: gridImagesCopy[selectedImageIdx].listingImages.find(
           (photo) => photo.photoId === newDefaultPhotoId
         )?.photoLink,
       }),
-      ...gridImages.slice(selectedImageIdx + 1),
+      ...gridImagesCopy.slice(selectedImageIdx + 1),
     ];
   }
 
-  return gridImages;
+  return gridImagesCopy;
 }
