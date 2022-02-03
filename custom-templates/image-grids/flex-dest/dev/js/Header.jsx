@@ -57,7 +57,7 @@ export default function Header({
         className={`material-icons next-icon ${
           hasNext ? 'button-default' : ''
         }`}
-        onClick={handleGoNext}
+        onClick={hasNext ? handleGoNext : undefined}
       >
         keyboard_arrow_right
       </i>

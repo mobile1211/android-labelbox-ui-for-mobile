@@ -7837,7 +7837,7 @@
 	  }, "Label this asset"), /*#__PURE__*/React.createElement("i", {
 	    id: "next",
 	    className: "material-icons next-icon ".concat(hasNext ? 'button-default' : ''),
-	    onClick: handleGoNext
+	    onClick: hasNext ? handleGoNext : undefined
 	  }, "keyboard_arrow_right"));
 	}
 
