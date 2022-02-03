@@ -6,8 +6,6 @@ export default function AdditionalPhotos({
   onClickImage,
   newDefaultPhotoId,
 }) {
-  if (!selectedListing) return null;
-
   return (
     <>
       <h5>Other pictures</h5>

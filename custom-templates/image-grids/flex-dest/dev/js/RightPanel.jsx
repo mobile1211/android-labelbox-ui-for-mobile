@@ -1,6 +1,11 @@
 import React, { useEffect } from 'react';
+import AdditionalPhotos from './AdditionalPhotos';
 
-export default function RightPanel({ selectedListing }) {
+export default function RightPanel({
+  selectedListing,
+  newDefaultPhotoId,
+  onClickImage,
+}) {
   useEffect(() => {
     document.querySelector('div.flex-column.right-side-panel').scrollTo(0, 0);
   }, [selectedListing]);
@@ -58,6 +63,11 @@ export default function RightPanel({ selectedListing }) {
           ></iframe>
         </div>
       </div>
+      <AdditionalPhotos
+        selectedListing={selectedListing}
+        onClickImage={onClickImage}
+        newDefaultPhotoId={newDefaultPhotoId}
+      />
     </>
   );
 }

@@ -8155,8 +8155,42 @@
 	  })));
 	}
 
+	function AdditionalImage(_ref) {
+	  var isSelected = _ref.isSelected,
+	      listingImage = _ref.listingImage,
+	      _onClick = _ref.onClick;
+	  var imageUrl = getResizedImageUrl(listingImage.photoLink);
+	  return /*#__PURE__*/React.createElement("div", {
+	    className: "additional-image-wrapper"
+	  }, /*#__PURE__*/React.createElement("div", null, "Photo ID: ", listingImage.photoId), /*#__PURE__*/React.createElement("button", {
+	    className: "additional-image ".concat(isSelected ? 'image-selected' : ''),
+	    onClick: function onClick() {
+	      return _onClick(listingImage.photoId);
+	    }
+	  }, /*#__PURE__*/React.createElement("img", {
+	    src: imageUrl,
+	    width: "100%"
+	  })));
+	}
+
+	function AdditionalPhotos(_ref) {
+	  var selectedListing = _ref.selectedListing,
+	      onClickImage = _ref.onClickImage,
+	      newDefaultPhotoId = _ref.newDefaultPhotoId;
+	  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h5", null, "Other pictures"), selectedListing.listingImages.map(function (image) {
+	    return /*#__PURE__*/React.createElement(AdditionalImage, {
+	      key: image.photoId,
+	      isSelected: newDefaultPhotoId === image.photoId,
+	      listingImage: image,
+	      onClick: onClickImage
+	    });
+	  }));
+	}
+
 	function RightPanel(_ref) {
-	  var selectedListing = _ref.selectedListing;
+	  var selectedListing = _ref.selectedListing,
+	      newDefaultPhotoId = _ref.newDefaultPhotoId,
+	      onClickImage = _ref.onClickImage;
 	  react.exports.useEffect(function () {
 	    document.querySelector('div.flex-column.right-side-panel').scrollTo(0, 0);
 	  }, [selectedListing]);
@@ -8198,7 +8232,11 @@
 	    marginHeight: "0",
 	    marginWidth: "0",
 	    src: "https://maps.google.com/maps?q=".concat(lat, ",").concat(lng, "&z=14&output=embed")
-	  }))));
+	  }))), /*#__PURE__*/React.createElement(AdditionalPhotos, {
+	    selectedListing: selectedListing,
+	    onClickImage: onClickImage,
+	    newDefaultPhotoId: newDefaultPhotoId
+	  }));
 	}
 
 	function get(url) {
@@ -8206,39 +8244,6 @@
 	  Httpreq.open('GET', url, false);
 	  Httpreq.send(null);
 	  return Httpreq.responseText;
-	}
-
-	function AdditionalImage(_ref) {
-	  var isSelected = _ref.isSelected,
-	      listingImage = _ref.listingImage,
-	      _onClick = _ref.onClick;
-	  var imageUrl = getResizedImageUrl(listingImage.photoLink);
-	  return /*#__PURE__*/React.createElement("div", {
-	    className: "additional-image-wrapper"
-	  }, /*#__PURE__*/React.createElement("div", null, "Photo ID: ", listingImage.photoId), /*#__PURE__*/React.createElement("button", {
-	    className: "additional-image ".concat(isSelected ? 'image-selected' : ''),
-	    onClick: function onClick() {
-	      return _onClick(listingImage.photoId);
-	    }
-	  }, /*#__PURE__*/React.createElement("img", {
-	    src: imageUrl,
-	    width: "100%"
-	  })));
-	}
-
-	function AdditionalPhotos(_ref) {
-	  var selectedListing = _ref.selectedListing,
-	      onClickImage = _ref.onClickImage,
-	      newDefaultPhotoId = _ref.newDefaultPhotoId;
-	  if (!selectedListing) return null;
-	  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h5", null, "Other pictures"), selectedListing.listingImages.map(function (image) {
-	    return /*#__PURE__*/React.createElement(AdditionalImage, {
-	      key: image.photoId,
-	      isSelected: newDefaultPhotoId === image.photoId,
-	      listingImage: image,
-	      onClick: onClickImage
-	    });
-	  }));
 	}
 
 	function overrideGridImages(changes, gridImages) {
@@ -8434,8 +8439,6 @@
 	  })), /*#__PURE__*/React.createElement("div", {
 	    className: "flex-column right-side-panel"
 	  }, /*#__PURE__*/React.createElement(RightPanel, {
-	    selectedListing: selectedListing
-	  }), /*#__PURE__*/React.createElement(AdditionalPhotos, {
 	    selectedListing: selectedListing,
 	    onClickImage: handleClickAdditionalImage,
 	    newDefaultPhotoId: newDefaultPhotoId

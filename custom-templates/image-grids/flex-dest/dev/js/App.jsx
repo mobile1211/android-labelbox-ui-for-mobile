@@ -119,8 +119,7 @@ export default function App() {
         />
       </div>
       <div className="flex-column right-side-panel">
-        <RightPanel selectedListing={selectedListing} />
-        <AdditionalPhotos
+        <RightPanel
           selectedListing={selectedListing}
           onClickImage={handleClickAdditionalImage}
           newDefaultPhotoId={newDefaultPhotoId}
