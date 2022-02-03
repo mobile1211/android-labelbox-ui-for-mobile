@@ -7902,16 +7902,18 @@
 	  return /*#__PURE__*/React.createElement("div", {
 	    className: "photo-grid"
 	  }, images.map(function (imgObj, idx) {
-	    // considered edited if in labels or unsubmitted photo edits
-	    var listingEdit = [].concat(_toConsumableArray(labels), _toConsumableArray(photoEdits)).find(function (edit) {
+	    var listingLabel = labels.find(function (label) {
+	      return label.listingId === imgObj.listingId;
+	    });
+	    var listingEdit = photoEdits.find(function (edit) {
 	      return edit.listingId === imgObj.listingId;
 	    });
-	    var hasQualiterTierChanged = !!(listingEdit !== null && listingEdit !== void 0 && listingEdit.photoQualityTier) && (listingEdit === null || listingEdit === void 0 ? void 0 : listingEdit.photoQualityTier) !== qualityTier;
+	    var hasQualiterTierChanged = !!(listingEdit !== null && listingEdit !== void 0 && listingEdit.photoQualityTier) && (listingEdit === null || listingEdit === void 0 ? void 0 : listingEdit.photoQualityTier) !== qualityTier || !!(listingLabel !== null && listingLabel !== void 0 && listingLabel.photoQualityTier) && (listingLabel === null || listingLabel === void 0 ? void 0 : listingLabel.photoQualityTier) !== qualityTier;
 	    return /*#__PURE__*/React.createElement(DefaultImage, {
 	      hasQualityTierChanged: hasQualiterTierChanged,
 	      imgObj: imgObj,
 	      idx: idx,
-	      isEdited: !!listingEdit,
+	      isEdited: !!listingEdit || !!listingLabel,
 	      isSelected: selectedImageIdx === idx,
 	      key: imgObj.photoId,
 	      onClickImage: function onClickImage(photoIdx) {

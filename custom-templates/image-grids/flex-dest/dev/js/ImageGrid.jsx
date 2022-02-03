@@ -12,20 +12,25 @@ export default function ImageGrid({
   return (
     <div className="photo-grid">
       {images.map((imgObj, idx) => {
-        // considered edited if in labels or unsubmitted photo edits
-        const listingEdit = [...labels, ...photoEdits].find(
+        const listingLabel = labels.find(
+          (label) => label.listingId === imgObj.listingId
+        );
+        const listingEdit = photoEdits.find(
           (edit) => edit.listingId === imgObj.listingId
         );
+
         const hasQualiterTierChanged =
-          !!listingEdit?.photoQualityTier &&
-          listingEdit?.photoQualityTier !== qualityTier;
+          (!!listingEdit?.photoQualityTier &&
+            listingEdit?.photoQualityTier !== qualityTier) ||
+          (!!listingLabel?.photoQualityTier &&
+            listingLabel?.photoQualityTier !== qualityTier);
 
         return (
           <DefaultImage
             hasQualityTierChanged={hasQualiterTierChanged}
             imgObj={imgObj}
             idx={idx}
-            isEdited={!!listingEdit}
+            isEdited={!!listingEdit || !!listingLabel}
             isSelected={selectedImageIdx === idx}
             key={imgObj.photoId}
             onClickImage={(photoIdx) => onClickImage(photoIdx)}
