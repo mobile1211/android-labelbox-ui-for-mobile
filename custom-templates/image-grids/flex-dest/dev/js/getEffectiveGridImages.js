@@ -22,33 +22,28 @@ function overrideGridImages(changes, gridImages) {
 
 export default function getEffectiveGridImages(
   assetData,
-  labels,
   photoEdits,
   selectedImageIdx,
   newDefaultPhotoId
 ) {
   if (!assetData) return [];
-  let gridImagesCopy = [...assetData.gridImages];
-
-  if (labels.length) {
-    gridImagesCopy = overrideGridImages(labels, gridImagesCopy);
-  }
+  const { gridImages } = assetData;
 
   if (photoEdits.length) {
-    gridImagesCopy = overrideGridImages(photoEdits, gridImagesCopy);
+    gridImages = overrideGridImages(photoEdits, gridImages);
   }
 
   if (typeof selectedImageIdx === 'number' && !!newDefaultPhotoId) {
     return [
-      ...gridImagesCopy.slice(0, selectedImageIdx),
-      Object.assign({}, gridImagesCopy[selectedImageIdx], {
-        photoLink: assetData.gridImages[selectedImageIdx].listingImages.find(
+      ...gridImages.slice(0, selectedImageIdx),
+      Object.assign({}, gridImages[selectedImageIdx], {
+        photoLink: gridImages[selectedImageIdx].listingImages.find(
           (photo) => photo.photoId === newDefaultPhotoId
         )?.photoLink,
       }),
-      ...gridImagesCopy.slice(selectedImageIdx + 1),
+      ...gridImages.slice(selectedImageIdx + 1),
     ];
   }
 
-  return gridImagesCopy;
+  return gridImages;
 }

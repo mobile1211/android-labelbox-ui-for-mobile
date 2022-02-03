@@ -8,7 +8,6 @@ export default function Content({
   gridImages,
   isLoading,
   onClickImage,
-  labels,
   photoEdits,
   selectedListing,
   selectedImageIdx,
@@ -57,7 +56,6 @@ export default function Content({
           <ImageGrid
             images={gridImages}
             onClickImage={onClickImage}
-            labels={labels}
             photoEdits={photoEdits}
             qualityTier={assetData?.qualityTier}
             selectedImageIdx={selectedImageIdx}

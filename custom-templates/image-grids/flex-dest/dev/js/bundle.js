@@ -7716,6 +7716,10 @@
 	  return obj;
 	}
 
+	function _readOnlyError(name) {
+	  throw new TypeError("\"" + name + "\" is read-only");
+	}
+
 	function _slicedToArray(arr, i) {
 	  return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
 	}
@@ -7895,25 +7899,21 @@
 	function ImageGrid(_ref) {
 	  var images = _ref.images,
 	      _onClickImage = _ref.onClickImage,
-	      labels = _ref.labels,
 	      photoEdits = _ref.photoEdits,
 	      qualityTier = _ref.qualityTier,
 	      selectedImageIdx = _ref.selectedImageIdx;
 	  return /*#__PURE__*/React.createElement("div", {
 	    className: "photo-grid"
 	  }, images.map(function (imgObj, idx) {
-	    var listingLabel = labels.find(function (label) {
-	      return label.listingId === imgObj.listingId;
-	    });
 	    var listingEdit = photoEdits.find(function (edit) {
 	      return edit.listingId === imgObj.listingId;
 	    });
-	    var hasQualiterTierChanged = !!(listingEdit !== null && listingEdit !== void 0 && listingEdit.photoQualityTier) && (listingEdit === null || listingEdit === void 0 ? void 0 : listingEdit.photoQualityTier) !== qualityTier || !!(listingLabel !== null && listingLabel !== void 0 && listingLabel.photoQualityTier) && (listingLabel === null || listingLabel === void 0 ? void 0 : listingLabel.photoQualityTier) !== qualityTier;
+	    var hasQualiterTierChanged = !!(listingEdit !== null && listingEdit !== void 0 && listingEdit.photoQualityTier) && (listingEdit === null || listingEdit === void 0 ? void 0 : listingEdit.photoQualityTier) !== qualityTier;
 	    return /*#__PURE__*/React.createElement(DefaultImage, {
 	      hasQualityTierChanged: hasQualiterTierChanged,
 	      imgObj: imgObj,
 	      idx: idx,
-	      isEdited: !!listingEdit || !!listingLabel,
+	      isEdited: !!listingEdit,
 	      isSelected: selectedImageIdx === idx,
 	      key: imgObj.photoId,
 	      onClickImage: function onClickImage(photoIdx) {
@@ -7974,7 +7974,6 @@
 	      gridImages = _ref.gridImages,
 	      isLoading = _ref.isLoading,
 	      onClickImage = _ref.onClickImage,
-	      labels = _ref.labels,
 	      photoEdits = _ref.photoEdits,
 	      selectedListing = _ref.selectedListing,
 	      selectedImageIdx = _ref.selectedImageIdx,
@@ -8009,7 +8008,6 @@
 	  }), /*#__PURE__*/React.createElement(ImageGrid, {
 	    images: gridImages,
 	    onClickImage: onClickImage,
-	    labels: labels,
 	    photoEdits: photoEdits,
 	    qualityTier: assetData === null || assetData === void 0 ? void 0 : assetData.qualityTier,
 	    selectedImageIdx: selectedImageIdx
@@ -8268,30 +8266,25 @@
 	  return updatedGridImages;
 	}
 
-	function getEffectiveGridImages(assetData, labels, photoEdits, selectedImageIdx, newDefaultPhotoId) {
+	function getEffectiveGridImages(assetData, photoEdits, selectedImageIdx, newDefaultPhotoId) {
 	  if (!assetData) return [];
-
-	  var gridImagesCopy = _toConsumableArray(assetData.gridImages);
-
-	  if (labels.length) {
-	    gridImagesCopy = overrideGridImages(labels, gridImagesCopy);
-	  }
+	  var gridImages = assetData.gridImages;
 
 	  if (photoEdits.length) {
-	    gridImagesCopy = overrideGridImages(photoEdits, gridImagesCopy);
+	    overrideGridImages(photoEdits, gridImages), _readOnlyError("gridImages");
 	  }
 
 	  if (typeof selectedImageIdx === 'number' && !!newDefaultPhotoId) {
-	    var _assetData$gridImages;
+	    var _gridImages$selectedI;
 
-	    return [].concat(_toConsumableArray(gridImagesCopy.slice(0, selectedImageIdx)), [Object.assign({}, gridImagesCopy[selectedImageIdx], {
-	      photoLink: (_assetData$gridImages = assetData.gridImages[selectedImageIdx].listingImages.find(function (photo) {
+	    return [].concat(_toConsumableArray(gridImages.slice(0, selectedImageIdx)), [Object.assign({}, gridImages[selectedImageIdx], {
+	      photoLink: (_gridImages$selectedI = gridImages[selectedImageIdx].listingImages.find(function (photo) {
 	        return photo.photoId === newDefaultPhotoId;
-	      })) === null || _assetData$gridImages === void 0 ? void 0 : _assetData$gridImages.photoLink
-	    })], _toConsumableArray(gridImagesCopy.slice(selectedImageIdx + 1)));
+	      })) === null || _gridImages$selectedI === void 0 ? void 0 : _gridImages$selectedI.photoLink
+	    })], _toConsumableArray(gridImages.slice(selectedImageIdx + 1)));
 	  }
 
-	  return gridImagesCopy;
+	  return gridImages;
 	}
 
 	// photoEdits data structure
@@ -8315,6 +8308,7 @@
 	  });
 	}
 
+	var EMPTY_ARR = [];
 	function App() {
 	  var projectId = new URL(window.location.href).searchParams.get('project');
 
@@ -8354,17 +8348,12 @@
 	  // }]
 
 
-	  var _useState13 = react.exports.useState([]),
+	  var _useState13 = react.exports.useState(EMPTY_ARR),
 	      _useState14 = _slicedToArray(_useState13, 2),
-	      labels = _useState14[0],
-	      setLabels = _useState14[1];
+	      photoEdits = _useState14[0],
+	      setPhotoEdits = _useState14[1];
 
-	  var _useState15 = react.exports.useState([]),
-	      _useState16 = _slicedToArray(_useState15, 2),
-	      photoEdits = _useState16[0],
-	      setPhotoEdits = _useState16[1];
-
-	  var effectiveGridImages = getEffectiveGridImages(assetData, labels, photoEdits, selectedImageIdx, newDefaultPhotoId);
+	  var effectiveGridImages = getEffectiveGridImages(assetData, photoEdits, selectedImageIdx, newDefaultPhotoId);
 	  var handleAssetChange = react.exports.useCallback(function (asset) {
 	    if (asset) {
 	      var assetDataStr = get(asset.data).replace(/NaN/g, 'null');
@@ -8372,11 +8361,10 @@
 
 	      if (asset.label) {
 	        if (asset.label === 'Skip') return;
+	        var labels = JSON.parse(asset.label);
+	        var formattedLabels = convertLabelToPhotoEditFormat(labels); // store labels in photoEdits mutable data structure
 
-	        var _labels = JSON.parse(asset.label);
-
-	        var formattedLabels = convertLabelToPhotoEditFormat(_labels);
-	        setLabels(formattedLabels);
+	        setPhotoEdits(formattedLabels);
 	      }
 
 	      if ((currentAsset === null || currentAsset === void 0 ? void 0 : currentAsset.id) !== asset.id) {
@@ -8391,12 +8379,7 @@
 	    setSelectedImageIdx(imageIdx);
 	    setSelectedListing(assetData.gridImages[imageIdx]);
 	    setNewDefaultPhotoId('');
-	  }, [assetData, setSelectedImageIdx, setSelectedListing, setNewDefaultPhotoId]);
-
-	  function handleClickAdditionalImage(photoId) {
-	    setNewDefaultPhotoId(photoId);
-	  } // fetch asset on componentDidMount
-
+	  }, [assetData, setSelectedImageIdx, setSelectedListing, setNewDefaultPhotoId]); // fetch asset on componentDidMount
 
 	  react.exports.useEffect(function () {
 	    setIsLoading(true);
@@ -8428,7 +8411,6 @@
 	    gridImages: effectiveGridImages,
 	    isLoading: isLoading,
 	    onClickImage: handleClickDefaultImage,
-	    labels: labels,
 	    photoEdits: photoEdits,
 	    selectedListing: selectedListing,
 	    selectedImageIdx: selectedImageIdx,
@@ -8440,7 +8422,7 @@
 	    className: "flex-column right-side-panel"
 	  }, /*#__PURE__*/React.createElement(RightPanel, {
 	    selectedListing: selectedListing,
-	    onClickImage: handleClickAdditionalImage,
+	    onClickImage: setNewDefaultPhotoId,
 	    newDefaultPhotoId: newDefaultPhotoId
 	  })));
 	}

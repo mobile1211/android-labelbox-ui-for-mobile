@@ -4,9 +4,10 @@ import Content from './Content';
 import LeftPanel from './LeftPanel';
 import RightPanel from './RightPanel';
 import { get } from './utils';
-import AdditionalPhotos from './AdditionalPhotos';
 import getEffectiveGridImages from './getEffectiveGridImages';
 import convertLabelToPhotoEditFormat from './convertLabelToPhotoEditFormat';
+
+const EMPTY_ARR = [];
 
 export default function App() {
   const projectId = new URL(window.location.href).searchParams.get('project');
@@ -23,12 +24,10 @@ export default function App() {
   //   defaultPhotoId: 345,
   //   photoQualityTier: 'High',
   // }]
-  const [labels, setLabels] = useState([]);
-  const [photoEdits, setPhotoEdits] = useState([]);
+  const [photoEdits, setPhotoEdits] = useState(EMPTY_ARR);
 
   const effectiveGridImages = getEffectiveGridImages(
     assetData,
-    labels,
     photoEdits,
     selectedImageIdx,
     newDefaultPhotoId
@@ -45,7 +44,8 @@ export default function App() {
           const labels = JSON.parse(asset.label);
           const formattedLabels = convertLabelToPhotoEditFormat(labels);
 
-          setLabels(formattedLabels);
+          // store labels in photoEdits mutable data structure
+          setPhotoEdits(formattedLabels);
         }
 
         if (currentAsset?.id !== asset.id) {
@@ -66,10 +66,6 @@ export default function App() {
     },
     [assetData, setSelectedImageIdx, setSelectedListing, setNewDefaultPhotoId]
   );
-
-  function handleClickAdditionalImage(photoId) {
-    setNewDefaultPhotoId(photoId);
-  }
 
   // fetch asset on componentDidMount
   useEffect(() => {
@@ -108,7 +104,6 @@ export default function App() {
           gridImages={effectiveGridImages}
           isLoading={isLoading}
           onClickImage={handleClickDefaultImage}
-          labels={labels}
           photoEdits={photoEdits}
           selectedListing={selectedListing}
           selectedImageIdx={selectedImageIdx}
@@ -121,7 +116,7 @@ export default function App() {
       <div className="flex-column right-side-panel">
         <RightPanel
           selectedListing={selectedListing}
-          onClickImage={handleClickAdditionalImage}
+          onClickImage={setNewDefaultPhotoId}
           newDefaultPhotoId={newDefaultPhotoId}
         />
       </div>
