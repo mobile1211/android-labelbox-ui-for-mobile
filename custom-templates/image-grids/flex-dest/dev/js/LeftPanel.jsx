@@ -69,6 +69,7 @@ export default function LeftPanel({
         );
 
         if (prevChangeIndex !== -1) {
+          // override previous edit
           return [
             ...prevEdits.slice(0, prevChangeIndex),
             Object.assign({}, prevEdits[prevChangeIndex], {
@@ -77,6 +78,7 @@ export default function LeftPanel({
             ...prevEdits.slice(prevChangeIndex + 1),
           ];
         } else {
+          // add to photoEdits
           return [
             ...prevEdits,
             {

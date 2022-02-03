@@ -37,6 +37,7 @@ export default function Content({
 
     Labelbox.setLabelForAsset(formattedData, 'ANY').then(() => {
       Labelbox.fetchNextAssetToLabel();
+      console.log('fetch next asset');
       setIsLoading(true);
       setPhotoEdits([]);
     });

@@ -40,5 +40,6 @@ export default function formatEditDataForSubmission(
     return data;
   });
 
+  console.log('formatted', formatted);
   return JSON.stringify(formatted);
 }

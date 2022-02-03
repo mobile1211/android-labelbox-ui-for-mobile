@@ -7962,6 +7962,7 @@
 
 	    return data;
 	  });
+	  console.log('formatted', formatted);
 	  return JSON.stringify(formatted);
 	}
 
@@ -7991,6 +7992,7 @@
 	    var formattedData = formatEditDataForSubmission(photoEdits, assetData === null || assetData === void 0 ? void 0 : assetData.attribute, assetData === null || assetData === void 0 ? void 0 : assetData.qualityTier);
 	    Labelbox.setLabelForAsset(formattedData, 'ANY').then(function () {
 	      Labelbox.fetchNextAssetToLabel();
+	      console.log('fetch next asset');
 	      setIsLoading(true);
 	      setPhotoEdits([]);
 	    });
@@ -8081,10 +8083,12 @@
 	        });
 
 	        if (prevChangeIndex !== -1) {
+	          // override previous edit
 	          return [].concat(_toConsumableArray(prevEdits.slice(0, prevChangeIndex)), [Object.assign({}, prevEdits[prevChangeIndex], {
 	            defaultPhotoId: newDefaultPhotoId
 	          })], _toConsumableArray(prevEdits.slice(prevChangeIndex + 1)));
 	        } else {
+	          // add to photoEdits
 	          return [].concat(_toConsumableArray(prevEdits), [{
 	            listingId: selectedListing.listingId,
 	            defaultPhotoId: newDefaultPhotoId,
@@ -8352,6 +8356,8 @@
 
 	  var effectiveGridImages = getEffectiveGridImages(assetData, photoEdits, selectedImageIdx, newDefaultPhotoId);
 	  var handleAssetChange = react.exports.useCallback(function (asset) {
+	    console.log('asset changed', asset);
+
 	    if (asset) {
 	      var assetDataStr = get(asset.data).replace(/NaN/g, 'null');
 	      var parsedAssetData = JSON.parse(assetDataStr);
@@ -8359,6 +8365,7 @@
 	      if (asset.label) {
 	        if (asset.label === 'Skip') return;
 	        var labels = JSON.parse(asset.label);
+	        console.log('labels', labels);
 	        var formattedLabels = convertLabelToPhotoEditFormat(labels); // store labels in photoEdits mutable data structure
 
 	        setPhotoEdits(formattedLabels);
@@ -8368,9 +8375,9 @@
 	        setCurrentAsset(asset);
 	        setAssetData(parsedAssetData);
 	      }
-
-	      setIsLoading(false);
 	    }
+
+	    setIsLoading(false);
 	  }, [currentAsset, setCurrentAsset, setAssetData, setIsLoading]);
 	  var handleClickDefaultImage = react.exports.useCallback(function (imageIdx) {
 	    setSelectedImageIdx(imageIdx);
