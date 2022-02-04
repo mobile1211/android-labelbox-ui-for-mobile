@@ -182,6 +182,11 @@ label {
 
 select {
   display: inherit !important; 
+  border: 1px solid #222222;
+}
+
+select:focus {
+  outline: none !important;
 }
 
 .flex-column .additional-image {
