@@ -7983,7 +7983,6 @@
 	    Labelbox.setLabelForAsset(formattedData, 'ANY').then(function () {
 	      setPhotoEdits([]);
 	      Labelbox.fetchNextAssetToLabel();
-	      document.querySelector('div.center-content').scrollTo(0, 0);
 	    });
 	  }, [photoEdits, assetData]);
 	  return /*#__PURE__*/React.createElement("div", {
@@ -8325,13 +8324,16 @@
 	  var _useState9 = react.exports.useState(''),
 	      _useState10 = _slicedToArray(_useState9, 2),
 	      newDefaultPhotoId = _useState10[0],
-	      setNewDefaultPhotoId = _useState10[1]; // photoEdits data structure
+	      setNewDefaultPhotoId = _useState10[1];
+
+	  var assetId = react.exports.useRef();
+	  var assetNext = react.exports.useRef();
+	  var assetPrev = react.exports.useRef(); // photoEdits data structure
 	  // [{
 	  //   listingId: 123,
 	  //   defaultPhotoId: 345,
 	  //   photoQualityTier: 'High',
 	  // }]
-
 
 	  var _useState11 = react.exports.useState(EMPTY_ARR),
 	      _useState12 = _slicedToArray(_useState11, 2),
@@ -8341,10 +8343,12 @@
 	  var effectiveGridImages = getEffectiveGridImages(assetData, photoEdits, selectedImageIdx, newDefaultPhotoId);
 	  var handleAssetChange = react.exports.useCallback(function (asset) {
 	    if (asset) {
-	      var assetDataStr = get(asset.data).replace(/NaN/g, 'null');
-	      var parsedAssetData = JSON.parse(assetDataStr);
-
-	      if ((currentAsset === null || currentAsset === void 0 ? void 0 : currentAsset.id) !== asset.id) {
+	      if ((currentAsset === null || currentAsset === void 0 ? void 0 : currentAsset.id) !== asset.id && (assetId.current !== asset.id || assetNext.current !== asset.next || assetPrev.current !== asset.previous)) {
+	        assetId.current = asset.id;
+	        assetNext.current = asset.next;
+	        assetPrev.current = asset.previous;
+	        var assetDataStr = get(asset.data).replace(/NaN/g, 'null');
+	        var parsedAssetData = JSON.parse(assetDataStr);
 	        setCurrentAsset(asset);
 	        setAssetData(parsedAssetData);
 	      }
@@ -8366,7 +8370,7 @@
 
 	  react.exports.useEffect(function () {
 	    Labelbox.currentAsset().subscribe(function (asset) {
-	      console.log('asset changed', asset);
+	      console.log('asset changed');
 	      handleAssetChange(asset);
 	    });
 	  }, [handleAssetChange]);

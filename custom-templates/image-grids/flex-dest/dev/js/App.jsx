@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Header from './Header';
 import Content from './Content';
 import LeftPanel from './LeftPanel';
@@ -16,6 +16,9 @@ export default function App() {
   const [selectedListing, setSelectedListing] = useState();
   const [selectedImageIdx, setSelectedImageIdx] = useState();
   const [newDefaultPhotoId, setNewDefaultPhotoId] = useState('');
+  const assetId = useRef();
+  const assetNext = useRef();
+  const assetPrev = useRef();
 
   // photoEdits data structure
   // [{
@@ -35,10 +38,18 @@ export default function App() {
   const handleAssetChange = useCallback(
     (asset) => {
       if (asset) {
-        const assetDataStr = get(asset.data).replace(/NaN/g, 'null');
-        const parsedAssetData = JSON.parse(assetDataStr);
+        if (
+          currentAsset?.id !== asset.id &&
+          (assetId.current !== asset.id ||
+            assetNext.current !== asset.next ||
+            assetPrev.current !== asset.previous)
+        ) {
+          assetId.current = asset.id;
+          assetNext.current = asset.next;
+          assetPrev.current = asset.previous;
+          const assetDataStr = get(asset.data).replace(/NaN/g, 'null');
+          const parsedAssetData = JSON.parse(assetDataStr);
 
-        if (currentAsset?.id !== asset.id) {
           setCurrentAsset(asset);
           setAssetData(parsedAssetData);
         }
@@ -68,7 +79,7 @@ export default function App() {
   // fetch asset on componentDidMount
   useEffect(() => {
     Labelbox.currentAsset().subscribe((asset) => {
-      console.log('asset changed', asset);
+      console.log('asset changed');
       handleAssetChange(asset);
     });
   }, [handleAssetChange]);

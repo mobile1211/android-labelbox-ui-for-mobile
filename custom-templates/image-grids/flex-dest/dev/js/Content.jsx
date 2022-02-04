@@ -36,7 +36,6 @@ export default function Content({
     Labelbox.setLabelForAsset(formattedData, 'ANY').then(() => {
       setPhotoEdits([]);
       Labelbox.fetchNextAssetToLabel();
-      document.querySelector('div.center-content').scrollTo(0, 0);
     });
   }, [photoEdits, assetData]);
 
