@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import ListingDetailsHeader from './ListingDetailsHeader';
 import ImageGrid from './ImageGrid';
 import formatEditDataForSubmission from './formatEditDataForSubmission';
@@ -14,6 +14,10 @@ export default function Content({
   setSelectedImageIdx,
   setPhotoEdits,
 }) {
+  useEffect(() => {
+    document.querySelector('.content').scrollTo(0, 0);
+  }, [assetData]);
+
   const handleSkip = useCallback(() => {
     setSelectedListing();
     setSelectedImageIdx();

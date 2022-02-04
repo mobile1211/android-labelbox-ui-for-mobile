@@ -7968,6 +7968,9 @@
 	      setSelectedListing = _ref.setSelectedListing,
 	      setSelectedImageIdx = _ref.setSelectedImageIdx,
 	      setPhotoEdits = _ref.setPhotoEdits;
+	  react.exports.useEffect(function () {
+	    document.querySelector('.content').scrollTo(0, 0);
+	  }, [assetData]);
 	  var handleSkip = react.exports.useCallback(function () {
 	    setSelectedListing();
 	    setSelectedImageIdx();
@@ -8384,7 +8387,7 @@
 	    setNewDefaultPhotoId: setNewDefaultPhotoId,
 	    setPhotoEdits: setPhotoEdits
 	  }) : null), /*#__PURE__*/React.createElement("div", {
-	    className: "center-content flex-grow flex-column"
+	    className: "flex-grow flex-column"
 	  }, /*#__PURE__*/React.createElement(Header, {
 	    currentAsset: currentAsset,
 	    hasNext: !!(currentAsset !== null && currentAsset !== void 0 && currentAsset.next),
