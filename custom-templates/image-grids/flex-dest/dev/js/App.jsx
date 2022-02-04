@@ -11,7 +11,6 @@ const EMPTY_ARR = [];
 
 export default function App() {
   const projectId = new URL(window.location.href).searchParams.get('project');
-  const [isLoading, setIsLoading] = useState(false);
   const [currentAsset, setCurrentAsset] = useState();
   const [assetData, setAssetData] = useState();
   const [selectedListing, setSelectedListing] = useState();
@@ -53,9 +52,8 @@ export default function App() {
           setPhotoEdits(formattedLabels);
         }
       }
-      setIsLoading(false);
     },
-    [currentAsset, setCurrentAsset, setAssetData, setIsLoading]
+    [currentAsset, setCurrentAsset, setAssetData]
   );
 
   const handleClickDefaultImage = useCallback(
@@ -92,7 +90,7 @@ export default function App() {
       <div className="flex-grow flex-column">
         <Header
           currentAsset={currentAsset}
-          hasNext={!!currentAsset?.next || !!(currentAsset?.label !== 'Skip')}
+          hasNext={!!currentAsset?.next}
           hasPrev={!!currentAsset?.previous}
           projectId={projectId}
           setSelectedListing={setSelectedListing}
@@ -101,14 +99,12 @@ export default function App() {
         <Content
           assetData={assetData}
           gridImages={effectiveGridImages}
-          isLoading={isLoading}
           onClickImage={handleClickDefaultImage}
           photoEdits={photoEdits}
           selectedListing={selectedListing}
           selectedImageIdx={selectedImageIdx}
           setSelectedListing={setSelectedListing}
           setSelectedImageIdx={setSelectedImageIdx}
-          setIsLoading={setIsLoading}
           setPhotoEdits={setPhotoEdits}
         />
       </div>

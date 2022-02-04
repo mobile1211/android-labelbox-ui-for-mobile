@@ -6,12 +6,10 @@ import formatEditDataForSubmission from './formatEditDataForSubmission';
 export default function Content({
   assetData,
   gridImages,
-  isLoading,
   onClickImage,
   photoEdits,
   selectedListing,
   selectedImageIdx,
-  setIsLoading,
   setSelectedListing,
   setSelectedImageIdx,
   setPhotoEdits,
@@ -21,7 +19,6 @@ export default function Content({
     setSelectedImageIdx();
     setPhotoEdits([]);
     Labelbox.skip().then(() => {
-      setIsLoading(true);
       Labelbox.fetchNextAssetToLabel();
     });
   }, []);
@@ -37,7 +34,6 @@ export default function Content({
     );
 
     Labelbox.setLabelForAsset(formattedData, 'ANY').then(() => {
-      setIsLoading(true);
       setPhotoEdits([]);
       Labelbox.fetchNextAssetToLabel();
     });
@@ -45,24 +41,18 @@ export default function Content({
 
   return (
     <div className="content">
-      {isLoading ? (
-        'loading...'
-      ) : (
-        <>
-          <ListingDetailsHeader
-            attribute={assetData?.attribute}
-            qualityTier={assetData?.qualityTier}
-            selectedListing={selectedListing}
-          />
-          <ImageGrid
-            images={gridImages}
-            onClickImage={onClickImage}
-            photoEdits={photoEdits}
-            qualityTier={assetData?.qualityTier}
-            selectedImageIdx={selectedImageIdx}
-          />
-        </>
-      )}
+      <ListingDetailsHeader
+        attribute={assetData?.attribute}
+        qualityTier={assetData?.qualityTier}
+        selectedListing={selectedListing}
+      />
+      <ImageGrid
+        images={gridImages}
+        onClickImage={onClickImage}
+        photoEdits={photoEdits}
+        qualityTier={assetData?.qualityTier}
+        selectedImageIdx={selectedImageIdx}
+      />
       <div className="cta-container">
         <a className="cta skip-cta" onClick={handleSkip}>
           Skip

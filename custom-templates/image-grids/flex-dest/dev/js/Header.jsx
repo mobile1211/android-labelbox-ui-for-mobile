@@ -36,7 +36,6 @@ export default function Header({
         home
       </i>
       <i
-        id="back"
         className={`material-icons back-icon ${
           hasPrev ? 'button-default' : ''
         }`}
@@ -48,7 +47,6 @@ export default function Header({
         Label this asset
       </div>
       <i
-        id="next"
         className={`material-icons next-icon ${
           hasNext ? 'button-default' : ''
         }`}

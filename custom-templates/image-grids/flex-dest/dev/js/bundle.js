@@ -7823,14 +7823,12 @@
 	    className: "material-icons home-icon",
 	    onClick: handleGoHome
 	  }, "home"), /*#__PURE__*/React.createElement("i", {
-	    id: "back",
 	    className: "material-icons back-icon ".concat(hasPrev ? 'button-default' : ''),
 	    onClick: handleGoBack
 	  }, "keyboard_arrow_left"), /*#__PURE__*/React.createElement("div", {
 	    className: "header-title",
 	    id: "externalid"
 	  }, "Label this asset"), /*#__PURE__*/React.createElement("i", {
-	    id: "next",
 	    className: "material-icons next-icon ".concat(hasNext ? 'button-default' : ''),
 	    onClick: hasNext ? handleGoNext : undefined
 	  }, "keyboard_arrow_right"));
@@ -7963,12 +7961,10 @@
 	function Content(_ref) {
 	  var assetData = _ref.assetData,
 	      gridImages = _ref.gridImages,
-	      isLoading = _ref.isLoading,
 	      onClickImage = _ref.onClickImage,
 	      photoEdits = _ref.photoEdits,
 	      selectedListing = _ref.selectedListing,
 	      selectedImageIdx = _ref.selectedImageIdx,
-	      setIsLoading = _ref.setIsLoading,
 	      setSelectedListing = _ref.setSelectedListing,
 	      setSelectedImageIdx = _ref.setSelectedImageIdx,
 	      setPhotoEdits = _ref.setPhotoEdits;
@@ -7977,7 +7973,6 @@
 	    setSelectedImageIdx();
 	    setPhotoEdits([]);
 	    Labelbox.skip().then(function () {
-	      setIsLoading(true);
 	      Labelbox.fetchNextAssetToLabel();
 	    });
 	  }, []);
@@ -7986,14 +7981,13 @@
 	    setSelectedImageIdx();
 	    var formattedData = formatEditDataForSubmission(photoEdits, assetData === null || assetData === void 0 ? void 0 : assetData.attribute, assetData === null || assetData === void 0 ? void 0 : assetData.qualityTier);
 	    Labelbox.setLabelForAsset(formattedData, 'ANY').then(function () {
-	      setIsLoading(true);
 	      setPhotoEdits([]);
 	      Labelbox.fetchNextAssetToLabel();
 	    });
 	  }, [photoEdits, assetData]);
 	  return /*#__PURE__*/React.createElement("div", {
 	    className: "content"
-	  }, isLoading ? 'loading...' : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(ListingDetailsHeader, {
+	  }, /*#__PURE__*/React.createElement(ListingDetailsHeader, {
 	    attribute: assetData === null || assetData === void 0 ? void 0 : assetData.attribute,
 	    qualityTier: assetData === null || assetData === void 0 ? void 0 : assetData.qualityTier,
 	    selectedListing: selectedListing
@@ -8003,7 +7997,7 @@
 	    photoEdits: photoEdits,
 	    qualityTier: assetData === null || assetData === void 0 ? void 0 : assetData.qualityTier,
 	    selectedImageIdx: selectedImageIdx
-	  })), /*#__PURE__*/React.createElement("div", {
+	  }), /*#__PURE__*/React.createElement("div", {
 	    className: "cta-container"
 	  }, /*#__PURE__*/React.createElement("a", {
 	    className: "cta skip-cta",
@@ -8307,35 +8301,30 @@
 	function App() {
 	  var projectId = new URL(window.location.href).searchParams.get('project');
 
-	  var _useState = react.exports.useState(false),
+	  var _useState = react.exports.useState(),
 	      _useState2 = _slicedToArray(_useState, 2),
-	      isLoading = _useState2[0],
-	      setIsLoading = _useState2[1];
+	      currentAsset = _useState2[0],
+	      setCurrentAsset = _useState2[1];
 
 	  var _useState3 = react.exports.useState(),
 	      _useState4 = _slicedToArray(_useState3, 2),
-	      currentAsset = _useState4[0],
-	      setCurrentAsset = _useState4[1];
+	      assetData = _useState4[0],
+	      setAssetData = _useState4[1];
 
 	  var _useState5 = react.exports.useState(),
 	      _useState6 = _slicedToArray(_useState5, 2),
-	      assetData = _useState6[0],
-	      setAssetData = _useState6[1];
+	      selectedListing = _useState6[0],
+	      setSelectedListing = _useState6[1];
 
 	  var _useState7 = react.exports.useState(),
 	      _useState8 = _slicedToArray(_useState7, 2),
-	      selectedListing = _useState8[0],
-	      setSelectedListing = _useState8[1];
+	      selectedImageIdx = _useState8[0],
+	      setSelectedImageIdx = _useState8[1];
 
-	  var _useState9 = react.exports.useState(),
+	  var _useState9 = react.exports.useState(''),
 	      _useState10 = _slicedToArray(_useState9, 2),
-	      selectedImageIdx = _useState10[0],
-	      setSelectedImageIdx = _useState10[1];
-
-	  var _useState11 = react.exports.useState(''),
-	      _useState12 = _slicedToArray(_useState11, 2),
-	      newDefaultPhotoId = _useState12[0],
-	      setNewDefaultPhotoId = _useState12[1]; // photoEdits data structure
+	      newDefaultPhotoId = _useState10[0],
+	      setNewDefaultPhotoId = _useState10[1]; // photoEdits data structure
 	  // [{
 	  //   listingId: 123,
 	  //   defaultPhotoId: 345,
@@ -8343,10 +8332,10 @@
 	  // }]
 
 
-	  var _useState13 = react.exports.useState(EMPTY_ARR),
-	      _useState14 = _slicedToArray(_useState13, 2),
-	      photoEdits = _useState14[0],
-	      setPhotoEdits = _useState14[1];
+	  var _useState11 = react.exports.useState(EMPTY_ARR),
+	      _useState12 = _slicedToArray(_useState11, 2),
+	      photoEdits = _useState12[0],
+	      setPhotoEdits = _useState12[1];
 
 	  var effectiveGridImages = getEffectiveGridImages(assetData, photoEdits, selectedImageIdx, newDefaultPhotoId);
 	  var handleAssetChange = react.exports.useCallback(function (asset) {
@@ -8367,9 +8356,7 @@
 	        setPhotoEdits(formattedLabels);
 	      }
 	    }
-
-	    setIsLoading(false);
-	  }, [currentAsset, setCurrentAsset, setAssetData, setIsLoading]);
+	  }, [currentAsset, setCurrentAsset, setAssetData]);
 	  var handleClickDefaultImage = react.exports.useCallback(function (imageIdx) {
 	    setSelectedImageIdx(imageIdx);
 	    setSelectedListing(assetData.gridImages[imageIdx]);
@@ -8395,7 +8382,7 @@
 	    className: "flex-grow flex-column"
 	  }, /*#__PURE__*/React.createElement(Header, {
 	    currentAsset: currentAsset,
-	    hasNext: !!(currentAsset !== null && currentAsset !== void 0 && currentAsset.next) || !!((currentAsset === null || currentAsset === void 0 ? void 0 : currentAsset.label) !== 'Skip'),
+	    hasNext: !!(currentAsset !== null && currentAsset !== void 0 && currentAsset.next),
 	    hasPrev: !!(currentAsset !== null && currentAsset !== void 0 && currentAsset.previous),
 	    projectId: projectId,
 	    setSelectedListing: setSelectedListing,
@@ -8403,14 +8390,12 @@
 	  }), /*#__PURE__*/React.createElement(Content, {
 	    assetData: assetData,
 	    gridImages: effectiveGridImages,
-	    isLoading: isLoading,
 	    onClickImage: handleClickDefaultImage,
 	    photoEdits: photoEdits,
 	    selectedListing: selectedListing,
 	    selectedImageIdx: selectedImageIdx,
 	    setSelectedListing: setSelectedListing,
 	    setSelectedImageIdx: setSelectedImageIdx,
-	    setIsLoading: setIsLoading,
 	    setPhotoEdits: setPhotoEdits
 	  })), /*#__PURE__*/React.createElement("div", {
 	    className: "flex-column right-side-panel"
