@@ -7983,6 +7983,7 @@
 	    Labelbox.setLabelForAsset(formattedData, 'ANY').then(function () {
 	      setPhotoEdits([]);
 	      Labelbox.fetchNextAssetToLabel();
+	      document.querySelector('div.center-content').scrollTo(0, 0);
 	    });
 	  }, [photoEdits, assetData]);
 	  return /*#__PURE__*/React.createElement("div", {
@@ -8379,7 +8380,7 @@
 	    setNewDefaultPhotoId: setNewDefaultPhotoId,
 	    setPhotoEdits: setPhotoEdits
 	  }) : null), /*#__PURE__*/React.createElement("div", {
-	    className: "flex-grow flex-column"
+	    className: "center-content flex-grow flex-column"
 	  }, /*#__PURE__*/React.createElement(Header, {
 	    currentAsset: currentAsset,
 	    hasNext: !!(currentAsset !== null && currentAsset !== void 0 && currentAsset.next),

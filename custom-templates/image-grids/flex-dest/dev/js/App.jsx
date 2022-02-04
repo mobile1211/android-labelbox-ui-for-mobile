@@ -87,7 +87,7 @@ export default function App() {
           />
         ) : null}
       </div>
-      <div className="flex-grow flex-column">
+      <div className="center-content flex-grow flex-column">
         <Header
           currentAsset={currentAsset}
           hasNext={!!currentAsset?.next}
