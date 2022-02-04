@@ -7796,7 +7796,7 @@
 	      hasPrev = _ref.hasPrev,
 	      hasNext = _ref.hasNext,
 	      projectId = _ref.projectId,
-	      setIsLoading = _ref.setIsLoading,
+	      setCurrentAsset = _ref.setCurrentAsset,
 	      setSelectedListing = _ref.setSelectedListing,
 	      setSelectedImageIdx = _ref.setSelectedImageIdx;
 	  var handleGoHome = react.exports.useCallback(function () {
@@ -7805,18 +7805,18 @@
 	  var handleGoBack = react.exports.useCallback(function () {
 	    setSelectedListing();
 	    setSelectedImageIdx();
-	    setIsLoading(true);
 
 	    if (hasPrev) {
+	      setCurrentAsset(currentAsset.previous);
 	      Labelbox.setLabelAsCurrentAsset(currentAsset.previous);
 	    }
 	  }, [currentAsset]);
 	  var handleGoNext = react.exports.useCallback(function () {
 	    setSelectedListing();
 	    setSelectedImageIdx();
-	    setIsLoading(true);
 
 	    if (hasNext) {
+	      setCurrentAsset(currentAsset.next);
 	      Labelbox.setLabelAsCurrentAsset(currentAsset.next);
 	    } else {
 	      Labelbox.fetchNextAssetToLabel();
@@ -7980,8 +7980,9 @@
 	  var handleSkip = react.exports.useCallback(function () {
 	    setSelectedListing();
 	    setSelectedImageIdx();
-	    setIsLoading(true);
+	    setPhotoEdits([]);
 	    Labelbox.skip().then(function () {
+	      setIsLoading(true);
 	      Labelbox.fetchNextAssetToLabel();
 	    });
 	  }, []);
@@ -7990,9 +7991,9 @@
 	    setSelectedImageIdx();
 	    var formattedData = formatEditDataForSubmission(photoEdits, assetData === null || assetData === void 0 ? void 0 : assetData.attribute, assetData === null || assetData === void 0 ? void 0 : assetData.qualityTier);
 	    Labelbox.setLabelForAsset(formattedData, 'ANY').then(function () {
-	      Labelbox.fetchNextAssetToLabel();
 	      setIsLoading(true);
 	      setPhotoEdits([]);
+	      Labelbox.fetchNextAssetToLabel();
 	    });
 	  }, [photoEdits, assetData]);
 	  return /*#__PURE__*/React.createElement("div", {
@@ -8383,6 +8384,7 @@
 	  react.exports.useEffect(function () {
 	    setIsLoading(true);
 	    Labelbox.currentAsset().subscribe(function (asset) {
+	      console.log('asset changed', asset);
 	      handleAssetChange(asset);
 	    });
 	  }, [handleAssetChange]);
@@ -8402,7 +8404,7 @@
 	    hasNext: !!(currentAsset !== null && currentAsset !== void 0 && currentAsset.next) || !!(currentAsset !== null && currentAsset !== void 0 && currentAsset.label),
 	    hasPrev: !!(currentAsset !== null && currentAsset !== void 0 && currentAsset.previous),
 	    projectId: projectId,
-	    setIsLoading: setIsLoading,
+	    setCurrentAsset: setCurrentAsset,
 	    setSelectedListing: setSelectedListing,
 	    setSelectedImageIdx: setSelectedImageIdx
 	  }), /*#__PURE__*/React.createElement(Content, {

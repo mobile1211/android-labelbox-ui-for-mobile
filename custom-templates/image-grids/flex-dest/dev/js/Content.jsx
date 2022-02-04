@@ -19,8 +19,9 @@ export default function Content({
   const handleSkip = useCallback(() => {
     setSelectedListing();
     setSelectedImageIdx();
-    setIsLoading(true);
+    setPhotoEdits([]);
     Labelbox.skip().then(() => {
+      setIsLoading(true);
       Labelbox.fetchNextAssetToLabel();
     });
   }, []);
@@ -36,9 +37,9 @@ export default function Content({
     );
 
     Labelbox.setLabelForAsset(formattedData, 'ANY').then(() => {
-      Labelbox.fetchNextAssetToLabel();
       setIsLoading(true);
       setPhotoEdits([]);
+      Labelbox.fetchNextAssetToLabel();
     });
   }, [photoEdits, assetData]);
 

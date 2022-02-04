@@ -71,6 +71,7 @@ export default function App() {
   useEffect(() => {
     setIsLoading(true);
     Labelbox.currentAsset().subscribe((asset) => {
+      console.log('asset changed', asset);
       handleAssetChange(asset);
     });
   }, [handleAssetChange]);
@@ -95,7 +96,7 @@ export default function App() {
           hasNext={!!currentAsset?.next || !!currentAsset?.label}
           hasPrev={!!currentAsset?.previous}
           projectId={projectId}
-          setIsLoading={setIsLoading}
+          setCurrentAsset={setCurrentAsset}
           setSelectedListing={setSelectedListing}
           setSelectedImageIdx={setSelectedImageIdx}
         />

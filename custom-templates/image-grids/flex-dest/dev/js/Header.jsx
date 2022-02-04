@@ -5,7 +5,7 @@ export default function Header({
   hasPrev,
   hasNext,
   projectId,
-  setIsLoading,
+  setCurrentAsset,
   setSelectedListing,
   setSelectedImageIdx,
 }) {
@@ -16,9 +16,9 @@ export default function Header({
   const handleGoBack = useCallback(() => {
     setSelectedListing();
     setSelectedImageIdx();
-    setIsLoading(true);
 
     if (hasPrev) {
+      setCurrentAsset(currentAsset.previous);
       Labelbox.setLabelAsCurrentAsset(currentAsset.previous);
     }
   }, [currentAsset]);
@@ -26,9 +26,9 @@ export default function Header({
   const handleGoNext = useCallback(() => {
     setSelectedListing();
     setSelectedImageIdx();
-    setIsLoading(true);
 
     if (hasNext) {
+      setCurrentAsset(currentAsset.next);
       Labelbox.setLabelAsCurrentAsset(currentAsset.next);
     } else {
       Labelbox.fetchNextAssetToLabel();
