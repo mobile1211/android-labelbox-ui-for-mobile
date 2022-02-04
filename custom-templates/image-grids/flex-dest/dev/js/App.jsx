@@ -39,6 +39,11 @@ export default function App() {
         const assetDataStr = get(asset.data).replace(/NaN/g, 'null');
         const parsedAssetData = JSON.parse(assetDataStr);
 
+        if (currentAsset?.id !== asset.id) {
+          setCurrentAsset(asset);
+          setAssetData(parsedAssetData);
+        }
+
         if (asset.label) {
           if (asset.label === 'Skip') return;
           const labels = JSON.parse(asset.label);
@@ -46,11 +51,6 @@ export default function App() {
 
           // store labels in photoEdits mutable data structure
           setPhotoEdits(formattedLabels);
-        }
-
-        if (currentAsset?.id !== asset.id) {
-          setCurrentAsset(asset);
-          setAssetData(parsedAssetData);
         }
       }
       setIsLoading(false);
@@ -69,7 +69,7 @@ export default function App() {
 
   // fetch asset on componentDidMount
   useEffect(() => {
-    setIsLoading(true);
+    // setIsLoading(true);
     Labelbox.currentAsset().subscribe((asset) => {
       console.log('asset changed', asset);
       handleAssetChange(asset);
@@ -96,7 +96,6 @@ export default function App() {
           hasNext={!!currentAsset?.next || !!currentAsset?.label}
           hasPrev={!!currentAsset?.previous}
           projectId={projectId}
-          setCurrentAsset={setCurrentAsset}
           setSelectedListing={setSelectedListing}
           setSelectedImageIdx={setSelectedImageIdx}
         />

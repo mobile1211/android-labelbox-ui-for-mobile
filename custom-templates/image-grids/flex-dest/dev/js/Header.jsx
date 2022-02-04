@@ -5,7 +5,6 @@ export default function Header({
   hasPrev,
   hasNext,
   projectId,
-  setCurrentAsset,
   setSelectedListing,
   setSelectedImageIdx,
 }) {
@@ -18,7 +17,6 @@ export default function Header({
     setSelectedImageIdx();
 
     if (hasPrev) {
-      setCurrentAsset(currentAsset.previous);
       Labelbox.setLabelAsCurrentAsset(currentAsset.previous);
     }
   }, [currentAsset]);
@@ -28,7 +26,6 @@ export default function Header({
     setSelectedImageIdx();
 
     if (hasNext) {
-      setCurrentAsset(currentAsset.next);
       Labelbox.setLabelAsCurrentAsset(currentAsset.next);
     } else {
       Labelbox.fetchNextAssetToLabel();

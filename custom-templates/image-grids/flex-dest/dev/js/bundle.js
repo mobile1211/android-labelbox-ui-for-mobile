@@ -7796,7 +7796,6 @@
 	      hasPrev = _ref.hasPrev,
 	      hasNext = _ref.hasNext,
 	      projectId = _ref.projectId,
-	      setCurrentAsset = _ref.setCurrentAsset,
 	      setSelectedListing = _ref.setSelectedListing,
 	      setSelectedImageIdx = _ref.setSelectedImageIdx;
 	  var handleGoHome = react.exports.useCallback(function () {
@@ -7807,7 +7806,6 @@
 	    setSelectedImageIdx();
 
 	    if (hasPrev) {
-	      setCurrentAsset(currentAsset.previous);
 	      Labelbox.setLabelAsCurrentAsset(currentAsset.previous);
 	    }
 	  }, [currentAsset]);
@@ -7816,7 +7814,6 @@
 	    setSelectedImageIdx();
 
 	    if (hasNext) {
-	      setCurrentAsset(currentAsset.next);
 	      Labelbox.setLabelAsCurrentAsset(currentAsset.next);
 	    } else {
 	      Labelbox.fetchNextAssetToLabel();
@@ -8359,17 +8356,17 @@
 	      var assetDataStr = get(asset.data).replace(/NaN/g, 'null');
 	      var parsedAssetData = JSON.parse(assetDataStr);
 
+	      if ((currentAsset === null || currentAsset === void 0 ? void 0 : currentAsset.id) !== asset.id) {
+	        setCurrentAsset(asset);
+	        setAssetData(parsedAssetData);
+	      }
+
 	      if (asset.label) {
 	        if (asset.label === 'Skip') return;
 	        var labels = JSON.parse(asset.label);
 	        var formattedLabels = convertLabelToPhotoEditFormat(labels); // store labels in photoEdits mutable data structure
 
 	        setPhotoEdits(formattedLabels);
-	      }
-
-	      if ((currentAsset === null || currentAsset === void 0 ? void 0 : currentAsset.id) !== asset.id) {
-	        setCurrentAsset(asset);
-	        setAssetData(parsedAssetData);
 	      }
 	    }
 
@@ -8382,7 +8379,7 @@
 	  }, [assetData, setSelectedImageIdx, setSelectedListing, setNewDefaultPhotoId]); // fetch asset on componentDidMount
 
 	  react.exports.useEffect(function () {
-	    setIsLoading(true);
+	    // setIsLoading(true);
 	    Labelbox.currentAsset().subscribe(function (asset) {
 	      console.log('asset changed', asset);
 	      handleAssetChange(asset);
@@ -8404,7 +8401,6 @@
 	    hasNext: !!(currentAsset !== null && currentAsset !== void 0 && currentAsset.next) || !!(currentAsset !== null && currentAsset !== void 0 && currentAsset.label),
 	    hasPrev: !!(currentAsset !== null && currentAsset !== void 0 && currentAsset.previous),
 	    projectId: projectId,
-	    setCurrentAsset: setCurrentAsset,
 	    setSelectedListing: setSelectedListing,
 	    setSelectedImageIdx: setSelectedImageIdx
 	  }), /*#__PURE__*/React.createElement(Content, {
