@@ -69,7 +69,6 @@ export default function App() {
 
   // fetch asset on componentDidMount
   useEffect(() => {
-    // setIsLoading(true);
     Labelbox.currentAsset().subscribe((asset) => {
       console.log('asset changed', asset);
       handleAssetChange(asset);
@@ -93,7 +92,7 @@ export default function App() {
       <div className="flex-grow flex-column">
         <Header
           currentAsset={currentAsset}
-          hasNext={!!currentAsset?.next || !!currentAsset?.label}
+          hasNext={!!currentAsset?.next || !!(currentAsset?.label !== 'Skip')}
           hasPrev={!!currentAsset?.previous}
           projectId={projectId}
           setSelectedListing={setSelectedListing}

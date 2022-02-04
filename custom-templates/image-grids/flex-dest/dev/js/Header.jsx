@@ -27,8 +27,6 @@ export default function Header({
 
     if (hasNext) {
       Labelbox.setLabelAsCurrentAsset(currentAsset.next);
-    } else {
-      Labelbox.fetchNextAssetToLabel();
     }
   }, [currentAsset]);
 

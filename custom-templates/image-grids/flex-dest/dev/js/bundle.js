@@ -7815,8 +7815,6 @@
 
 	    if (hasNext) {
 	      Labelbox.setLabelAsCurrentAsset(currentAsset.next);
-	    } else {
-	      Labelbox.fetchNextAssetToLabel();
 	    }
 	  }, [currentAsset]);
 	  return /*#__PURE__*/React.createElement("div", {
@@ -8379,7 +8377,6 @@
 	  }, [assetData, setSelectedImageIdx, setSelectedListing, setNewDefaultPhotoId]); // fetch asset on componentDidMount
 
 	  react.exports.useEffect(function () {
-	    // setIsLoading(true);
 	    Labelbox.currentAsset().subscribe(function (asset) {
 	      console.log('asset changed', asset);
 	      handleAssetChange(asset);
@@ -8398,7 +8395,7 @@
 	    className: "flex-grow flex-column"
 	  }, /*#__PURE__*/React.createElement(Header, {
 	    currentAsset: currentAsset,
-	    hasNext: !!(currentAsset !== null && currentAsset !== void 0 && currentAsset.next) || !!(currentAsset !== null && currentAsset !== void 0 && currentAsset.label),
+	    hasNext: !!(currentAsset !== null && currentAsset !== void 0 && currentAsset.next) || !!((currentAsset === null || currentAsset === void 0 ? void 0 : currentAsset.label) !== 'Skip'),
 	    hasPrev: !!(currentAsset !== null && currentAsset !== void 0 && currentAsset.previous),
 	    projectId: projectId,
 	    setSelectedListing: setSelectedListing,
