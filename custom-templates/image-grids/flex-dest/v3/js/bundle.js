@@ -8346,9 +8346,6 @@
 	  var effectiveGridImages = getEffectiveGridImages(assetData, photoEdits, selectedImageIdx, newDefaultPhotoId);
 	  var handleAssetChange = react.exports.useCallback(function (asset) {
 	    if (asset) {
-	      // subscription to Labelbox makes increasing network calls as label history gets longer
-	      // to reduce jank from network calls, check the refs to ensure call is only made when relevant
-	      // data has changed
 	      if ((currentAsset === null || currentAsset === void 0 ? void 0 : currentAsset.id) !== asset.id && (assetId.current !== asset.id || assetNext.current !== asset.next || assetPrev.current !== asset.previous)) {
 	        assetId.current = asset.id;
 	        assetNext.current = asset.next;
