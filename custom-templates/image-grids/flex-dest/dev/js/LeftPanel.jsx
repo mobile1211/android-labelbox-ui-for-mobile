@@ -61,34 +61,56 @@ export default function LeftPanel({
 
   function handleSubmit(e) {
     e.preventDefault();
-    // change default photo id in edits
-    if (!!newDefaultPhotoId && newDefaultPhotoId !== originalDefaultPhotoId) {
-      setPhotoEdits((prevEdits) => {
-        const prevChangeIndex = prevEdits.findIndex(
-          (edit) => edit.listingId === selectedListing.listingId
-        );
+    if (!!newDefaultPhotoId) {
+      // photo id and quality tier both same as original data
+      if (
+        newDefaultPhotoId === originalDefaultPhotoId &&
+        photoQualityTier === assetData.qualityTier
+      ) {
+        setPhotoEdits((prevEdits) => {
+          const prevChangeIndex = prevEdits.findIndex(
+            (edit) => edit.listingId === selectedListing.listingId
+          );
 
-        if (prevChangeIndex !== -1) {
-          // override previous edit
-          return [
-            ...prevEdits.slice(0, prevChangeIndex),
-            Object.assign({}, prevEdits[prevChangeIndex], {
-              defaultPhotoId: newDefaultPhotoId,
-            }),
-            ...prevEdits.slice(prevChangeIndex + 1),
-          ];
-        } else {
-          // add to photoEdits
-          return [
-            ...prevEdits,
-            {
-              listingId: selectedListing.listingId,
-              defaultPhotoId: newDefaultPhotoId,
-              photoQualityTier,
-            },
-          ];
-        }
-      });
+          if (prevChangeIndex !== -1) {
+            // delete previous edit
+            return [
+              ...prevEdits.slice(0, prevChangeIndex),
+              ...prevEdits.slice(prevChangeIndex + 1),
+            ];
+          }
+          return prevEdits;
+        });
+      }
+
+      if (newDefaultPhotoId !== originalDefaultPhotoId) {
+        setPhotoEdits((prevEdits) => {
+          const prevChangeIndex = prevEdits.findIndex(
+            (edit) => edit.listingId === selectedListing.listingId
+          );
+
+          if (prevChangeIndex !== -1) {
+            // override previous edit
+            return [
+              ...prevEdits.slice(0, prevChangeIndex),
+              Object.assign({}, prevEdits[prevChangeIndex], {
+                defaultPhotoId: newDefaultPhotoId,
+              }),
+              ...prevEdits.slice(prevChangeIndex + 1),
+            ];
+          } else {
+            // add to photoEdits
+            return [
+              ...prevEdits,
+              {
+                listingId: selectedListing.listingId,
+                defaultPhotoId: newDefaultPhotoId,
+                photoQualityTier,
+              },
+            ];
+          }
+        });
+      }
     }
 
     // change photo quality tier in edits

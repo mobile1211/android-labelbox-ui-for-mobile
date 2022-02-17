@@ -82,7 +82,6 @@ export default function App() {
   // fetch asset on componentDidMount
   useEffect(() => {
     Labelbox.currentAsset().subscribe((asset) => {
-      console.log('asset changed');
       handleAssetChange(asset);
     });
   }, [handleAssetChange]);

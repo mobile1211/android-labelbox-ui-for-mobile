@@ -8065,28 +8065,46 @@
 	  }
 
 	  function handleSubmit(e) {
-	    e.preventDefault(); // change default photo id in edits
+	    e.preventDefault();
 
-	    if (!!newDefaultPhotoId && newDefaultPhotoId !== originalDefaultPhotoId) {
-	      setPhotoEdits(function (prevEdits) {
-	        var prevChangeIndex = prevEdits.findIndex(function (edit) {
-	          return edit.listingId === selectedListing.listingId;
+	    if (!!newDefaultPhotoId) {
+	      // photo id and quality tier both same as original data
+	      if (newDefaultPhotoId === originalDefaultPhotoId && photoQualityTier === assetData.qualityTier) {
+	        setPhotoEdits(function (prevEdits) {
+	          var prevChangeIndex = prevEdits.findIndex(function (edit) {
+	            return edit.listingId === selectedListing.listingId;
+	          });
+
+	          if (prevChangeIndex !== -1) {
+	            // delete previous edit
+	            return [].concat(_toConsumableArray(prevEdits.slice(0, prevChangeIndex)), _toConsumableArray(prevEdits.slice(prevChangeIndex + 1)));
+	          }
+
+	          return prevEdits;
 	        });
+	      }
 
-	        if (prevChangeIndex !== -1) {
-	          // override previous edit
-	          return [].concat(_toConsumableArray(prevEdits.slice(0, prevChangeIndex)), [Object.assign({}, prevEdits[prevChangeIndex], {
-	            defaultPhotoId: newDefaultPhotoId
-	          })], _toConsumableArray(prevEdits.slice(prevChangeIndex + 1)));
-	        } else {
-	          // add to photoEdits
-	          return [].concat(_toConsumableArray(prevEdits), [{
-	            listingId: selectedListing.listingId,
-	            defaultPhotoId: newDefaultPhotoId,
-	            photoQualityTier: photoQualityTier
-	          }]);
-	        }
-	      });
+	      if (newDefaultPhotoId !== originalDefaultPhotoId) {
+	        setPhotoEdits(function (prevEdits) {
+	          var prevChangeIndex = prevEdits.findIndex(function (edit) {
+	            return edit.listingId === selectedListing.listingId;
+	          });
+
+	          if (prevChangeIndex !== -1) {
+	            // override previous edit
+	            return [].concat(_toConsumableArray(prevEdits.slice(0, prevChangeIndex)), [Object.assign({}, prevEdits[prevChangeIndex], {
+	              defaultPhotoId: newDefaultPhotoId
+	            })], _toConsumableArray(prevEdits.slice(prevChangeIndex + 1)));
+	          } else {
+	            // add to photoEdits
+	            return [].concat(_toConsumableArray(prevEdits), [{
+	              listingId: selectedListing.listingId,
+	              defaultPhotoId: newDefaultPhotoId,
+	              photoQualityTier: photoQualityTier
+	            }]);
+	          }
+	        });
+	      }
 	    } // change photo quality tier in edits
 
 
@@ -8376,7 +8394,6 @@
 
 	  react.exports.useEffect(function () {
 	    Labelbox.currentAsset().subscribe(function (asset) {
-	      console.log('asset changed');
 	      handleAssetChange(asset);
 	    });
 	  }, [handleAssetChange]);
