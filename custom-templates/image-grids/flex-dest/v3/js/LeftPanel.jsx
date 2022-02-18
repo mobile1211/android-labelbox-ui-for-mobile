@@ -138,6 +138,24 @@ export default function LeftPanel({
           ];
         }
       });
+    } else {
+      // if photo edit exists for the listing, update the photoQualityTier
+      setPhotoEdits((prevEdits) => {
+        const prevChangeIndex = prevEdits.findIndex(
+          (edit) => edit.listingId === selectedListing.listingId
+        );
+
+        if (prevChangeIndex !== -1) {
+          return [
+            ...prevEdits.slice(0, prevChangeIndex),
+            Object.assign({}, prevEdits[prevChangeIndex], {
+              photoQualityTier,
+            }),
+            ...prevEdits.slice(prevChangeIndex + 1),
+          ];
+        }
+        return prevEdits;
+      });
     }
   }
 

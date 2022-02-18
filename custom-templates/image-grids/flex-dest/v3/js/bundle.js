@@ -8125,6 +8125,21 @@
 	          }]);
 	        }
 	      });
+	    } else {
+	      // if photo edit exists for the listing, update the photoQualityTier
+	      setPhotoEdits(function (prevEdits) {
+	        var prevChangeIndex = prevEdits.findIndex(function (edit) {
+	          return edit.listingId === selectedListing.listingId;
+	        });
+
+	        if (prevChangeIndex !== -1) {
+	          return [].concat(_toConsumableArray(prevEdits.slice(0, prevChangeIndex)), [Object.assign({}, prevEdits[prevChangeIndex], {
+	            photoQualityTier: photoQualityTier
+	          })], _toConsumableArray(prevEdits.slice(prevChangeIndex + 1)));
+	        }
+
+	        return prevEdits;
+	      });
 	    }
 	  }
 
