@@ -61,6 +61,7 @@ export default function LeftPanel({
 
   function handleSubmit(e) {
     e.preventDefault();
+    // change in photo id
     if (!!newDefaultPhotoId) {
       // photo id and quality tier both same as original data
       if (
@@ -110,10 +111,28 @@ export default function LeftPanel({
             ];
           }
         });
+      } else {
+        setPhotoEdits((prevEdits) => {
+          const prevChangeIndex = prevEdits.findIndex(
+            (edit) => edit.listingId === selectedListing.listingId
+          );
+
+          if (prevChangeIndex !== -1) {
+            const copy = Object.assign({}, prevEdits[prevChangeIndex]);
+            delete copy.defaultPhotoId;
+
+            return [
+              ...prevEdits.slice(0, prevChangeIndex),
+              copy,
+              ...prevEdits.slice(prevChangeIndex + 1),
+            ];
+          }
+          return prevEdits;
+        });
       }
     }
 
-    // change photo quality tier in edits
+    // change photo quality tier
     if (photoQualityTier !== assetData.qualityTier) {
       setPhotoEdits((prevEdits) => {
         const prevChangeIndex = prevEdits.findIndex(

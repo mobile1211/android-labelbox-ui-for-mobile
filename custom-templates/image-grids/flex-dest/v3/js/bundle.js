@@ -8065,7 +8065,7 @@
 	  }
 
 	  function handleSubmit(e) {
-	    e.preventDefault();
+	    e.preventDefault(); // change in photo id
 
 	    if (!!newDefaultPhotoId) {
 	      // photo id and quality tier both same as original data
@@ -8104,8 +8104,22 @@
 	            }]);
 	          }
 	        });
+	      } else {
+	        setPhotoEdits(function (prevEdits) {
+	          var prevChangeIndex = prevEdits.findIndex(function (edit) {
+	            return edit.listingId === selectedListing.listingId;
+	          });
+
+	          if (prevChangeIndex !== -1) {
+	            var copy = Object.assign({}, prevEdits[prevChangeIndex]);
+	            delete copy.defaultPhotoId;
+	            return [].concat(_toConsumableArray(prevEdits.slice(0, prevChangeIndex)), [copy], _toConsumableArray(prevEdits.slice(prevChangeIndex + 1)));
+	          }
+
+	          return prevEdits;
+	        });
 	      }
-	    } // change photo quality tier in edits
+	    } // change photo quality tier
 
 
 	    if (photoQualityTier !== assetData.qualityTier) {
