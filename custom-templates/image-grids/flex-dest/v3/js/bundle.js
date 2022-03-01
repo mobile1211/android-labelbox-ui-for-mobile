@@ -7917,7 +7917,7 @@
 	      photoQualityTier = edit.photoQualityTier;
 	  var photoQualityTierChanged = !!photoQualityTier && photoQualityTier !== originalPhotoQualityTier;
 
-	  if (photoQualityTierChanged && photoQualityTier === 'Unacceptable') {
+	  if (photoQualityTierChanged && photoQualityTier === 'Remove') {
 	    return 'remove category';
 	  }
 
@@ -8179,7 +8179,9 @@
 	    value: "Low Quality"
 	  }, "Low Quality"), /*#__PURE__*/React.createElement("option", {
 	    value: "Unacceptable"
-	  }, "Unacceptable"))), /*#__PURE__*/React.createElement("div", {
+	  }, "Unacceptable"), /*#__PURE__*/React.createElement("option", {
+	    value: "Remove"
+	  }, "Remove"))), /*#__PURE__*/React.createElement("div", {
 	    className: "left-panel-ctas-wrapper"
 	  }, /*#__PURE__*/React.createElement("button", {
 	    onClick: handleResetChanges,

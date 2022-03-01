@@ -4,7 +4,7 @@ function getUpdateReason(edit, originalPhotoQualityTier) {
   const photoQualityTierChanged =
     !!photoQualityTier && photoQualityTier !== originalPhotoQualityTier;
 
-  if (photoQualityTierChanged && photoQualityTier === 'Unacceptable') {
+  if (photoQualityTierChanged && photoQualityTier === 'Remove') {
     return 'remove category';
   }
 
