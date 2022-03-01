@@ -199,6 +199,7 @@ export default function LeftPanel({
           <option value="Acceptable">Acceptable</option>
           <option value="Low Quality">Low Quality</option>
           <option value="Unacceptable">Unacceptable</option>
+          <option value="Remove">Remove</option>
         </select>
       </label>
       <div className="left-panel-ctas-wrapper">
