@@ -16,7 +16,6 @@ export default function App() {
   const [selectedListing, setSelectedListing] = useState();
   const [selectedImageIdx, setSelectedImageIdx] = useState();
   const [newDefaultPhotoId, setNewDefaultPhotoId] = useState('');
-  const assetId = useRef();
   const assetNext = useRef();
   const assetPrev = useRef();
 
@@ -40,14 +39,18 @@ export default function App() {
       if (asset) {
         // subscription to Labelbox makes increasing network calls as label history gets longer
         // to reduce jank from network calls, check the refs to ensure call is only made when relevant
-        // data has changed 
+        // data has changed
         if (
           currentAsset?.id !== asset.id &&
-          (assetId.current !== asset.id ||
-            assetNext.current !== asset.next ||
+          currentAsset?.data !== asset.data &&
+          (assetNext.current !== asset.next ||
             assetPrev.current !== asset.previous)
         ) {
-          assetId.current = asset.id;
+          console.log('id', currentAsset?.id, asset.id);
+          console.log('assetData', currentAsset?.data, asset.data);
+          console.log('next', assetNext.current, asset.next);
+          console.log('prev', assetPrev.current, asset.previous);
+
           assetNext.current = asset.next;
           assetPrev.current = asset.previous;
           const assetDataStr = get(asset.data).replace(/NaN/g, 'null');

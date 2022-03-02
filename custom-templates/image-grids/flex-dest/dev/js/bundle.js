@@ -8378,7 +8378,6 @@
 	      newDefaultPhotoId = _useState10[0],
 	      setNewDefaultPhotoId = _useState10[1];
 
-	  var assetId = react.exports.useRef();
 	  var assetNext = react.exports.useRef();
 	  var assetPrev = react.exports.useRef(); // photoEdits data structure
 	  // [{
@@ -8398,8 +8397,11 @@
 	      // subscription to Labelbox makes increasing network calls as label history gets longer
 	      // to reduce jank from network calls, check the refs to ensure call is only made when relevant
 	      // data has changed
-	      if ((currentAsset === null || currentAsset === void 0 ? void 0 : currentAsset.id) !== asset.id && (assetId.current !== asset.id || assetNext.current !== asset.next || assetPrev.current !== asset.previous)) {
-	        assetId.current = asset.id;
+	      if ((currentAsset === null || currentAsset === void 0 ? void 0 : currentAsset.id) !== asset.id && (currentAsset === null || currentAsset === void 0 ? void 0 : currentAsset.data) !== asset.data && (assetNext.current !== asset.next || assetPrev.current !== asset.previous)) {
+	        console.log('id', currentAsset === null || currentAsset === void 0 ? void 0 : currentAsset.id, asset.id);
+	        console.log('assetData', currentAsset === null || currentAsset === void 0 ? void 0 : currentAsset.data, asset.data);
+	        console.log('next', assetNext.current, asset.next);
+	        console.log('prev', assetPrev.current, asset.previous);
 	        assetNext.current = asset.next;
 	        assetPrev.current = asset.previous;
 	        var assetDataStr = get(asset.data).replace(/NaN/g, 'null');
@@ -8421,8 +8423,7 @@
 	    setSelectedImageIdx(imageIdx);
 	    setSelectedListing(assetData.gridImages[imageIdx]);
 	    setNewDefaultPhotoId('');
-	  }, [assetData, setSelectedImageIdx, setSelectedListing, setNewDefaultPhotoId]); // fetch asset on componentDidMount
-
+	  }, [assetData, setSelectedImageIdx, setSelectedListing, setNewDefaultPhotoId]);
 	  react.exports.useEffect(function () {
 	    Labelbox.currentAsset().subscribe(function (asset) {
 	      handleAssetChange(asset);
