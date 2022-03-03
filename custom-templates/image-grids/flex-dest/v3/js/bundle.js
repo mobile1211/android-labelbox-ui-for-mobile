@@ -8230,8 +8230,8 @@
 	      newDefaultPhotoId = _ref.newDefaultPhotoId,
 	      onClickImage = _ref.onClickImage;
 	  react.exports.useEffect(function () {
-	    document.querySelector('div.flex-column.right-side-panel').scrollTo(0, 0);
-	  }, [selectedListing.title]);
+	    document.querySelector('.right-side-panel').scrollTo(0, 0);
+	  }, [selectedListing]);
 	  var title = selectedListing.listingTitle,
 	      description = selectedListing.listingDescription,
 	      location = selectedListing.listingLocation,

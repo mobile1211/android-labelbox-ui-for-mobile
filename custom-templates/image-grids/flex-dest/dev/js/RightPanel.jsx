@@ -7,8 +7,8 @@ export default function RightPanel({
   onClickImage,
 }) {
   useEffect(() => {
-    document.querySelector('div.flex-column.right-side-panel').scrollTo(0, 0);
-  }, [selectedListing.title]);
+    document.querySelector('.right-side-panel').scrollTo(0, 0);
+  }, [selectedListing]);
 
   const {
     listingTitle: title,
