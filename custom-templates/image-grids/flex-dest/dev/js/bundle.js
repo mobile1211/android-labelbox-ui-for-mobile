@@ -8334,6 +8334,7 @@
 	//   photoQualityTier: 'High',
 	// }]
 	function convertLabelToPhotoEditFormat(labels) {
+	  if (!Array.isArray(labels)) return [];
 	  return labels.map(function (label) {
 	    var id_listing = label.id_listing,
 	        photo_id = label.photo_id,
