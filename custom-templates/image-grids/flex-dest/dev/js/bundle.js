@@ -8241,7 +8241,7 @@
 	  // src="https://maps.google.com/maps?q=${lat},${lng}&hl=es&z=14&amp;output=embed"
 	  // href="https://maps.google.com/maps?q=${lat},${lng};z=14&amp;output=embed"
 
-	  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h5", null, "Listing Info"), /*#__PURE__*/React.createElement("div", {
+	  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h5", null, "Listing Info"), /*#__PURE__*/React.createElement("div", {
 	    className: "listing-info-container"
 	  }, /*#__PURE__*/React.createElement("div", {
 	    className: "listing-info"
