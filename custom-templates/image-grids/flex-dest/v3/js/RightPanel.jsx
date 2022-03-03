@@ -8,9 +8,8 @@ export default function RightPanel({
 }) {
   useEffect(() => {
     document.querySelector('div.flex-column.right-side-panel').scrollTo(0, 0);
-  }, [selectedListing]);
+  }, [selectedListing.title]);
 
-  if (!selectedListing) return null;
   const {
     listingTitle: title,
     listingDescription: description,

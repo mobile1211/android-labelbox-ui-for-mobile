@@ -8231,8 +8231,7 @@
 	      onClickImage = _ref.onClickImage;
 	  react.exports.useEffect(function () {
 	    document.querySelector('div.flex-column.right-side-panel').scrollTo(0, 0);
-	  }, [selectedListing]);
-	  if (!selectedListing) return null;
+	  }, [selectedListing.title]);
 	  var title = selectedListing.listingTitle,
 	      description = selectedListing.listingDescription,
 	      location = selectedListing.listingLocation,
@@ -8459,11 +8458,11 @@
 	    setPhotoEdits: setPhotoEdits
 	  })), /*#__PURE__*/React.createElement("div", {
 	    className: "flex-column right-side-panel"
-	  }, /*#__PURE__*/React.createElement(RightPanel, {
+	  }, selectedListing ? /*#__PURE__*/React.createElement(RightPanel, {
 	    selectedListing: selectedListing,
 	    onClickImage: setNewDefaultPhotoId,
 	    newDefaultPhotoId: newDefaultPhotoId
-	  })));
+	  }) : null));
 	}
 
 	ReactDOM.render( /*#__PURE__*/React.createElement(App, null), document.getElementById('root'));
