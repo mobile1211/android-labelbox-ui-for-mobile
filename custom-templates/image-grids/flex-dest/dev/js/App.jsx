@@ -62,7 +62,12 @@ export default function App() {
 
         if (asset.label) {
           if (asset.label === 'Skip') return;
-          const labels = JSON.parse(asset.label);
+          let labels = [];
+          try {
+            labels = JSON.parse(asset.label);
+          } catch (e) {
+            console.error(e);
+          }
           const formattedLabels = convertLabelToPhotoEditFormat(labels);
 
           // store labels in photoEdits mutable data structure

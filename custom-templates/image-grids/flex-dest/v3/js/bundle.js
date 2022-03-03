@@ -8412,7 +8412,14 @@
 
 	      if (asset.label) {
 	        if (asset.label === 'Skip') return;
-	        var labels = JSON.parse(asset.label);
+	        var labels = [];
+
+	        try {
+	          labels = JSON.parse(asset.label);
+	        } catch (e) {
+	          console.error(e);
+	        }
+
 	        var formattedLabels = convertLabelToPhotoEditFormat(labels); // store labels in photoEdits mutable data structure
 
 	        setPhotoEdits(formattedLabels);
