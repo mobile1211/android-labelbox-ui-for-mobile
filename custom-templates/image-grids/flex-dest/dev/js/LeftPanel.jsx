@@ -61,29 +61,29 @@ export default function LeftPanel({
 
   function handleSubmit(e) {
     e.preventDefault();
+    // photo id and quality tier both same as original data
+    if (
+      (!newDefaultPhotoId || newDefaultPhotoId === originalDefaultPhotoId) &&
+      photoQualityTier === originalPhotoQualityTier
+    ) {
+      return setPhotoEdits((prevEdits) => {
+        const prevChangeIndex = prevEdits.findIndex(
+          (edit) => edit.listingId === selectedListing.listingId
+        );
+
+        if (prevChangeIndex !== -1) {
+          // delete previous edit
+          return [
+            ...prevEdits.slice(0, prevChangeIndex),
+            ...prevEdits.slice(prevChangeIndex + 1),
+          ];
+        }
+        return prevEdits;
+      });
+    }
+
     // change in photo id
     if (!!newDefaultPhotoId) {
-      // photo id and quality tier both same as original data
-      if (
-        newDefaultPhotoId === originalDefaultPhotoId &&
-        photoQualityTier === assetData.qualityTier
-      ) {
-        setPhotoEdits((prevEdits) => {
-          const prevChangeIndex = prevEdits.findIndex(
-            (edit) => edit.listingId === selectedListing.listingId
-          );
-
-          if (prevChangeIndex !== -1) {
-            // delete previous edit
-            return [
-              ...prevEdits.slice(0, prevChangeIndex),
-              ...prevEdits.slice(prevChangeIndex + 1),
-            ];
-          }
-          return prevEdits;
-        });
-      }
-
       if (newDefaultPhotoId !== originalDefaultPhotoId) {
         setPhotoEdits((prevEdits) => {
           const prevChangeIndex = prevEdits.findIndex(
@@ -118,8 +118,9 @@ export default function LeftPanel({
           );
 
           if (prevChangeIndex !== -1) {
-            const copy = Object.assign({}, prevEdits[prevChangeIndex]);
-            delete copy.defaultPhotoId;
+            const copy = Object.assign({}, prevEdits[prevChangeIndex], {
+              defaultPhotoId: newDefaultPhotoId,
+            });
 
             return [
               ...prevEdits.slice(0, prevChangeIndex),
@@ -133,7 +134,7 @@ export default function LeftPanel({
     }
 
     // change photo quality tier
-    if (photoQualityTier !== assetData.qualityTier) {
+    if (photoQualityTier !== originalPhotoQualityTier) {
       setPhotoEdits((prevEdits) => {
         const prevChangeIndex = prevEdits.findIndex(
           (edit) => edit.listingId === selectedListing.listingId
@@ -152,6 +153,10 @@ export default function LeftPanel({
             ...prevEdits,
             {
               listingId: selectedListing.listingId,
+              defaultPhotoId:
+                originalDefaultPhotoId ||
+                updatedDefaultPhotoId ||
+                originalDefaultPhotoId,
               photoQualityTier,
             },
           ];

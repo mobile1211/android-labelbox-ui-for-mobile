@@ -34,7 +34,8 @@ export default function Content({
     const formattedData = formatEditDataForSubmission(
       photoEdits,
       assetData?.attribute,
-      assetData?.qualityTier
+      assetData?.qualityTier,
+      assetData?.gridImages
     );
 
     Labelbox.setLabelForAsset(formattedData, 'ANY').then(() => {

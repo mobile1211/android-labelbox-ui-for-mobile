@@ -1,5 +1,12 @@
-function getUpdateReason(edit, originalPhotoQualityTier) {
+function getUpdateReason(
+  edit,
+  originalDefaultPhotoId,
+  originalPhotoQualityTier
+) {
   const { defaultPhotoId, photoQualityTier } = edit;
+
+  const defaultPhotoIdChanged =
+    !!defaultPhotoId && defaultPhotoId !== originalDefaultPhotoId;
 
   const photoQualityTierChanged =
     !!photoQualityTier && photoQualityTier !== originalPhotoQualityTier;
@@ -8,7 +15,7 @@ function getUpdateReason(edit, originalPhotoQualityTier) {
     return 'remove category';
   }
 
-  if (!!defaultPhotoId && photoQualityTierChanged) {
+  if (defaultPhotoIdChanged && photoQualityTierChanged) {
     return 'update photo + quality';
   }
 
@@ -16,7 +23,7 @@ function getUpdateReason(edit, originalPhotoQualityTier) {
     return 'update quality';
   }
 
-  if (!!defaultPhotoId) {
+  if (defaultPhotoIdChanged) {
     return 'update photo';
   }
 
@@ -26,16 +33,26 @@ function getUpdateReason(edit, originalPhotoQualityTier) {
 export default function formatEditDataForSubmission(
   photoEdits,
   attribute,
-  originalPhotoQualityTier
+  originalPhotoQualityTier,
+  gridImages
 ) {
   const formatted = photoEdits.map((edit) => {
     const { listingId, defaultPhotoId, photoQualityTier } = edit;
+    const listingInfo = gridImages.find(
+      (listing) => listing.listingId === listingId
+    );
+    const originalDefaultPhotoId = listingInfo?.photoId;
+
     const data = {
       id_listing: listingId,
       listing_category: attribute,
-      ...(defaultPhotoId ? { photo_id: defaultPhotoId } : undefined),
-      ...(photoQualityTier ? { photo_quality: photoQualityTier } : undefined),
-      update_reason: getUpdateReason(edit, originalPhotoQualityTier),
+      photo_id: defaultPhotoId,
+      photo_quality: photoQualityTier,
+      update_reason: getUpdateReason(
+        edit,
+        originalDefaultPhotoId,
+        originalPhotoQualityTier
+      ),
     };
     return data;
   });
