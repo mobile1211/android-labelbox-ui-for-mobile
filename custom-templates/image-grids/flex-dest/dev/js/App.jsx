@@ -46,11 +46,6 @@ export default function App() {
           (assetNext.current !== asset.next ||
             assetPrev.current !== asset.previous)
         ) {
-          console.log('id', currentAsset?.id, asset.id);
-          console.log('assetData', currentAsset?.data, asset.data);
-          console.log('next', assetNext.current, asset.next);
-          console.log('prev', assetPrev.current, asset.previous);
-
           assetNext.current = asset.next;
           assetPrev.current = asset.previous;
           const assetDataStr = get(asset.data).replace(/NaN/g, 'null');

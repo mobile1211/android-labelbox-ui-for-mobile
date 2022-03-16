@@ -8291,12 +8291,14 @@
 	  });
 	  var updatedGridImages = gridImages.map(function (imgObj) {
 	    if (listingIdsWithUpdatedDefaultPhoto.includes(imgObj.listingId)) {
+	      var _imgObj$listingImages;
+
 	      var updatedPhotoId = changes.find(function (edit) {
 	        return edit.listingId === imgObj.listingId;
 	      }).defaultPhotoId;
-	      var updatedPhotoLink = imgObj.listingImages.find(function (photo) {
+	      var updatedPhotoLink = (_imgObj$listingImages = imgObj.listingImages.find(function (photo) {
 	        return photo.photoId === updatedPhotoId;
-	      }).photoLink;
+	      })) === null || _imgObj$listingImages === void 0 ? void 0 : _imgObj$listingImages.photoLink;
 	      return Object.assign({}, imgObj, {
 	        photoLink: updatedPhotoLink
 	      });
@@ -8400,10 +8402,6 @@
 	      // to reduce jank from network calls, check the refs to ensure call is only made when relevant
 	      // data has changed
 	      if ((currentAsset === null || currentAsset === void 0 ? void 0 : currentAsset.id) !== asset.id && (currentAsset === null || currentAsset === void 0 ? void 0 : currentAsset.data) !== asset.data && (assetNext.current !== asset.next || assetPrev.current !== asset.previous)) {
-	        console.log('id', currentAsset === null || currentAsset === void 0 ? void 0 : currentAsset.id, asset.id);
-	        console.log('assetData', currentAsset === null || currentAsset === void 0 ? void 0 : currentAsset.data, asset.data);
-	        console.log('next', assetNext.current, asset.next);
-	        console.log('prev', assetPrev.current, asset.previous);
 	        assetNext.current = asset.next;
 	        assetPrev.current = asset.previous;
 	        var assetDataStr = get(asset.data).replace(/NaN/g, 'null');

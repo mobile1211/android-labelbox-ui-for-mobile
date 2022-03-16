@@ -9,7 +9,7 @@ function overrideGridImages(changes, gridImages) {
       ).defaultPhotoId;
       const updatedPhotoLink = imgObj.listingImages.find(
         (photo) => photo.photoId === updatedPhotoId
-      ).photoLink;
+      )?.photoLink;
 
       return Object.assign({}, imgObj, {
         photoLink: updatedPhotoLink,
