@@ -8231,9 +8231,10 @@
 	  var selectedListing = _ref.selectedListing,
 	      newDefaultPhotoId = _ref.newDefaultPhotoId,
 	      onClickImage = _ref.onClickImage;
-	  react.exports.useEffect(function () {
-	    document.querySelector('.right-side-panel').scrollTo(0, 0);
+	  var scrollToTop = react.exports.useCallback(function (node) {
+	    node === null || node === void 0 ? void 0 : node.scrollTo(0, 0);
 	  }, [selectedListing]);
+	  if (!selectedListing) return null;
 	  var title = selectedListing.listingTitle,
 	      description = selectedListing.listingDescription,
 	      location = selectedListing.listingLocation,
@@ -8243,7 +8244,10 @@
 	  // src="https://maps.google.com/maps?q=${lat},${lng}&hl=es&z=14&amp;output=embed"
 	  // href="https://maps.google.com/maps?q=${lat},${lng};z=14&amp;output=embed"
 
-	  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h5", null, "Listing Info"), /*#__PURE__*/React.createElement("div", {
+	  return /*#__PURE__*/React.createElement("div", {
+	    className: "flex-column right-side-panel",
+	    ref: scrollToTop
+	  }, /*#__PURE__*/React.createElement("h5", null, "Listing Info"), /*#__PURE__*/React.createElement("div", {
 	    className: "listing-info-container"
 	  }, /*#__PURE__*/React.createElement("div", {
 	    className: "listing-info"
@@ -8464,13 +8468,11 @@
 	    setSelectedListing: setSelectedListing,
 	    setSelectedImageIdx: setSelectedImageIdx,
 	    setPhotoEdits: setPhotoEdits
-	  })), /*#__PURE__*/React.createElement("div", {
-	    className: "flex-column right-side-panel"
-	  }, selectedListing ? /*#__PURE__*/React.createElement(RightPanel, {
+	  })), /*#__PURE__*/React.createElement(RightPanel, {
 	    selectedListing: selectedListing,
 	    onClickImage: setNewDefaultPhotoId,
 	    newDefaultPhotoId: newDefaultPhotoId
-	  }) : null));
+	  }));
 	}
 
 	ReactDOM.render( /*#__PURE__*/React.createElement(App, null), document.getElementById('root'));

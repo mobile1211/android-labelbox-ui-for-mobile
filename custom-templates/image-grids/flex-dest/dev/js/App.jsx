@@ -123,15 +123,11 @@ export default function App() {
           setPhotoEdits={setPhotoEdits}
         />
       </div>
-      <div className="flex-column right-side-panel">
-        {selectedListing ? (
-          <RightPanel
-            selectedListing={selectedListing}
-            onClickImage={setNewDefaultPhotoId}
-            newDefaultPhotoId={newDefaultPhotoId}
-          />
-        ) : null}
-      </div>
+      <RightPanel
+        selectedListing={selectedListing}
+        onClickImage={setNewDefaultPhotoId}
+        newDefaultPhotoId={newDefaultPhotoId}
+      />
     </>
   );
 }

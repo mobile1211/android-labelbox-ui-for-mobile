@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback } from 'react';
 import AdditionalPhotos from './AdditionalPhotos';
 
 export default function RightPanel({
@@ -6,9 +6,14 @@ export default function RightPanel({
   newDefaultPhotoId,
   onClickImage,
 }) {
-  useEffect(() => {
-    document.querySelector('.right-side-panel').scrollTo(0, 0);
-  }, [selectedListing]);
+  const scrollToTop = useCallback(
+    (node) => {
+      node?.scrollTo(0, 0);
+    },
+    [selectedListing]
+  );
+
+  if (!selectedListing) return null;
 
   const {
     listingTitle: title,
@@ -23,7 +28,7 @@ export default function RightPanel({
   // src="https://maps.google.com/maps?q=${lat},${lng}&hl=es&z=14&amp;output=embed"
   // href="https://maps.google.com/maps?q=${lat},${lng};z=14&amp;output=embed"
   return (
-    <div>
+    <div className="flex-column right-side-panel" ref={scrollToTop}>
       <h5>Listing Info</h5>
       <div className="listing-info-container">
         <div className="listing-info">
