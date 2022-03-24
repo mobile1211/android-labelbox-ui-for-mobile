@@ -8217,7 +8217,7 @@
 	  var selectedListing = _ref.selectedListing,
 	      onClickImage = _ref.onClickImage,
 	      newDefaultPhotoId = _ref.newDefaultPhotoId;
-	  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("h5", null, "Other pictures"), selectedListing.listingImages.map(function (image) {
+	  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h5", null, "Other pictures"), selectedListing.listingImages.map(function (image) {
 	    return /*#__PURE__*/React.createElement(AdditionalImage, {
 	      key: image.photoId,
 	      isSelected: newDefaultPhotoId === image.photoId,

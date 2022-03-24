@@ -7,7 +7,7 @@ export default function AdditionalPhotos({
   newDefaultPhotoId,
 }) {
   return (
-    <>
+    <div>
       <h5>Other pictures</h5>
       {selectedListing.listingImages.map((image) => (
         <AdditionalImage
@@ -17,6 +17,6 @@ export default function AdditionalPhotos({
           onClick={onClickImage}
         />
       ))}
-    </>
+    </div>
   );
 }
